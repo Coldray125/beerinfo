@@ -1,4 +1,15 @@
 # beerinfo
+
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running Tests](#running-tests)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+
+- ## Project Structure
+
 ```
 ├───src
    ├───main
