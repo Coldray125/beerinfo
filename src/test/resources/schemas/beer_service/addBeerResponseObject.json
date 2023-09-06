@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string"
+    },
+    "beer": {
+      "type": "object",
+      "properties": {
+        "beerId": {
+          "type": "integer"
+        },
+        "abv": {
+          "type": "string"
+        },
+        "ibuNumber": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "style": {
+          "type": "string"
+        },
+        "breweryId": {
+          "type": "integer"
+        },
+        "ounces": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "beerId",
+        "abv",
+        "ibuNumber",
+        "id",
+        "name",
+        "style",
+        "breweryId",
+        "ounces"
+      ]
+    }
+  },
+  "required": ["message", "beer"]
+}
