@@ -1,5 +1,6 @@
 package api.db_query;
 
+import api.test_utils.data_generators.BeerObjectGenerator;
 import io.qameta.allure.Step;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
@@ -33,21 +34,13 @@ public class BeerQuery {
     }
 
     @Step("Add Beer record to Postgres: {0}")
-    public long addBeerReturnId(BeerEntity beer) {
-        Optional<BeerEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, beer);
-        if (beerEntity.isPresent()) {
-            return beerEntity.get().getBeerId();
-        }
-        throw new PersistenceException("Failed to add BeerEntity: \n" + beer);
-    }
-
-    @Step("Add Beer record to Postgres: {0}")
-    public GetBeerResponseDTO addBeerReturnEntity(BeerEntity beer) {
-        Optional<BeerEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, beer);
+    public GetBeerResponseDTO addRandomBeerReturnDTO() {
+        BeerEntity randomEntity = BeerObjectGenerator.generateRandomBeerEntity();
+        Optional<BeerEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, randomEntity);
         if (beerEntity.isPresent()) {
             return BeerDTOConverter.convertToGetBeerResponseDTO(beerEntity.get());
         }
-        throw new PersistenceException("Failed to add BeerEntity: \n" + beer);
+        throw new PersistenceException("Failed to add BeerEntity: \n" + randomEntity);
     }
 
     @Step("Update Beer record in Postgres with ID: {0} and Beer: {1}")

@@ -21,8 +21,7 @@ public class BeerRequest {
                 .when()
                 .get()
                 .thenReturn();
-
-        return response.jsonPath().getList("");
+        return response.jsonPath().getList("", GetBeerResponse.class);
     }
 
     @Step("Request to get all beer records GET /beers")

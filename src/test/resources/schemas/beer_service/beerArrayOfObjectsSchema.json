@@ -12,9 +12,6 @@
       "ibuNumber": {
         "type": "string"
       },
-      "id": {
-        "type": "string"
-      },
       "name": {
         "type": "string"
       },
@@ -28,6 +25,6 @@
         "type": "string"
       }
     },
-    "required": ["beerId", "abv", "ibuNumber", "id", "name", "style", "breweryId", "ounces"]
+    "required": ["beerId", "abv", "ibuNumber", "name", "style", "breweryId", "ounces"]
   }
 }
