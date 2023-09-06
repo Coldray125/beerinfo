@@ -1,5 +1,5 @@
 # beerinfo
-'''
+```
 ├───src
    ├───main
    │   ├───java
@@ -41,4 +41,4 @@
           └───schemas
              ├───beer_service
              └───brewerie_service
-             '''
+```
