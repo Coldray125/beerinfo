@@ -21,7 +21,7 @@ public class BreweryQuery {
 
     @Step("Get Brewery from Postgres by ID: {0}")
     public GetBreweryResponseDTO getBreweryById(long id) {
-        Optional<BreweryEntity> breweryEntity = HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BreweryEntity.class, "beerId", id);
+        Optional<BreweryEntity> breweryEntity = HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BreweryEntity.class, "breweryId", id);
         if (breweryEntity.isPresent()) {
             return BreweryDTOConverter.convertBreweryEntityToResponseDTO(breweryEntity.get());
         }

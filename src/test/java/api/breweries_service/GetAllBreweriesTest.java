@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static api.test_utils.SchemaPaths.BEER_ARRAY;
+import static api.test_utils.SchemaPaths.BREWERY_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Brewery API")
@@ -16,16 +16,16 @@ public class GetAllBreweriesTest {
 
     BreweryRequest breweryRequest = new BreweryRequest();
 
-    @DisplayName("Verify GET /beers Response JSON Structure")
+    @DisplayName("Verify GET /breweries Response JSON Structure")
     @Test
-    void checkGetAllBeersResponseStructure() {
+    void checkGetAllBreweriesResponseStructure() {
         Response response = breweryRequest.getBreweriesRequestReturnResponse();
-        ResponseValidator.assertResponseMatchesSchema(response, BEER_ARRAY.getPath());
+        ResponseValidator.assertResponseMatchesSchema(response, BREWERY_ARRAY.getPath());
     }
 
-    @DisplayName("Ensure GET /beers Response Code")
+    @DisplayName("Ensure GET /breweries Response Code")
     @Test
-    void checkGetAllBeersStatusCode() {
+    void checkGetAllBreweriesStatusCode() {
         Response response = breweryRequest.getBreweriesRequestReturnResponse();
         Assertions.assertEquals(SC_OK, response.getStatusCode());
     }

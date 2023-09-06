@@ -49,7 +49,7 @@ public class UpdateBreweryPositiveTest {
                 () -> Assertions.assertEquals(breweryRequestPojo.getCountry(), responseObject.getCountry()));
     }
 
-    @DisplayName("Ensure POST /beer Response Message")
+    @DisplayName("Ensure POST /brewery Response Message")
     @Test
     void checkUpdateBreweryResponseText() {
         UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(breweryRequestPojo, String.valueOf(breweryId));
@@ -57,7 +57,7 @@ public class UpdateBreweryPositiveTest {
         Assertions.assertEquals(expectedMessage, fullResponse.getMessage());
     }
 
-    @DisplayName("Verify Data Update in Database with valid Country POST /beer")
+    @DisplayName("Verify Data Update in Database with valid Country POST /brewery")
     @ParameterizedTest
     @EnumSource(SupportedCountry.class)
     void checkUpdateBreweryWithValidCountry(SupportedCountry country) {
