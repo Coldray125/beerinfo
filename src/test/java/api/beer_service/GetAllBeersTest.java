@@ -33,8 +33,7 @@ public class GetAllBeersTest {
     @DisplayName("Verify GET /beers response contains record added to Postgres")
     @Test
     void checkGetAllBeersContainsAddedRecord() {
-        BeerEntity randomEntity = BeerObjectGenerator.generateRandomBeerEntity();
-        GetBeerResponseDTO entityDTO = beerQuery.addBeerReturnEntity(randomEntity);
+        GetBeerResponseDTO entityDTO = beerQuery.addRandomBeerReturnDTO();
         List<GetBeerResponse> responseList = beerRequest.getBeerRequestReturnList();
 
         Optional<GetBeerResponse> matchingResponse = responseList.stream()

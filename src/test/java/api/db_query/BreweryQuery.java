@@ -1,5 +1,6 @@
 package api.db_query;
 
+import api.test_utils.data_generators.BreweryObjectGenerator;
 import io.qameta.allure.Step;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -28,11 +29,12 @@ public class BreweryQuery {
     }
 
     @Step("Add Brewery record to Postgres: {0}")
-    public long addBreweryReturnId(BreweryEntity brewery) {
-        Optional<BreweryEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, brewery);
+    public long addRandomBreweryReturnId() {
+        BreweryEntity breweryEntity = BreweryObjectGenerator.generateRandomBreweryEntity();
+        Optional<BreweryEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, breweryEntity);
         if (beerEntity.isPresent()) {
             return beerEntity.get().getBreweryId();
         }
-        throw new PersistenceException("Failed to add BeerEntity: \n" + brewery);
+        throw new PersistenceException("Failed to add BeerEntity: \n" + breweryEntity);
     }
 }

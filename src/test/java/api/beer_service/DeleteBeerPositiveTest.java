@@ -5,6 +5,7 @@ import api.request.BeerRequest;
 import api.test_utils.data_generators.BeerObjectGenerator;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
+import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
 import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
@@ -19,23 +20,23 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class DeleteBeerPositiveTest {
 
     BeerRequest beerRequest = new BeerRequest();
-    BeerEntity beerEntity;
+    GetBeerResponseDTO beerEntity;
     HibernateUtil hibernateUtil = new HibernateUtil();
     SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
     BeerQuery beerQuery = new BeerQuery(sessionFactory);
 
-    long beerId;
+    String beerId;
 
     @BeforeEach
     void createBeerEntityInDB() {
-        beerEntity = BeerObjectGenerator.generateRandomBeerEntity();
-        beerId = beerQuery.addBeerReturnId(beerEntity);
+        beerEntity = beerQuery.addRandomBeerReturnDTO();
+        beerId = String.valueOf(beerEntity.getBeerId());
     }
 
     @DisplayName("Check DELETE /beer/{id} response message")
     @Test
     void checkDeleteBeerResponseText() {
-        Response response = beerRequest.deleteBeerRequestReturnResponse(String.valueOf(beerId));
+        Response response = beerRequest.deleteBeerRequestReturnResponse(beerId);
 
         Assertions.assertEquals(SC_OK, response.getStatusCode());
 

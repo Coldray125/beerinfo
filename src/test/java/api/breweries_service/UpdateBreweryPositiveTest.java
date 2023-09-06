@@ -25,7 +25,6 @@ public class UpdateBreweryPositiveTest {
 
     BreweryRequest breweryRequest = new BreweryRequest();
     BreweryRequestPojo breweryRequestPojo;
-    BreweryEntity breweryEntity;
     HibernateUtil hibernateUtil = new HibernateUtil();
     SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
     BreweryQuery breweryQuery = new BreweryQuery(sessionFactory);
@@ -35,8 +34,7 @@ public class UpdateBreweryPositiveTest {
     @BeforeEach
     void createBeerEntityInDB() {
         breweryRequestPojo = BreweryObjectGenerator.generateRandomBreweryPojo();
-        breweryEntity = BreweryObjectGenerator.generateRandomBreweryEntity();
-        breweryId = breweryQuery.addBreweryReturnId(breweryEntity);
+        breweryId = breweryQuery.addRandomBreweryReturnId();
     }
 
     @DisplayName("Verify Data in PUT /brewery/{id} Response and Request")

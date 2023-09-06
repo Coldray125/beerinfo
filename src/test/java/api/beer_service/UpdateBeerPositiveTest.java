@@ -22,24 +22,23 @@ public class UpdateBeerPositiveTest {
 
     BeerRequest beerRequest = new BeerRequest();
     BeerRequestPojo beerRequestPojo;
-    BeerEntity beerEntity;
     HibernateUtil hibernateUtil = new HibernateUtil();
     SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
     BeerQuery beerQuery = new BeerQuery(sessionFactory);
 
-    long beerId;
+    String beerId;
 
     @BeforeEach
     void createBeerEntityInDB() {
         beerRequestPojo = BeerObjectGenerator.generateRandomBeerPojo();
-        beerEntity = BeerObjectGenerator.generateRandomBeerEntity();
-        beerId = beerQuery.addBeerReturnId(beerEntity);
+        GetBeerResponseDTO entity = beerQuery.addRandomBeerReturnDTO();
+        beerId = String.valueOf(entity.getBeerId());
     }
 
     @DisplayName("Verify Response Text for PUT /beer/{id}")
     @Test
     void checkUpdateBeerResponseText() {
-        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, String.valueOf(beerId));
+        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, beerId);
         String expectedText = String.format("Beer with id: %s was updated.", beerId);
         String responseText = fullResponse.getMessage();
         Assertions.assertEquals(expectedText, responseText);
@@ -48,7 +47,7 @@ public class UpdateBeerPositiveTest {
     @DisplayName("Verify Data in PUT /beer/{id} Response and Request")
     @Test
     void checkValuesAddBeerResponse() {
-        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, String.valueOf(beerId));
+        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, beerId);
         UpdateBeerResponse.BeerDetails responseObject = fullResponse.getBeer();
         Assertions.assertAll(
                 () -> Assertions.assertEquals(beerRequestPojo.getAbv(), responseObject.getAbv()),
@@ -62,9 +61,9 @@ public class UpdateBeerPositiveTest {
     @DisplayName("Verify Data in PUT /beer/{id} Response and Database")
     @Test
     void checkAddBeerWriteInDatabase() {
-        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, String.valueOf(beerId));
+        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, beerId);
         UpdateBeerResponse.BeerDetails responseObject = fullResponse.getBeer();
-        GetBeerResponseDTO beerEntity = beerQuery.getBeerById(beerId);
+        GetBeerResponseDTO beerEntity = beerQuery.getBeerById(Long.parseLong(beerId));
 
         step("Validate response JSON against database values");
         Assertions.assertAll(
