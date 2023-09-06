@@ -1,4 +1,4 @@
-CREATE TABLE Breweries (brewery_id BIGSERIAL PRIMARY KEY, name VARCHAR(40), city VARCHAR(20), state VARCHAR(20), country VARCHAR(30));
+CREATE TABLE Breweries (brewery_id BIGSERIAL PRIMARY KEY, name VARCHAR(60), city VARCHAR(60), state VARCHAR(20), country VARCHAR(30));
 INSERT INTO Breweries (name, city, state, country) VALUES ('NorthGate  Brewing ','Minneapolis',' MN','United States of America');
 INSERT INTO Breweries (name, city, state, country) VALUES ('Against the Grain Brewery','Louisville',' KY','United States of America');
 INSERT INTO Breweries (name, city, state, country) VALUES ('Jacks Abby Craft Lagers','Framingham',' MA','United States of America');
