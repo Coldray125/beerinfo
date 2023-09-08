@@ -30,7 +30,7 @@ public class DeleteBeerPositiveTest {
     @BeforeEach
     void createBeerEntityInDB() {
         beerEntity = beerQuery.addRandomBeerReturnDTO();
-        beerId = String.valueOf(beerEntity.getBeerId());
+        beerId = String.valueOf(beerEntity.beerId());
     }
 
     @DisplayName("Check DELETE /beer/{id} response message")

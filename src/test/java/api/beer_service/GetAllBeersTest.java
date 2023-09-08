@@ -37,7 +37,7 @@ public class GetAllBeersTest {
         List<GetBeerResponse> responseList = beerRequest.getBeerRequestReturnList();
 
         Optional<GetBeerResponse> matchingResponse = responseList.stream()
-                .filter(response -> response.getBeerId() == entityDTO.getBeerId())
+                .filter(response -> response.getBeerId() == entityDTO.beerId())
                 .findFirst();
 
         Assertions.assertTrue(matchingResponse.isPresent());

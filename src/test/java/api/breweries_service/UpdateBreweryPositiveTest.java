@@ -4,11 +4,9 @@ import api.db_query.BreweryQuery;
 import api.pojo.request.BreweryRequestPojo;
 import api.pojo.response.brewery.UpdateBreweryResponse;
 import api.request.BreweryRequest;
-import api.test_utils.data_generators.BeerObjectGenerator;
 import api.test_utils.data_generators.BreweryObjectGenerator;
 import io.qameta.allure.Story;
 import org.beerinfo.dto.api.brewery.GetBreweryResponseDTO;
-import org.beerinfo.entity.BreweryEntity;
 import org.beerinfo.enums.SupportedCountry;
 import org.beerinfo.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
@@ -17,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @Story("Beer API")
