@@ -43,13 +43,13 @@ public class AddBeerPositiveTest {
 
         step("Validate response JSON against database values");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(responseObject.getBeerId(), beerEntity.getBeerId()),
-                () -> Assertions.assertEquals(responseObject.getAbv(), beerEntity.getAbv()),
-                () -> Assertions.assertEquals(responseObject.getName(), beerEntity.getName()),
-                () -> Assertions.assertEquals(responseObject.getIbuNumber(), beerEntity.getIbuNumber()),
-                () -> Assertions.assertEquals(responseObject.getStyle(), beerEntity.getStyle()),
-                () -> Assertions.assertEquals(responseObject.getBreweryId(), beerEntity.getBreweryId()),
-                () -> Assertions.assertEquals(responseObject.getOunces(), beerEntity.getOunces())
+                () -> Assertions.assertEquals(responseObject.getBeerId(), beerEntity.beerId()),
+                () -> Assertions.assertEquals(responseObject.getAbv(), beerEntity.abv()),
+                () -> Assertions.assertEquals(responseObject.getName(), beerEntity.name()),
+                () -> Assertions.assertEquals(responseObject.getIbuNumber(), beerEntity.ibuNumber()),
+                () -> Assertions.assertEquals(responseObject.getStyle(), beerEntity.style()),
+                () -> Assertions.assertEquals(responseObject.getBreweryId(), beerEntity.breweryId()),
+                () -> Assertions.assertEquals(responseObject.getOunces(), beerEntity.ounces())
         );
     }
 

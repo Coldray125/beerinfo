@@ -7,7 +7,6 @@ import api.request.BeerRequest;
 import api.test_utils.data_generators.BeerObjectGenerator;
 import io.qameta.allure.Story;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Assertions;
@@ -32,7 +31,7 @@ public class UpdateBeerPositiveTest {
     void createBeerEntityInDB() {
         beerRequestPojo = BeerObjectGenerator.generateRandomBeerPojo();
         GetBeerResponseDTO entity = beerQuery.addRandomBeerReturnDTO();
-        beerId = String.valueOf(entity.getBeerId());
+        beerId = String.valueOf(entity.beerId());
     }
 
     @DisplayName("Verify Response Text for PUT /beer/{id}")
@@ -67,12 +66,12 @@ public class UpdateBeerPositiveTest {
 
         step("Validate response JSON against database values");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(responseObject.getAbv(), beerEntity.getAbv()),
-                () -> Assertions.assertEquals(responseObject.getName(), beerEntity.getName()),
-                () -> Assertions.assertEquals(responseObject.getIbuNumber(), beerEntity.getIbuNumber()),
-                () -> Assertions.assertEquals(responseObject.getStyle(), beerEntity.getStyle()),
-                () -> Assertions.assertEquals(responseObject.getBreweryId(), beerEntity.getBreweryId()),
-                () -> Assertions.assertEquals(responseObject.getOunces(), beerEntity.getOunces())
+                () -> Assertions.assertEquals(responseObject.getAbv(), beerEntity.abv()),
+                () -> Assertions.assertEquals(responseObject.getName(), beerEntity.name()),
+                () -> Assertions.assertEquals(responseObject.getIbuNumber(), beerEntity.ibuNumber()),
+                () -> Assertions.assertEquals(responseObject.getStyle(), beerEntity.style()),
+                () -> Assertions.assertEquals(responseObject.getBreweryId(), beerEntity.breweryId()),
+                () -> Assertions.assertEquals(responseObject.getOunces(), beerEntity.ounces())
         );
     }
 }

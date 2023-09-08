@@ -1,12 +1,10 @@
 package api.request;
 
 import api.api_specifications.ApiRequestSpecification;
-import api.pojo.request.BeerRequestPojo;
 import api.pojo.request.BreweryRequestPojo;
 import api.pojo.response.brewery.UpdateBreweryResponse;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import org.beerinfo.dto.api.beer.PutBeerResponseDTO;
 
 import java.util.List;
 

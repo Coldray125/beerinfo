@@ -31,7 +31,7 @@ public class GetBeerByIdPositiveTest {
     @BeforeEach
     void createBeerEntityInDB() {
         beerEntity = beerQuery.addRandomBeerReturnDTO();
-        beerId = String.valueOf(beerEntity.getBeerId());
+        beerId = String.valueOf(beerEntity.beerId());
     }
 
     @DisplayName("Ensure Response Code is 200 for GET /beer/{id}")
@@ -53,13 +53,13 @@ public class GetBeerByIdPositiveTest {
     void checkValuesInBeerByIdResponse() {
         GetBeerResponse responseObject = beerRequest.getBeerByIdRequest(beerId);
         Assertions.assertAll(
-                () -> Assertions.assertEquals(beerEntity.getAbv(), responseObject.getAbv()),
-                () -> Assertions.assertEquals(beerEntity.getName(), responseObject.getName()),
-                () -> Assertions.assertEquals(beerEntity.getIbuNumber(), responseObject.getIbuNumber()),
-                () -> Assertions.assertEquals(beerEntity.getName(), responseObject.getName()),
-                () -> Assertions.assertEquals(beerEntity.getStyle(), responseObject.getStyle()),
-                () -> Assertions.assertEquals(beerEntity.getBreweryId(), responseObject.getBreweryId()),
-                () -> Assertions.assertEquals(beerEntity.getOunces(), responseObject.getOunces())
+                () -> Assertions.assertEquals(beerEntity.abv(), responseObject.getAbv()),
+                () -> Assertions.assertEquals(beerEntity.name(), responseObject.getName()),
+                () -> Assertions.assertEquals(beerEntity.ibuNumber(), responseObject.getIbuNumber()),
+                () -> Assertions.assertEquals(beerEntity.name(), responseObject.getName()),
+                () -> Assertions.assertEquals(beerEntity.style(), responseObject.getStyle()),
+                () -> Assertions.assertEquals(beerEntity.breweryId(), responseObject.getBreweryId()),
+                () -> Assertions.assertEquals(beerEntity.ounces(), responseObject.getOunces())
         );
     }
 }
