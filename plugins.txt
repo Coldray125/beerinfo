@@ -1,0 +1,4 @@
+configuration-as-code
+allure-jenkins-plugin
+workflow-aggregator
+pipeline-stage-step
