@@ -13,7 +13,7 @@
 
 - **Java:** 16+
 
-- **Maven: 3.9.4+
+- **Maven:** 3.9.4+
 
 - ## Project Structure
 
