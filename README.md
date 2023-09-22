@@ -27,7 +27,7 @@ This project utilizes the following technologies, libraries, and frameworks for 
   - JUnit 5
   - Rest-assured
   - JSON Schema Validator: Used for validating JSON responses.
-  - 
+    
 - **Persistence and Data Validation:**
 
   - Hibernate Core 6
