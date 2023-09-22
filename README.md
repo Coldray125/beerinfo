@@ -8,6 +8,13 @@
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 
+
+- ## Prerequisites
+
+- **Java:** 16+
+
+- **Maven: 3.9.4+
+
 - ## Project Structure
 
 ```
