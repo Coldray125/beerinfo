@@ -24,16 +24,16 @@ This project utilizes the following technologies, libraries, and frameworks for 
 
 - **Testing Frameworks:**
 
-  - JUnit (5.8.2): Used for unit and integration testing.
-  - Rest-assured (5.3.0): Used for testing REST APIs.
-  - JSON Schema Validator (5.3.1): Used for validating JSON responses.
+  - JUnit 5
+  - Rest-assured
+  - JSON Schema Validator: Used for validating JSON responses.
   - 
 - **Persistence and Data Validation:**
 
-  - Hibernate Core (6.2.6.Final): Used for Hibernate-related functionality.
+  - Hibernate Core 6
   - Hibernate Validator
-  - Jakarta EL (5.0.0-M1) and Jakarta EL API (5.0.1): Used for Expression Language support.
-  - Jakarta Validation API (3.0.2): Used for validation.
+  - Jakarta EL and Jakarta EL API: Used for Expression Language support.
+  - Jakarta Validation API: Used for validation.
 
 - **Other Dependencies:**
   - Lombok
@@ -43,7 +43,7 @@ This project utilizes the following technologies, libraries, and frameworks for 
 
 - **Testing Report Framework:**
 
-  - Allure JUnit5 (2.23.0): Used for generating informative test reports.
+  - Allure JUnit5
 
 
 - ## Project Structure
