@@ -3,7 +3,7 @@
 ## Table of Contents
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
-- [Technology Stack](#Technology)
+- [Technology Stack](#technology-stack)
 - [Installation](#installation)
 - [Running Tests](#running-tests)
 - [Usage](#usage)
