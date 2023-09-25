@@ -34,7 +34,7 @@ public class UpdateBeerByIdHandler {
                     return validationError;
                 }
 
-                final BeerEntity beer = BeerDTOConverter.convertToBeerEntity(beerCreationDTO);
+                final BeerEntity beer = BeerDTOConverter.convertToBeerEntity.apply(beerCreationDTO);
 
                 long id = Long.parseLong(idString);
                 boolean updateResult = beerService.updateBeerById(beer,id);

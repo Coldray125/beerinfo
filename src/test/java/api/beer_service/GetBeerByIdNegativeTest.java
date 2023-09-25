@@ -12,13 +12,12 @@ import org.junit.jupiter.api.Test;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
+import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
 public class GetBeerByIdNegativeTest {
     BeerRequest beerRequest = new BeerRequest();
-    HibernateUtil hibernateUtil = new HibernateUtil();
-    SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
-    BeerQuery beerQuery = new BeerQuery(sessionFactory);
+    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
 
     @DisplayName("Error: Retrieve Nonexistent Beer by ID")
     @Test

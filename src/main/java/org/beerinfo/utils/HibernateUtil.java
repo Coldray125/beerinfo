@@ -16,7 +16,20 @@ import static org.hibernate.cfg.AvailableSettings.*;
 @Getter
 public class HibernateUtil {
 
-    public SessionFactory buildSessionFactory() {
+    private static SessionFactory sessionFactory;
+
+    private HibernateUtil() {
+    }
+
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            sessionFactory = buildSessionFactory();
+        }
+
+        return sessionFactory;
+    }
+
+    private static SessionFactory buildSessionFactory() {
         StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(createConfiguration().getProperties())
                 .build();
@@ -28,7 +41,7 @@ public class HibernateUtil {
         return sessionFactoryBuilder.build();
     }
 
-    private Metadata addAnnotatedClasses(StandardServiceRegistry serviceRegistry) {
+    private static Metadata addAnnotatedClasses(StandardServiceRegistry serviceRegistry) {
         return new MetadataSources(serviceRegistry)
                 .addAnnotatedClass(BeerEntity.class)
                 .addAnnotatedClass(BreweryEntity.class)
@@ -36,7 +49,7 @@ public class HibernateUtil {
                 .build();
     }
 
-    private Configuration createConfiguration() {
+    private static Configuration createConfiguration() {
         Configuration configuration = new Configuration();
         configuration.setProperty(URL, "jdbc:postgresql://192.168.1.17:5432/mydatabase");
         configuration.setProperty(USER, "postgres");

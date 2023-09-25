@@ -22,8 +22,7 @@ public class UpdateBreweryPositiveTest {
 
     BreweryRequest breweryRequest = new BreweryRequest();
     BreweryRequestPojo breweryRequestPojo;
-    HibernateUtil hibernateUtil = new HibernateUtil();
-    SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
+    SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     BreweryQuery breweryQuery = new BreweryQuery(sessionFactory);
 
     long breweryId;

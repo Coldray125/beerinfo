@@ -39,7 +39,7 @@ public class AddBeerHandler {
                     return validationError;
                 }
 
-                final BeerEntity beer = BeerDTOConverter.convertToBeerEntity(beerCreationDTO);
+                final BeerEntity beer = BeerDTOConverter.convertToBeerEntity.apply(beerCreationDTO);
 
                 long lastBreweryId = breweriesService.getLastBreweryId();
                 int breweryIdFromRequest = beer.getBreweryId();
@@ -58,7 +58,7 @@ public class AddBeerHandler {
                             response, 500, "Error occurred while adding the beer. Please check if the provided data is valid");
                 }
 
-                final PostBeerResponseDTO getBeerResponseDTO = BeerDTOConverter.convertToPostBeerResponseDTO(beer);
+                final PostBeerResponseDTO getBeerResponseDTO = BeerDTOConverter.convertToPostBeerResponseDTO.apply(beer);
 
                 ResponseUtil.setJsonResponseCode(response, 200);
 

@@ -38,7 +38,7 @@ public class GetBeerByIdHandler {
 
                 if (beerOptional.isPresent()) {
                     BeerEntity beer = beerOptional.get();
-                    GetBeerResponseDTO getBeerResponseDTO = BeerDTOConverter.convertToGetBeerResponseDTO(beer);
+                    GetBeerResponseDTO getBeerResponseDTO = BeerDTOConverter.convertToGetBeerResponseDTO.apply(beer);
                     ResponseUtil.setJsonResponseCode(response, 200);
                     return objectMapper.writeValueAsString(getBeerResponseDTO);
                 } else {

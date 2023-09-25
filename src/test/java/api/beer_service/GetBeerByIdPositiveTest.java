@@ -4,13 +4,9 @@ import api.db_query.BeerQuery;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
-import api.test_utils.data_generators.BeerObjectGenerator;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.beerinfo.entity.BeerEntity;
-import org.beerinfo.utils.HibernateUtil;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,15 +14,14 @@ import org.junit.jupiter.api.Test;
 
 import static api.test_utils.SchemaPaths.BEER_OBJECT;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
 public class GetBeerByIdPositiveTest {
     BeerRequest beerRequest = new BeerRequest();
     String beerId;
     GetBeerResponseDTO beerEntity;
-    HibernateUtil hibernateUtil = new HibernateUtil();
-    SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
-    BeerQuery beerQuery = new BeerQuery(sessionFactory);
+    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
 
     @BeforeEach
     void createBeerEntityInDB() {

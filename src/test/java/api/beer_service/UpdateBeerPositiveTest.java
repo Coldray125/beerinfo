@@ -7,23 +7,20 @@ import api.request.BeerRequest;
 import api.test_utils.data_generators.BeerObjectGenerator;
 import io.qameta.allure.Story;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.beerinfo.utils.HibernateUtil;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
+import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
 public class UpdateBeerPositiveTest {
 
     BeerRequest beerRequest = new BeerRequest();
     BeerRequestPojo beerRequestPojo;
-    HibernateUtil hibernateUtil = new HibernateUtil();
-    SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
-    BeerQuery beerQuery = new BeerQuery(sessionFactory);
+    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
 
     String beerId;
 

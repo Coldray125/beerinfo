@@ -28,7 +28,7 @@ public class BeerQuery {
     public GetBeerResponseDTO getBeerById(long id) {
         Optional<BeerEntity> beerEntity = HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BeerEntity.class, "beerId", id);
         if (beerEntity.isPresent()) {
-            return BeerDTOConverter.convertToGetBeerResponseDTO(beerEntity.get());
+            return BeerDTOConverter.convertToGetBeerResponseDTO.apply(beerEntity.get());
         }
         throw new EntityNotFoundException("BeerEntity not found for ID: " + id);
     }
@@ -38,7 +38,7 @@ public class BeerQuery {
         BeerEntity randomEntity = BeerObjectGenerator.generateRandomBeerEntity();
         Optional<BeerEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, randomEntity);
         if (beerEntity.isPresent()) {
-            return BeerDTOConverter.convertToGetBeerResponseDTO(beerEntity.get());
+            return BeerDTOConverter.convertToGetBeerResponseDTO.apply(beerEntity.get());
         }
         throw new PersistenceException("Failed to add BeerEntity: \n" + randomEntity);
     }
