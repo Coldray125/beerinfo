@@ -16,8 +16,7 @@ public class App {
         init();
 
         // Get the SessionFactory from HibernateUtil
-        HibernateUtil hibernateUtil = new HibernateUtil();
-        SessionFactory sessionFactory = hibernateUtil.buildSessionFactory();
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
         // Create the BeerService instance with the SessionFactory
         BeerService beerService = new BeerService(sessionFactory);

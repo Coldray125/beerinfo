@@ -41,7 +41,7 @@ public class UpdateBreweryByIdHandler {
                     return ResponseUtil.respondWithError(response, 400, errorMessage);
                 }
 
-                final BreweryEntity brewery = BreweryDTOConverter.convertToBreweryEntity(breweryCreationDTO);
+                final BreweryEntity brewery = BreweryDTOConverter.convertToBreweryEntity.apply(breweryCreationDTO);
 
                 long id = Long.parseLong(idString);
                 boolean updateResult = breweriesService.updateBreweryById(brewery, id);

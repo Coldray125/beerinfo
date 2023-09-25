@@ -23,7 +23,7 @@ public class BreweryQuery {
     public GetBreweryResponseDTO getBreweryById(long id) {
         Optional<BreweryEntity> breweryEntity = HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BreweryEntity.class, "breweryId", id);
         if (breweryEntity.isPresent()) {
-            return BreweryDTOConverter.convertBreweryEntityToResponseDTO(breweryEntity.get());
+            return BreweryDTOConverter.convertBreweryEntityToResponseDTO.apply(breweryEntity.get());
         }
         throw new EntityNotFoundException("BeerEntity not found for ID: " + id);
     }
