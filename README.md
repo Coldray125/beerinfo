@@ -1,6 +1,8 @@
 # beerinfo
 
 ## Table of Contents
+- [Project summary](#project-summary)
+- [Disclaimer](#disclaimer)
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
 - [Technology Stack](#technology-stack)
@@ -9,6 +11,11 @@
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 
+- ## Project summary
+- This project serves as a showcase of my endpoint testing skills while also providing a fully controlled testing environment. It involves interactions with Docker and Jenkins, enabling efficient and automated testing workflows.
+
+- ## Disclaimer
+- While the endpoint code and tests are good to go, I'm still working on Docker and Jenkins integration. They're currently under research and development.
 
 - ## Prerequisites
 
