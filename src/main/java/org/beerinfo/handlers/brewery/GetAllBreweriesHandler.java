@@ -1,9 +1,9 @@
 package org.beerinfo.handlers.brewery;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.beerinfo.converters.BreweryDTOConverter;
 import org.beerinfo.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.service.BreweriesService;
 import org.beerinfo.utils.ResponseUtil;
 
@@ -29,7 +29,7 @@ public class GetAllBreweriesHandler {
             if (breweries.isEmpty()) {
                 return ResponseUtil.respondWithError(response, 404, "Breweries not found.");
             } else {
-                getBreweryResponseDTO = BreweryDTOConverter.convertBreweryEntityListToResponseDTOList(breweries.get());
+                getBreweryResponseDTO = BreweryMapper.MAPPER.mapToGetBeerResponseDTOList(breweries.get());
                 ResponseUtil.setJsonResponseCode(response, 200);
                 return objectMapper.writeValueAsString(getBreweryResponseDTO);
             }

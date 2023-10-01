@@ -3,8 +3,6 @@ package org.beerinfo.handlers.beer;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.utils.ResponseUtil;
 
-import java.util.Optional;
-
 import static spark.Spark.delete;
 
 public class DeleteBeerByIdHandler {

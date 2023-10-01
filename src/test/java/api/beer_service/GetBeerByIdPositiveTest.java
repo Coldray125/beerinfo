@@ -48,13 +48,13 @@ public class GetBeerByIdPositiveTest {
     void checkValuesInBeerByIdResponse() {
         GetBeerResponse responseObject = beerRequest.getBeerByIdRequest(beerId);
         Assertions.assertAll(
-                () -> Assertions.assertEquals(beerEntity.abv(), responseObject.getAbv()),
-                () -> Assertions.assertEquals(beerEntity.name(), responseObject.getName()),
-                () -> Assertions.assertEquals(beerEntity.ibuNumber(), responseObject.getIbuNumber()),
-                () -> Assertions.assertEquals(beerEntity.name(), responseObject.getName()),
-                () -> Assertions.assertEquals(beerEntity.style(), responseObject.getStyle()),
-                () -> Assertions.assertEquals(beerEntity.breweryId(), responseObject.getBreweryId()),
-                () -> Assertions.assertEquals(beerEntity.ounces(), responseObject.getOunces())
+                () -> Assertions.assertEquals(beerEntity.abv(), responseObject.abv()),
+                () -> Assertions.assertEquals(beerEntity.name(), responseObject.name()),
+                () -> Assertions.assertEquals(beerEntity.ibuNumber(), responseObject.ibuNumber()),
+                () -> Assertions.assertEquals(beerEntity.name(), responseObject.name()),
+                () -> Assertions.assertEquals(beerEntity.style(), responseObject.style()),
+                () -> Assertions.assertEquals(beerEntity.breweryId(), responseObject.breweryId()),
+                () -> Assertions.assertEquals(beerEntity.ounces(), responseObject.ounces())
         );
     }
 }

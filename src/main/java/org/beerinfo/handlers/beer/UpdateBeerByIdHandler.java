@@ -3,8 +3,8 @@ package org.beerinfo.handlers.beer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.beerinfo.dto.data.BeerCreationDTO;
 import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
-import org.beerinfo.converters.BeerDTOConverter;
 import org.beerinfo.utils.ResponseUtil;
 import org.beerinfo.utils.ValidationUtils;
 
@@ -34,10 +34,10 @@ public class UpdateBeerByIdHandler {
                     return validationError;
                 }
 
-                final BeerEntity beer = BeerDTOConverter.convertToBeerEntity.apply(beerCreationDTO);
+                final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
 
                 long id = Long.parseLong(idString);
-                boolean updateResult = beerService.updateBeerById(beer,id);
+                boolean updateResult = beerService.updateBeerById(beer, id);
 
                 if (updateResult) {
                     ResponseUtil.setJsonResponseCode(response, 200);
