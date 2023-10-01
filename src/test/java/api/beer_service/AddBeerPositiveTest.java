@@ -35,18 +35,18 @@ public class AddBeerPositiveTest {
     @Test
     void checkAddBeerWriteInDatabase() {
         AddBeerResponse fullResponse = beerRequest.addBeerRequest(beerRequestPojo);
-        AddBeerResponse.BeerDetails responseObject = fullResponse.getBeer();
-        GetBeerResponseDTO beerEntity = beerQuery.getBeerById(responseObject.getBeerId());
+        AddBeerResponse.BeerDetails responseObject = fullResponse.beer();
+        GetBeerResponseDTO beerEntity = beerQuery.getBeerById(responseObject.beerId());
 
         step("Validate response JSON against database values");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(responseObject.getBeerId(), beerEntity.beerId()),
-                () -> Assertions.assertEquals(responseObject.getAbv(), beerEntity.abv()),
-                () -> Assertions.assertEquals(responseObject.getName(), beerEntity.name()),
-                () -> Assertions.assertEquals(responseObject.getIbuNumber(), beerEntity.ibuNumber()),
-                () -> Assertions.assertEquals(responseObject.getStyle(), beerEntity.style()),
-                () -> Assertions.assertEquals(responseObject.getBreweryId(), beerEntity.breweryId()),
-                () -> Assertions.assertEquals(responseObject.getOunces(), beerEntity.ounces())
+                () -> Assertions.assertEquals(responseObject.beerId(), beerEntity.beerId()),
+                () -> Assertions.assertEquals(responseObject.abv(), beerEntity.abv()),
+                () -> Assertions.assertEquals(responseObject.name(), beerEntity.name()),
+                () -> Assertions.assertEquals(responseObject.ibuNumber(), beerEntity.ibuNumber()),
+                () -> Assertions.assertEquals(responseObject.style(), beerEntity.style()),
+                () -> Assertions.assertEquals(responseObject.breweryId(), beerEntity.breweryId()),
+                () -> Assertions.assertEquals(responseObject.ounces(), beerEntity.ounces())
         );
     }
 
@@ -72,13 +72,13 @@ public class AddBeerPositiveTest {
     @Test
     void checkValuesAddBeerResponse() {
         AddBeerResponse fullResponse = beerRequest.addBeerRequest(beerRequestPojo);
-        AddBeerResponse.BeerDetails responseObject = fullResponse.getBeer();
+        AddBeerResponse.BeerDetails responseObject = fullResponse.beer();
         Assertions.assertAll(
-                () -> Assertions.assertEquals(beerRequestPojo.getAbv(), responseObject.getAbv()),
-                () -> Assertions.assertEquals(beerRequestPojo.getName(), responseObject.getName()),
-                () -> Assertions.assertEquals(beerRequestPojo.getIbuNumber(), responseObject.getIbuNumber()),
-                () -> Assertions.assertEquals(beerRequestPojo.getStyle(), responseObject.getStyle()),
-                () -> Assertions.assertEquals(beerRequestPojo.getBreweryId(), responseObject.getBreweryId()),
-                () -> Assertions.assertEquals(beerRequestPojo.getOunces(), responseObject.getOunces()));
+                () -> Assertions.assertEquals(beerRequestPojo.getAbv(), responseObject.abv()),
+                () -> Assertions.assertEquals(beerRequestPojo.getName(), responseObject.name()),
+                () -> Assertions.assertEquals(beerRequestPojo.getIbuNumber(), responseObject.ibuNumber()),
+                () -> Assertions.assertEquals(beerRequestPojo.getStyle(), responseObject.style()),
+                () -> Assertions.assertEquals(beerRequestPojo.getBreweryId(), responseObject.breweryId()),
+                () -> Assertions.assertEquals(beerRequestPojo.getOunces(), responseObject.ounces()));
     }
 }

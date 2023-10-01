@@ -3,8 +3,8 @@ package org.beerinfo.handlers.beer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
 import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
-import org.beerinfo.converters.BeerDTOConverter;
 import org.beerinfo.utils.ResponseUtil;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class GetBeerByIdHandler {
 
                 if (beerOptional.isPresent()) {
                     BeerEntity beer = beerOptional.get();
-                    GetBeerResponseDTO getBeerResponseDTO = BeerDTOConverter.convertToGetBeerResponseDTO.apply(beer);
+                    GetBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToGetBeerResponseDTO(beer);
                     ResponseUtil.setJsonResponseCode(response, 200);
                     return objectMapper.writeValueAsString(getBeerResponseDTO);
                 } else {

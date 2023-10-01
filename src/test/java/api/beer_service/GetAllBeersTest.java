@@ -1,6 +1,6 @@
 package api.beer_service;
 
-import api.conversion.BeerResponseConversion;
+import api.conversion.BeerConverter;
 import api.db_query.BeerQuery;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
@@ -32,12 +32,12 @@ public class GetAllBeersTest {
         List<GetBeerResponse> responseList = beerRequest.getBeerRequestReturnList();
 
         Optional<GetBeerResponse> matchingResponse = responseList.stream()
-                .filter(response -> response.getBeerId() == entityDTO.beerId())
+                .filter(response -> response.beerId() == entityDTO.beerId())
                 .findFirst();
 
         Assertions.assertTrue(matchingResponse.isPresent());
 
-        GetBeerResponseDTO responseDTO = BeerResponseConversion.convertToGetBeerResponseDTO(matchingResponse.get());
+        GetBeerResponseDTO responseDTO = BeerConverter.MAPPER.convertToGetBeerResponseDTO(matchingResponse.get());
         Assertions.assertEquals(entityDTO, responseDTO, "Response contains the record added to Postgres");
     }
 

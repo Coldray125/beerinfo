@@ -37,12 +37,12 @@ public class UpdateBreweryPositiveTest {
     @Test
     void checkUpdateBreweryResponseData() {
         UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(breweryRequestPojo, String.valueOf(breweryId));
-        UpdateBreweryResponse.BreweryDetails responseObject = fullResponse.getBrewery();
+        UpdateBreweryResponse.BreweryDetails responseObject = fullResponse.brewery();
         Assertions.assertAll(
-                () -> Assertions.assertEquals(breweryRequestPojo.getName(), responseObject.getName()),
-                () -> Assertions.assertEquals(breweryRequestPojo.getCity(), responseObject.getCity()),
-                () -> Assertions.assertEquals(breweryRequestPojo.getState(), responseObject.getState()),
-                () -> Assertions.assertEquals(breweryRequestPojo.getCountry(), responseObject.getCountry()));
+                () -> Assertions.assertEquals(breweryRequestPojo.getName(), responseObject.name()),
+                () -> Assertions.assertEquals(breweryRequestPojo.getCity(), responseObject.city()),
+                () -> Assertions.assertEquals(breweryRequestPojo.getState(), responseObject.state()),
+                () -> Assertions.assertEquals(breweryRequestPojo.getCountry(), responseObject.country()));
     }
 
     @DisplayName("Ensure POST /brewery Response Message")
@@ -50,7 +50,7 @@ public class UpdateBreweryPositiveTest {
     void checkUpdateBreweryResponseText() {
         UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(breweryRequestPojo, String.valueOf(breweryId));
         String expectedMessage = String.format("Brewery with id: %s was updated.", breweryId);
-        Assertions.assertEquals(expectedMessage, fullResponse.getMessage());
+        Assertions.assertEquals(expectedMessage, fullResponse.message());
     }
 
     @DisplayName("Verify Data Update in Database with valid Country POST /brewery")
@@ -59,12 +59,12 @@ public class UpdateBreweryPositiveTest {
     void checkUpdateBreweryWithValidCountry(SupportedCountry country) {
         breweryRequestPojo.setCountry(country.getCountryName());
         UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(breweryRequestPojo, String.valueOf(breweryId));
-        UpdateBreweryResponse.BreweryDetails updateResponse = fullResponse.getBrewery();
+        UpdateBreweryResponse.BreweryDetails updateResponse = fullResponse.brewery();
         GetBreweryResponseDTO entity = breweryQuery.getBreweryById(breweryId);
         Assertions.assertAll(
-                () -> Assertions.assertEquals(updateResponse.getName(), entity.getName()),
-                () -> Assertions.assertEquals(updateResponse.getCity(), entity.getCity()),
-                () -> Assertions.assertEquals(updateResponse.getState(), entity.getState()),
-                () -> Assertions.assertEquals(updateResponse.getCountry(), entity.getCountry()));
+                () -> Assertions.assertEquals(updateResponse.name(), entity.getName()),
+                () -> Assertions.assertEquals(updateResponse.city(), entity.getCity()),
+                () -> Assertions.assertEquals(updateResponse.state(), entity.getState()),
+                () -> Assertions.assertEquals(updateResponse.country(), entity.getCountry()));
     }
 }

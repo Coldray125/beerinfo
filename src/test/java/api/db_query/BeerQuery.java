@@ -10,7 +10,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
 import org.beerinfo.entity.BeerEntity;
-import org.beerinfo.converters.BeerDTOConverter;
+import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,7 +28,7 @@ public class BeerQuery {
     public GetBeerResponseDTO getBeerById(long id) {
         Optional<BeerEntity> beerEntity = HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BeerEntity.class, "beerId", id);
         if (beerEntity.isPresent()) {
-            return BeerDTOConverter.convertToGetBeerResponseDTO.apply(beerEntity.get());
+            return BeerMapper.MAPPER.mapToGetBeerResponseDTO(beerEntity.get());
         }
         throw new EntityNotFoundException("BeerEntity not found for ID: " + id);
     }
@@ -38,7 +38,7 @@ public class BeerQuery {
         BeerEntity randomEntity = BeerObjectGenerator.generateRandomBeerEntity();
         Optional<BeerEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, randomEntity);
         if (beerEntity.isPresent()) {
-            return BeerDTOConverter.convertToGetBeerResponseDTO.apply(beerEntity.get());
+            return BeerMapper.MAPPER.mapToGetBeerResponseDTO(beerEntity.get());
         }
         throw new PersistenceException("Failed to add BeerEntity: \n" + randomEntity);
     }
@@ -48,6 +48,7 @@ public class BeerQuery {
         beer.setBeerId(id);
         return HibernateQueryUtil.updateEntityById(sessionFactory, BeerEntity.class, id, beer);
     }
+
     @Step("Delete Beer record in Postgres with ID: {0}")
     public boolean deleteBeerById(long id) {
         return HibernateQueryUtil.deleteEntityById(sessionFactory, BeerEntity.class, id);

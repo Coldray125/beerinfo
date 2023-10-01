@@ -55,7 +55,6 @@ public class HibernateUtil {
         configuration.setProperty(USER, "postgres");
         configuration.setProperty(PASS, "password");
         configuration.setProperty(DRIVER, "org.postgresql.Driver");
-        configuration.setProperty(DIALECT, "org.hibernate.dialect.PostgreSQLDialect");
         configuration.setProperty(SHOW_SQL, "true");
         configuration.setProperty(FORMAT_SQL, "true");
         configuration.setProperty(HIGHLIGHT_SQL, "true");

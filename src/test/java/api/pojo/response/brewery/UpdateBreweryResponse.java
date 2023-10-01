@@ -1,17 +1,12 @@
 package api.pojo.response.brewery;
 
-import lombok.Data;
+public record UpdateBreweryResponse(String message, BreweryDetails brewery) {
+    public record BreweryDetails(
 
-@Data
-public class UpdateBreweryResponse {
-    private String message;
-    private BreweryDetails brewery;
-
-    @Data
-    public static class BreweryDetails {
-        private String name;
-        private String city;
-        private String state;
-        private String country;
+            String name,
+            String city,
+            String state,
+            String country
+    ) {
     }
 }

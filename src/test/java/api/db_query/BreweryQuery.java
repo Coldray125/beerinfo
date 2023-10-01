@@ -4,9 +4,9 @@ import api.test_utils.data_generators.BreweryObjectGenerator;
 import io.qameta.allure.Step;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
-import org.beerinfo.converters.BreweryDTOConverter;
 import org.beerinfo.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.SessionFactory;
 
@@ -23,7 +23,7 @@ public class BreweryQuery {
     public GetBreweryResponseDTO getBreweryById(long id) {
         Optional<BreweryEntity> breweryEntity = HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BreweryEntity.class, "breweryId", id);
         if (breweryEntity.isPresent()) {
-            return BreweryDTOConverter.convertBreweryEntityToResponseDTO.apply(breweryEntity.get());
+            return BreweryMapper.MAPPER.mapToGetBreweryResponseDTO(breweryEntity.get());
         }
         throw new EntityNotFoundException("BeerEntity not found for ID: " + id);
     }

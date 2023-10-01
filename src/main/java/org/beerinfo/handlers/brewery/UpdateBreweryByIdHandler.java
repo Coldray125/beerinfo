@@ -1,9 +1,9 @@
 package org.beerinfo.handlers.brewery;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.beerinfo.converters.BreweryDTOConverter;
 import org.beerinfo.dto.data.BreweryCreationDTO;
 import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.service.BreweriesService;
 import org.beerinfo.utils.ResponseUtil;
 import org.beerinfo.utils.ValidationUtils;
@@ -41,7 +41,7 @@ public class UpdateBreweryByIdHandler {
                     return ResponseUtil.respondWithError(response, 400, errorMessage);
                 }
 
-                final BreweryEntity brewery = BreweryDTOConverter.convertToBreweryEntity.apply(breweryCreationDTO);
+                final BreweryEntity brewery = BreweryMapper.MAPPER.mapToBreweryEntity(breweryCreationDTO);
 
                 long id = Long.parseLong(idString);
                 boolean updateResult = breweriesService.updateBreweryById(brewery, id);

@@ -1,10 +1,10 @@
 package org.beerinfo.handlers.beer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.beerinfo.converters.BeerDTOConverter;
 import org.beerinfo.dto.api.beer.PostBeerResponseDTO;
 import org.beerinfo.dto.data.BeerCreationDTO;
 import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
 import org.beerinfo.utils.ResponseUtil;
@@ -39,7 +39,7 @@ public class AddBeerHandler {
                     return validationError;
                 }
 
-                final BeerEntity beer = BeerDTOConverter.convertToBeerEntity.apply(beerCreationDTO);
+                final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
 
                 long lastBreweryId = breweriesService.getLastBreweryId();
                 int breweryIdFromRequest = beer.getBreweryId();
@@ -58,7 +58,7 @@ public class AddBeerHandler {
                             response, 500, "Error occurred while adding the beer. Please check if the provided data is valid");
                 }
 
-                final PostBeerResponseDTO getBeerResponseDTO = BeerDTOConverter.convertToPostBeerResponseDTO.apply(beer);
+                final PostBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToPostBeerResponseDTO(beer);
 
                 ResponseUtil.setJsonResponseCode(response, 200);
 
