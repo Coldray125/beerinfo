@@ -1,23 +1,29 @@
 package api.beer_service;
 
 import api.db_query.BeerQuery;
+import api.extensions.BeerQueryParameterResolver;
+import api.extensions.BeerRequestParameterResolver;
 import api.request.BeerRequest;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import org.beerinfo.utils.HibernateUtil;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
-import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class GetBeerByIdNegativeTest {
-    BeerRequest beerRequest = new BeerRequest();
-    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
+    BeerQuery beerQuery;
+    BeerRequest beerRequest;
+
+    public GetBeerByIdNegativeTest(BeerQuery beerQuery, BeerRequest beerRequest) {
+        this.beerQuery = beerQuery;
+        this.beerRequest = beerRequest;
+    }
 
     @DisplayName("Error: Retrieve Nonexistent Beer by ID")
     @Test

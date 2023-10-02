@@ -1,6 +1,8 @@
 package api.beer_service;
 
 import api.db_query.BeerQuery;
+import api.extensions.BeerQueryParameterResolver;
+import api.extensions.BeerRequestParameterResolver;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
@@ -11,17 +13,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static api.test_utils.SchemaPaths.BEER_OBJECT;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class GetBeerByIdPositiveTest {
-    BeerRequest beerRequest = new BeerRequest();
     String beerId;
     GetBeerResponseDTO beerEntity;
-    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
+    BeerQuery beerQuery;
+    BeerRequest beerRequest;
+
+    public GetBeerByIdPositiveTest(BeerQuery beerQuery, BeerRequest beerRequest) {
+        this.beerQuery = beerQuery;
+        this.beerRequest = beerRequest;
+    }
 
     @BeforeEach
     void createBeerEntityInDB() {

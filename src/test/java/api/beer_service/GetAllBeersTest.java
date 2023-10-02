@@ -2,6 +2,8 @@ package api.beer_service;
 
 import api.conversion.BeerConverter;
 import api.db_query.BeerQuery;
+import api.extensions.BeerQueryParameterResolver;
+import api.extensions.BeerRequestParameterResolver;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
@@ -11,19 +13,24 @@ import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Optional;
 
 import static api.test_utils.SchemaPaths.BEER_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class GetAllBeersTest {
+    BeerQuery beerQuery;
+    BeerRequest beerRequest;
 
-    BeerRequest beerRequest = new BeerRequest();
-    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
+    public GetAllBeersTest(BeerQuery beerQuery, BeerRequest beerRequest) {
+        this.beerQuery = beerQuery;
+        this.beerRequest = beerRequest;
+    }
 
     @DisplayName("Verify GET /beers response contains record added to Postgres")
     @Test
