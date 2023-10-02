@@ -1,6 +1,9 @@
 package api.beer_service;
 
 import api.db_query.BeerQuery;
+import api.extensions.BeerQueryParameterResolver;
+import api.extensions.BeerRequestParameterResolver;
+import api.extensions.annotation.beer.RandomBeerPojo;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.UpdateBeerResponse;
 import api.request.BeerRequest;
@@ -11,30 +14,32 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static io.qameta.allure.Allure.step;
-import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class UpdateBeerPositiveTest {
-
-    BeerRequest beerRequest = new BeerRequest();
-    BeerRequestPojo beerRequestPojo;
-    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
-
     String beerId;
+    BeerQuery beerQuery;
+    BeerRequest beerRequest;
+
+    public UpdateBeerPositiveTest(BeerQuery beerQuery, BeerRequest beerRequest) {
+        this.beerQuery = beerQuery;
+        this.beerRequest = beerRequest;
+    }
 
     @BeforeEach
     void createBeerEntityInDB() {
-        beerRequestPojo = BeerObjectGenerator.generateRandomBeerPojo();
         GetBeerResponseDTO entity = beerQuery.addRandomBeerReturnDTO();
         beerId = String.valueOf(entity.beerId());
     }
 
     @DisplayName("Verify Response Text for PUT /beer/{id}")
     @Test
-    void checkUpdateBeerResponseText() {
-        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, beerId);
+    void checkUpdateBeerResponseText(@RandomBeerPojo BeerRequestPojo request) {
+        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(request, beerId);
         String expectedText = String.format("Beer with id: %s was updated.", beerId);
         String responseText = fullResponse.message();
         Assertions.assertEquals(expectedText, responseText);
@@ -42,33 +47,33 @@ public class UpdateBeerPositiveTest {
 
     @DisplayName("Verify Data in PUT /beer/{id} Response and Request")
     @Test
-    void checkValuesAddBeerResponse() {
-        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, beerId);
-        UpdateBeerResponse.BeerDetails responseObject = fullResponse.beer();
+    void checkValuesAddBeerResponse(@RandomBeerPojo BeerRequestPojo request) {
+        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(request, beerId);
+        UpdateBeerResponse.BeerDetails response = fullResponse.beer();
         Assertions.assertAll(
-                () -> Assertions.assertEquals(beerRequestPojo.getAbv(), responseObject.abv()),
-                () -> Assertions.assertEquals(beerRequestPojo.getName(), responseObject.name()),
-                () -> Assertions.assertEquals(beerRequestPojo.getIbuNumber(), responseObject.ibuNumber()),
-                () -> Assertions.assertEquals(beerRequestPojo.getStyle(), responseObject.style()),
-                () -> Assertions.assertEquals(beerRequestPojo.getBreweryId(), responseObject.breweryId()),
-                () -> Assertions.assertEquals(beerRequestPojo.getOunces(), responseObject.ounces()));
+                () -> Assertions.assertEquals(request.getAbv(), response.abv()),
+                () -> Assertions.assertEquals(request.getName(), response.name()),
+                () -> Assertions.assertEquals(request.getIbuNumber(), response.ibuNumber()),
+                () -> Assertions.assertEquals(request.getStyle(), response.style()),
+                () -> Assertions.assertEquals(request.getBreweryId(), response.breweryId()),
+                () -> Assertions.assertEquals(request.getOunces(), response.ounces()));
     }
 
     @DisplayName("Verify Data in PUT /beer/{id} Response and Database")
     @Test
-    void checkAddBeerWriteInDatabase() {
-        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(beerRequestPojo, beerId);
-        UpdateBeerResponse.BeerDetails responseObject = fullResponse.beer();
+    void checkAddBeerWriteInDatabase(@RandomBeerPojo BeerRequestPojo request) {
+        UpdateBeerResponse fullResponse = beerRequest.updateBeerRequest(request, beerId);
+        UpdateBeerResponse.BeerDetails response = fullResponse.beer();
         GetBeerResponseDTO beerEntity = beerQuery.getBeerById(Long.parseLong(beerId));
 
         step("Validate response JSON against database values");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(responseObject.abv(), beerEntity.abv()),
-                () -> Assertions.assertEquals(responseObject.name(), beerEntity.name()),
-                () -> Assertions.assertEquals(responseObject.ibuNumber(), beerEntity.ibuNumber()),
-                () -> Assertions.assertEquals(responseObject.style(), beerEntity.style()),
-                () -> Assertions.assertEquals(responseObject.breweryId(), beerEntity.breweryId()),
-                () -> Assertions.assertEquals(responseObject.ounces(), beerEntity.ounces())
+                () -> Assertions.assertEquals(response.abv(), beerEntity.abv()),
+                () -> Assertions.assertEquals(response.name(), beerEntity.name()),
+                () -> Assertions.assertEquals(response.ibuNumber(), beerEntity.ibuNumber()),
+                () -> Assertions.assertEquals(response.style(), beerEntity.style()),
+                () -> Assertions.assertEquals(response.breweryId(), beerEntity.breweryId()),
+                () -> Assertions.assertEquals(response.ounces(), beerEntity.ounces())
         );
     }
 }

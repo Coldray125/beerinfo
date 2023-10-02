@@ -1,6 +1,8 @@
 package api.beer_service;
 
 import api.db_query.BeerQuery;
+import api.extensions.BeerQueryParameterResolver;
+import api.extensions.BeerRequestParameterResolver;
 import api.request.BeerRequest;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
@@ -9,18 +11,22 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.beerinfo.utils.HibernateUtil.getSessionFactory;
 
 @Story("Beer API")
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class DeleteBeerPositiveTest {
-
-    BeerRequest beerRequest = new BeerRequest();
     GetBeerResponseDTO beerEntity;
-    BeerQuery beerQuery = new BeerQuery(getSessionFactory());
-
     String beerId;
+    BeerQuery beerQuery;
+    BeerRequest beerRequest;
+
+    public DeleteBeerPositiveTest(BeerQuery beerQuery, BeerRequest beerRequest) {
+        this.beerQuery = beerQuery;
+        this.beerRequest = beerRequest;
+    }
 
     @BeforeEach
     void createBeerEntityInDB() {
