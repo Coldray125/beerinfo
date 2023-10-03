@@ -1,5 +1,6 @@
 package api.breweries_service;
 
+import api.extensions.BreweryRequestParameterResolver;
 import api.request.BreweryRequest;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Story;
@@ -7,14 +8,19 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static api.test_utils.SchemaPaths.BREWERY_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Brewery API")
+@ExtendWith(value = BreweryRequestParameterResolver.class)
 public class GetAllBreweriesTest {
+    BreweryRequest breweryRequest;
 
-    BreweryRequest breweryRequest = new BreweryRequest();
+    public GetAllBreweriesTest(BreweryRequest breweryRequest) {
+        this.breweryRequest = breweryRequest;
+    }
 
     @DisplayName("Verify GET /breweries Response JSON Structure")
     @Test
