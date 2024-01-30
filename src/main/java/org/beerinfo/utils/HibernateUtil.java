@@ -3,6 +3,8 @@ package org.beerinfo.utils;
 import lombok.Getter;
 import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.entity.JoinedBeerBreweryEntity;
+import org.beerinfo.entity.JoinedBreweryBeerEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -45,13 +47,15 @@ public class HibernateUtil {
         return new MetadataSources(serviceRegistry)
                 .addAnnotatedClass(BeerEntity.class)
                 .addAnnotatedClass(BreweryEntity.class)
+                .addAnnotatedClass(JoinedBeerBreweryEntity.class)
+                .addAnnotatedClass(JoinedBreweryBeerEntity.class)
                 .getMetadataBuilder()
                 .build();
     }
 
     private static Configuration createConfiguration() {
         Configuration configuration = new Configuration();
-        configuration.setProperty(URL, "jdbc:postgresql://192.168.1.17:5432/mydatabase");
+        configuration.setProperty(URL, "jdbc:postgresql://192.168.1.10:5432/mydatabase");
         configuration.setProperty(USER, "postgres");
         configuration.setProperty(PASS, "password");
         configuration.setProperty(DRIVER, "org.postgresql.Driver");
