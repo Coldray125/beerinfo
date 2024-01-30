@@ -9,7 +9,7 @@ public record GetBeerResponseDTO(
         String ibuNumber,
         String name,
         String style,
-       int breweryId,
+        int breweryId,
         String ounces
 ) {
 }

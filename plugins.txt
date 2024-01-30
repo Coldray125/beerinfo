@@ -29,3 +29,7 @@ github-api
 git
 github
 github-branch-source
+
+maven-plugin
+junit
+blueocean
