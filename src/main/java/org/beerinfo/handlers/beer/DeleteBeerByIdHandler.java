@@ -1,39 +1,40 @@
 package org.beerinfo.handlers.beer;
 
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import org.beerinfo.service.BeerService;
-import org.beerinfo.utils.ResponseUtil;
+import org.jetbrains.annotations.NotNull;
 
-import static spark.Spark.delete;
+import java.util.Map;
 
-public class DeleteBeerByIdHandler {
+import static org.beerinfo.utils.ResponseUtil.respondWithError;
+import static org.beerinfo.utils.ResponseUtil.respondWithInternalServerError;
+
+public class DeleteBeerByIdHandler implements Handler {
     private final BeerService beerService;
 
     public DeleteBeerByIdHandler(BeerService beerService) {
         this.beerService = beerService;
     }
 
-    public void registerRoute() {
-        delete("/beer/:id", (request, response) -> {
-            String idString = request.params(":id");
+    @Override
+    public void handle(@NotNull Context context) {
+        String beerId = context.queryParam("beerId");
 
-            try {
-                long id = Long.parseLong(idString);
-                boolean deleteResult = beerService.deleteBeerById(id);
+        try {
+            long id = Long.parseLong(beerId);
+            boolean deleteResult = beerService.deleteBeerById(id);
 
-                if (deleteResult) {
-                    ResponseUtil.setJsonResponseCode(response, 200);
-                    return String.format("{\"message\": \"Beer with id: %s was deleted.\"}", idString);
-                } else {
-                    ResponseUtil.setJsonResponseCode(response, 404);
-                    return String.format("{\"error\": \"Beer with id: %s not found.\"}", idString);
-                }
-            } catch (NumberFormatException e) {
-                return ResponseUtil.respondWithError(
-                        response, 400, "Invalid Beer ID format. Only numeric values are allowed.");
-            } catch (Exception e) {
-                return ResponseUtil.respondWithError(
-                        response, 500, "Error occurred while processing the request.");
+            if (deleteResult) {
+                context.status(200);
+                context.json(Map.of("message:", STR."Beer with beerId: \{beerId} was deleted"));
+            } else {
+                respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
             }
-        });
+        } catch (NumberFormatException e) {
+            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed");
+        } catch (Exception e) {
+            respondWithInternalServerError(context);
+        }
     }
 }

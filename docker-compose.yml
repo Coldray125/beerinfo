@@ -8,32 +8,32 @@ networks:
         - subnet: "172.20.0.0/16"
 
 services:
-  app:
-    image: amazoncorretto:21-alpine-jdk
-    command: java -jar /app/app.jar
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./target/restservice.jar:/app/app.jar
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    image: postgres:latest
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=mydatabase
-    volumes:
-      - ./src/main/resources/sqlscripts/Beers.sql:/docker-entrypoint-initdb.d/Beers.sql
-      - ./src/main/resources/sqlscripts/Breweries.sql:/docker-entrypoint-initdb.d/Breweries.sql
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+ app:
+   image: amazoncorretto:21-alpine-jdk
+   command: java -jar /app/app.jar
+   ports:
+     - "8080:8080"
+   volumes:
+     - ./target/restservice.jar:/app/app.jar
+   depends_on:
+     db:
+       condition: service_healthy
+ db:
+   image: postgres:latest
+   ports:
+     - "5432:5432"
+   environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=password
+     - POSTGRES_DB=mydatabase
+   volumes:
+     - ./src/main/resources/sqlscripts/Beers.sql:/docker-entrypoint-initdb.d/Beers.sql
+     - ./src/main/resources/sqlscripts/Breweries.sql:/docker-entrypoint-initdb.d/Breweries.sql
+   healthcheck:
+     test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+     interval: 5s
+     timeout: 5s
+     retries: 10
 # pgadmin:
 #   image: dpage/pgadmin4:latest
 #   ports:
@@ -47,27 +47,30 @@ services:
 #     - PGADMIN_CONFIG_MAX_LOGIN_ATTEMPTS=0
 #     - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
 
-  jenkins:
-    build:
-      context: .  # Use the current directory as the build context
-      dockerfile: Dockerfile  # Use the Dockerfile in the current directory
-    container_name: jenkins
-    user: root
-    ports:
-      - "8888:8080"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - JENKINS_OPTS=--prefix=/jenkins
-      #- JAVA_OPTS=-Djenkins.install.runSetupWizard=false -Djenkins.security.csrf.DefaultCrumbIssuer.EXCLUDE=true
-    restart: always
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://192.168.1.10:8888/jenkins/" ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-
-volumes:
-  pgadmin_data:
-  jenkins_home:
+#jenkins:
+#  build:
+#    context: .  # Use the current directory as the build context
+#    dockerfile: Dockerfile  # Use the Dockerfile in the current directory
+#  container_name: jenkins
+#  user: root
+#  ports:
+#    - "8888:8080"
+#  volumes:
+#    - jenkins_home:/var/jenkins_home
+#    - /var/run/docker.sock:/var/run/docker.sock
+#  environment:
+#    - JENKINS_OPTS=--prefix=/jenkins
+#    - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+#    - Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true
+#    #- JAVA_HOME=/usr/lib/jvm/java-21-openjdk
+#    #- PATH=$PATH:$JAVA_HOME/bin /opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+#    #- -Djenkins.security.csrf.DefaultCrumbIssuer.EXCLUDE=true
+#  restart: always
+#  healthcheck:
+#    test: [ "CMD", "curl", "-f", "http://192.168.1.10:8888/jenkins/" ]
+#    interval: 5s
+#    timeout: 5s
+#    retries: 10
+#volumes:
+  #pgadmin_data:
+  #jenkins_home:

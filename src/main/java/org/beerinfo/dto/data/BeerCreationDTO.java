@@ -1,6 +1,9 @@
 package org.beerinfo.dto.data;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +15,6 @@ public class BeerCreationDTO {
     private String ibuNumber;
     @NotBlank(message = "Name cannot be blank")
     private String name;
-
     @NotBlank(message = "Style cannot be blank")
     private String style;
 

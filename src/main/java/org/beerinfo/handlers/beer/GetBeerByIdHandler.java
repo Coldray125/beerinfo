@@ -1,18 +1,21 @@
 package org.beerinfo.handlers.beer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
 import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
-import org.beerinfo.utils.ResponseUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Optional;
 
-import static spark.Spark.get;
+import static org.beerinfo.utils.ResponseUtil.respondWithError;
+import static org.beerinfo.utils.ResponseUtil.respondWithInternalServerError;
 
-public class GetBeerByIdHandler {
+public class GetBeerByIdHandler implements Handler {
     private final BeerService beerService;
     private final ObjectMapper objectMapper;
 
@@ -21,34 +24,31 @@ public class GetBeerByIdHandler {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void registerRoute() {
-        get("/beer/:id", (request, response) -> {
-            String idString = request.params(":id");
+    @Override
+    public void handle(@NotNull Context context) {
+        String beerId = context.queryParam("beerId");
 
-            long id;
-            try {
-                id = Long.parseLong(idString);
-            } catch (NumberFormatException e) {
-                return ResponseUtil.respondWithError(
-                        response, 400, "Invalid Beer ID format. Only numeric values are allowed.");
+        long id = 0;
+        try {
+            id = Long.parseLong(beerId);
+        } catch (NumberFormatException e) {
+            context.status(400);
+            context.json("Invalid Beer ID format. Only numeric values are allowed.");
+        }
+
+        try {
+            Optional<BeerEntity> beerOptional = beerService.getBeerById(id);
+
+            if (beerOptional.isPresent()) {
+                BeerEntity beer = beerOptional.get();
+                GetBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToGetBeerResponseDTO(beer);
+                context.status(200);
+                context.json(objectMapper.writeValueAsString(getBeerResponseDTO));
+            } else {
+               respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
             }
-
-            try {
-                Optional<BeerEntity> beerOptional = beerService.getBeerById(id);
-
-                if (beerOptional.isPresent()) {
-                    BeerEntity beer = beerOptional.get();
-                    GetBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToGetBeerResponseDTO(beer);
-                    ResponseUtil.setJsonResponseCode(response, 200);
-                    return objectMapper.writeValueAsString(getBeerResponseDTO);
-                } else {
-                    ResponseUtil.setJsonResponseCode(response, 404);
-                    return String.format("{\"error\": \"Beer with id: %s not found.\"}", idString);
-                }
-            } catch (IOException e) {
-                return ResponseUtil.respondWithError(
-                        response, 500, "Error occurred while processing the request.");
-            }
-        });
+        } catch (IOException e) {
+            respondWithInternalServerError(context);
+        }
     }
 }

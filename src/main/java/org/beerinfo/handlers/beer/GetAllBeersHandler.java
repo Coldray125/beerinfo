@@ -1,38 +1,36 @@
 package org.beerinfo.handlers.beer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
 import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
-import org.beerinfo.utils.ResponseUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
 
-import static spark.Spark.get;
+import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
-public class GetAllBeersHandler {
+public class GetAllBeersHandler implements Handler {
     private final BeerService beerService;
-    private final ObjectMapper objectMapper;
 
     public GetAllBeersHandler(BeerService beerService) {
         this.beerService = beerService;
-        this.objectMapper = new ObjectMapper();
     }
 
-    public void registerRoute() {
-        get("/beers", (request, response) -> {
-            Optional<List<BeerEntity>> beers = beerService.getAllBeers();
-            List<GetBeerResponseDTO> getBeerResponseDTO;
+    @Override
+    public void handle(@NotNull Context context) {
+        Optional<List<BeerEntity>> beers = beerService.getAllBeers();
+        List<GetBeerResponseDTO> getBeerResponseDTO;
 
-            if (beers.isEmpty()) {
-                return ResponseUtil.respondWithError(response, 404, "Beers not found.");
-            } else {
-                getBeerResponseDTO = BeerMapper.MAPPER.mapToGetBeerResponseDTOList(beers.get());
-                ResponseUtil.setJsonResponseCode(response, 200);
-                return objectMapper.writeValueAsString(getBeerResponseDTO);
-            }
-        });
+        if (beers.isEmpty()) {
+            respondWithError(context, 404, "Beers not found");
+        } else {
+            getBeerResponseDTO = BeerMapper.MAPPER.mapToGetBeerResponseDTOList(beers.get());
+            context.status(200);
+            context.json(getBeerResponseDTO);
+        }
     }
 }
