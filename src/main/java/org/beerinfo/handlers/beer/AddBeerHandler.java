@@ -1,23 +1,26 @@
 package org.beerinfo.handlers.beer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import org.beerinfo.dto.api.beer.PostBeerResponseDTO;
 import org.beerinfo.dto.data.BeerCreationDTO;
 import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
-import org.beerinfo.utils.ResponseUtil;
 import org.beerinfo.utils.ValidationUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static spark.Spark.post;
+import static org.beerinfo.utils.ResponseUtil.respondWithError;
+import static org.beerinfo.utils.ResponseUtil.respondWithInternalServerError;
 
-public class AddBeerHandler {
+public class AddBeerHandler implements Handler {
     private final BeerService beerService;
     private final BreweriesService breweriesService;
     private final ObjectMapper objectMapper;
@@ -28,49 +31,44 @@ public class AddBeerHandler {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void registerRoute() {
-        post("/beer", (request, response) -> {
-            try {
-                BeerCreationDTO beerCreationDTO = objectMapper.readValue(request.body(), BeerCreationDTO.class);
+    @Override
+    public void handle(@NotNull Context context) {
+        try {
+            BeerCreationDTO beerCreationDTO = objectMapper.readValue(context.body(), BeerCreationDTO.class);
 
-                String validationError = ValidationUtils.validateDTO(objectMapper, beerCreationDTO);
-                if (validationError != null) {
-                    ResponseUtil.setJsonResponseCode(response, 400);
-                    return validationError;
-                }
-
-                final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
-
-                long lastBreweryId = breweriesService.getLastBreweryId();
-                int breweryIdFromRequest = beer.getBreweryId();
-
-                if (breweryIdFromRequest > lastBreweryId) {
-                    ResponseUtil.setJsonResponseCode(response, 404);
-                    return String.format("{\"error\": \"Wrong brewery id: %s, brewery cannot be added.\"}", breweryIdFromRequest);
-                }
-
-                Optional<BeerEntity> beerEntity = beerService.addBeer(beer);
-                if (beerEntity.isPresent()) {
-                    long generatedBeerId = beerEntity.get().getBeerId();
-                    beer.setBeerId(generatedBeerId);
-                } else {
-                    ResponseUtil.respondWithError(
-                            response, 500, "Error occurred while adding the beer. Please check if the provided data is valid");
-                }
-
-                final PostBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToPostBeerResponseDTO(beer);
-
-                ResponseUtil.setJsonResponseCode(response, 200);
-
-                Map<String, Object> responseData = new HashMap<>();
-                responseData.put("beer", getBeerResponseDTO);
-                responseData.put("message", "Beer added successfully.");
-
-                return objectMapper.writeValueAsString(responseData);
-            } catch (IOException e) {
-                return ResponseUtil.respondWithError(
-                        response, 500, "Error occurred while processing the request.");
+            String validationError = ValidationUtils.validateDTO(objectMapper, beerCreationDTO);
+            if (validationError != null) {
+                respondWithError(context, 400, validationError);
+                return;
             }
-        });
+
+            final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
+
+            long lastBreweryId = breweriesService.getLastBreweryId();
+            int breweryIdFromRequest = beer.getBreweryId();
+
+            if (breweryIdFromRequest > lastBreweryId) {
+                respondWithError(context, 404, STR."Wrong brewery id: \{breweryIdFromRequest}, brewery cannot be added.");
+                return;
+            }
+
+            Optional<BeerEntity> beerEntity = beerService.addBeer(beer);
+            if (beerEntity.isPresent()) {
+                long generatedBeerId = beerEntity.get().getBeerId();
+                beer.setBeerId(generatedBeerId);
+            } else {
+                respondWithError(context, 500, "Error occurred while adding the beer. Please check if the provided data is valid");
+            }
+
+            final PostBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToPostBeerResponseDTO(beer);
+            context.status(200);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("beer", getBeerResponseDTO);
+            responseData.put("message", "Beer added successfully.");
+            context.json(responseData);
+        } catch (IOException e) {
+            respondWithInternalServerError(context);
+        }
     }
 }

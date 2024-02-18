@@ -1,19 +1,21 @@
 package org.beerinfo.handlers.beer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import org.beerinfo.dto.data.BeerCreationDTO;
 import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
-import org.beerinfo.utils.ResponseUtil;
 import org.beerinfo.utils.ValidationUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static spark.Spark.put;
+import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
-public class UpdateBeerByIdHandler {
+public class UpdateBeerByIdHandler implements Handler {
     private final BeerService beerService;
     private final ObjectMapper objectMapper;
 
@@ -22,42 +24,35 @@ public class UpdateBeerByIdHandler {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void registerRoute() {
-        put("/beer/:id", (request, response) -> {
-            String idString = request.params(":id");
-            try {
-                BeerCreationDTO beerCreationDTO = objectMapper.readValue(request.body(), BeerCreationDTO.class);
+    @Override
+    public void handle(@NotNull Context context) {
+        String beerId = context.queryParam("beerId");
 
-                String validationError = ValidationUtils.validateDTO(objectMapper, beerCreationDTO);
-                if (validationError != null) {
-                    ResponseUtil.setJsonResponseCode(response, 400);
-                    return validationError;
-                }
-
-                final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
-
-                long id = Long.parseLong(idString);
-                boolean updateResult = beerService.updateBeerById(beer, id);
-
-                if (updateResult) {
-                    ResponseUtil.setJsonResponseCode(response, 200);
-                    Map<String, Object> responseData = new HashMap<>();
-
-                    responseData.put("beer", beerCreationDTO);
-                    responseData.put("message", String.format("Beer with id: %s was updated.", idString));
-
-                    return objectMapper.writeValueAsString(responseData);
-                } else {
-                    ResponseUtil.setJsonResponseCode(response, 404);
-                    return String.format("{\"error\": \"Beer with id: %s not found.\"}", idString);
-                }
-            } catch (NumberFormatException e) {
-                return ResponseUtil.respondWithError(
-                        response, 400, "Invalid Beer ID format. Only numeric values are allowed.");
-            } catch (Exception e) {
-                return ResponseUtil.respondWithError(
-                        response, 500, "Error occurred while processing the request.");
+        try {
+            BeerCreationDTO beerCreationDTO = objectMapper.readValue(context.body(), BeerCreationDTO.class);
+            String validationError = ValidationUtils.validateDTO(objectMapper, beerCreationDTO);
+            if (validationError != null) {
+                respondWithError(context, 400, validationError);
             }
-        });
+
+            final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
+
+            long id = Long.parseLong(beerId);
+            boolean updateResult = beerService.updateBeerById(beer, id);
+
+            if (updateResult) {
+                context.status(200);
+                Map<String, Object> responseData = new HashMap<>();
+                responseData.put("beer", beerCreationDTO);
+                responseData.put("message", STR."Beer with id: \{beerId} was updated.");
+                context.json(responseData);
+            } else {
+                respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
+            }
+        } catch (NumberFormatException e) {
+            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed");
+        } catch (Exception e) {
+            respondWithError(context, 500, "Error occurred while processing the request.");
+        }
     }
 }

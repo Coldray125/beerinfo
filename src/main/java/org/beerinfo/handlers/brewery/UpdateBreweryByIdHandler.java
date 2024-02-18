@@ -1,20 +1,23 @@
 package org.beerinfo.handlers.brewery;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
 import org.beerinfo.dto.data.BreweryCreationDTO;
 import org.beerinfo.entity.BreweryEntity;
 import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.service.BreweriesService;
-import org.beerinfo.utils.ResponseUtil;
 import org.beerinfo.utils.ValidationUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.beerinfo.enums.SupportedCountry.isValidCountry;
-import static spark.Spark.put;
+import static org.beerinfo.utils.ResponseUtil.respondWithError;
+import static org.beerinfo.utils.ResponseUtil.respondWithInternalServerError;
 
-public class UpdateBreweryByIdHandler {
+public class UpdateBreweryByIdHandler implements Handler {
     private final BreweriesService breweriesService;
     private final ObjectMapper objectMapper;
 
@@ -23,48 +26,41 @@ public class UpdateBreweryByIdHandler {
         this.objectMapper = new ObjectMapper();
     }
 
-    public void registerRoute() {
-        put("/brewery/:id", (request, response) -> {
-            String idString = request.params(":id");
-            try {
-                BreweryCreationDTO breweryCreationDTO = objectMapper.readValue(request.body(), BreweryCreationDTO.class);
+    @Override
+    public void handle(@NotNull Context context) {
+        String breweryId = context.queryParam("breweryId");
 
-                String validationError = ValidationUtils.validateDTO(objectMapper, breweryCreationDTO);
-                if (validationError != null) {
-                    ResponseUtil.setJsonResponseCode(response, 400);
-                    return validationError;
-                }
+        try {
+            BreweryCreationDTO breweryCreationDTO = objectMapper.readValue(context.body(), BreweryCreationDTO.class);
 
-                String country = breweryCreationDTO.getCountry();
-                if (!isValidCountry(country)) {
-                    String errorMessage = String.format("Country '%s' is not supported. Please provide a valid country.", country);
-                    return ResponseUtil.respondWithError(response, 400, errorMessage);
-                }
-
-                final BreweryEntity brewery = BreweryMapper.MAPPER.mapToBreweryEntity(breweryCreationDTO);
-
-                long id = Long.parseLong(idString);
-                boolean updateResult = breweriesService.updateBreweryById(brewery, id);
-
-                if (updateResult) {
-                    ResponseUtil.setJsonResponseCode(response, 200);
-                    Map<String, Object> responseData = new HashMap<>();
-
-                    responseData.put("message", String.format("Brewery with id: %s was updated.", idString));
-                    responseData.put("brewery", breweryCreationDTO);
-
-                    return objectMapper.writeValueAsString(responseData);
-                } else {
-                    String errorMessage = String.format("Brewery with id: %s not found.", idString);
-                    return ResponseUtil.respondWithError(response, 404, errorMessage);
-                }
-            } catch (NumberFormatException e) {
-                return ResponseUtil.respondWithError(
-                        response, 400, "Invalid Brewery ID format. Only numeric values are allowed.");
-            } catch (Exception e) {
-                return ResponseUtil.respondWithError(
-                        response, 500, "Error occurred while processing the request.");
+            String validationError = ValidationUtils.validateDTO(objectMapper, breweryCreationDTO);
+            if (validationError != null) {
+                respondWithError(context, 400, validationError);
             }
-        });
+
+            String country = breweryCreationDTO.getCountry();
+            if (!isValidCountry(country)) {
+                respondWithError(context, 400, STR."Country \{country} is not supported. Please provide a valid country");
+            }
+
+            final BreweryEntity brewery = BreweryMapper.MAPPER.mapToBreweryEntity(breweryCreationDTO);
+
+            long id = Long.parseLong(breweryId);
+            boolean updateResult = breweriesService.updateBreweryById(brewery, id);
+
+            if (updateResult) {
+                context.status(200);
+                Map<String, Object> responseData = new HashMap<>();
+                responseData.put("brewery", breweryCreationDTO);
+                responseData.put("message", STR."Brewery with id: \{breweryId} was updated.");
+                context.json(responseData);
+            } else {
+                respondWithError(context, 404, STR."Brewery with id: \{breweryId} not found");
+            }
+        } catch (NumberFormatException e) {
+            respondWithError(context, 400, "Invalid Brewery ID format. Only numeric values are allowed");
+        } catch (Exception e) {
+            respondWithInternalServerError(context);
+        }
     }
 }

@@ -3,31 +3,28 @@ package org.beerinfo.handlers.beer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
+import org.jetbrains.annotations.NotNull;
 
-import static spark.Spark.notFound;
+public class WrongEndpointRequestHandler implements Handler {
+    @Override
+    public void handle(@NotNull Context context) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectNode errorJson = objectMapper.createObjectNode();
+        errorJson.put("error", "Endpoint not found.");
+        errorJson.put("status", 404);
 
-public class WrongEndpointRequestHandler {
-    public void registerRoute() {
-        notFound((req, res) -> {
-            res.type("application/json");
-            res.status(404);
+        ArrayNode availableEndpoints = objectMapper.createArrayNode();
+        availableEndpoints.add("GET /beers");
+        availableEndpoints.add("GET /beer?beerId");
+        availableEndpoints.add("GET /breweries");
+        availableEndpoints.add("POST /beer");
+        availableEndpoints.add("PUT /beer");
+        availableEndpoints.add("DELETE /beer?beerId");
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            ObjectNode errorJson = objectMapper.createObjectNode();
-            errorJson.put("error", "Endpoint not found.");
-            errorJson.put("status", 404);
+        errorJson.set("availableEndpoints", availableEndpoints);
 
-            ArrayNode availableEndpoints = objectMapper.createArrayNode();
-            availableEndpoints.add("GET /beers");
-            availableEndpoints.add("GET /beer/:id");
-            availableEndpoints.add("GET /breweries");
-            availableEndpoints.add("POST /beer");
-            availableEndpoints.add("PUT /beer");
-            availableEndpoints.add("DELETE /beer/:id");
-
-            errorJson.set("availableEndpoints", availableEndpoints);
-
-            return errorJson.toString();
-        });
+        context.json(errorJson);
     }
 }

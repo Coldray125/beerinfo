@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <!-- Appender setup for 5 levels -->
+    <appender name="TRACE_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <onMatch>ACCEPT</onMatch>
+            <OnMismatch>DENY</OnMismatch>
+            <level>TRACE</level>
+        </filter>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%cyan(%-5level)] [%white(%class{36}.%M)] - %cyan(%msg%n%ex{full})
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="DEBUG_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <onMatch>ACCEPT</onMatch>
+            <OnMismatch>DENY</OnMismatch>
+            <level>DEBUG</level>
+        </filter>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%blue(%-5level)] [%white(%class{36}.%M)] - %blue(%msg%n%ex{full})
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="INFO_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <onMatch>ACCEPT</onMatch>
+            <OnMismatch>DENY</OnMismatch>
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%green(%-5level)] [%white(%class{36}.%M)] - %green(%msg%n%ex{full})
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="WARN_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <onMatch>ACCEPT</onMatch>
+            <OnMismatch>DENY</OnMismatch>
+            <level>WARN</level>
+        </filter>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%yellow(%-5level)] [%white(%class{36}.%M)] %logger{36} - %yellow(%msg%n%ex{full})
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <onMatch>ACCEPT</onMatch>
+            <OnMismatch>DENY</OnMismatch>
+            <level>ERROR</level>
+        </filter>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%red(%-5level)] [%white(%class{36}.%M)] - %red(%msg%n%ex{full})
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- The logging level setup -->
+    <root level="INFO">
+        <appender-ref ref="TRACE_CONSOLE"/>
+        <appender-ref ref="DEBUG_CONSOLE"/>
+        <appender-ref ref="INFO_CONSOLE"/>
+        <appender-ref ref="ERROR_CONSOLE"/>
+        <appender-ref ref="WARN_CONSOLE"/>
+    </root>
+
+    <!-- Blocking Logback's configuration logs-->
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+
+</configuration>
