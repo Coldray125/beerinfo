@@ -6,12 +6,12 @@ import api.extensions.BeerRequestParameterResolver;
 import api.request.BeerRequest;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 
 @Story("Beer API")
@@ -34,7 +34,7 @@ public class GetBeerByIdNegativeTest {
         Assertions.assertEquals(SC_NOT_FOUND, response.getStatusCode());
 
         String actualResponse = response.body().jsonPath().get("error");
-        String expectedResponse = String.format("Beer with id: %s not found.", lastBeerId + 1);
+        String expectedResponse = STR."Beer with id: \{lastBeerId + 1} not found";
 
         Assertions.assertEquals(expectedResponse, actualResponse);
     }
@@ -42,12 +42,13 @@ public class GetBeerByIdNegativeTest {
     @DisplayName("Error: Retrieve Beer with Invalid ID Format")
     @Test
     void checkBeerByIdWrongFormatIdResponseMessage() {
-        Response response = beerRequest.getBeerByIdRequestReturnResponse("a");
+        String beerId = RandomStringUtils.randomAlphabetic(1);
+        Response response = beerRequest.getBeerByIdRequestReturnResponse(beerId);
 
-        Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
+        Assertions.assertEquals(SC_NOT_FOUND, response.getStatusCode());
 
         String actualResponse = response.body().jsonPath().get("error");
-        String expectedResponse = "Invalid Beer ID format. Only numeric values are allowed.";
+        String expectedResponse = STR."Beer with id: \{beerId} not found";
 
         Assertions.assertEquals(expectedResponse, actualResponse);
     }

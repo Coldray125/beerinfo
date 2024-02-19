@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,9 +37,10 @@ public class AddBeerHandler implements Handler {
         try {
             BeerCreationDTO beerCreationDTO = objectMapper.readValue(context.body(), BeerCreationDTO.class);
 
-            String validationError = ValidationUtils.validateDTO(objectMapper, beerCreationDTO);
+            Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
             if (validationError != null) {
-                respondWithError(context, 400, validationError);
+                context.status(400);
+                context.json(validationError);
                 return;
             }
 

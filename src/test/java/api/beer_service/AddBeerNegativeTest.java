@@ -35,7 +35,7 @@ public class AddBeerNegativeTest {
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-        Assertions.assertEquals("Name cannot be blank", errorObject.error().get(0));
+        Assertions.assertEquals("Name cannot be blank", errorObject.error().getFirst());
     }
 
     @DisplayName("Error: Blank Style in POST /beer")
@@ -47,7 +47,7 @@ public class AddBeerNegativeTest {
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-        Assertions.assertEquals("Style cannot be blank", errorObject.error().get(0));
+        Assertions.assertEquals("Style cannot be blank", errorObject.error().getFirst());
     }
 
     @DisplayName("Error: Missing BreweryId in POST /beer")
@@ -59,7 +59,7 @@ public class AddBeerNegativeTest {
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-        Assertions.assertEquals("BreweryId cannot be empty", errorObject.error().get(0));
+        Assertions.assertEquals("BreweryId cannot be empty", errorObject.error().getFirst());
     }
 
     @DisplayName("Error: Negative BreweryId in POST /beer")
@@ -71,7 +71,7 @@ public class AddBeerNegativeTest {
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-        Assertions.assertEquals("breweryId must be a positive number and must be at least 1", errorObject.error().get(0));
+        Assertions.assertEquals("breweryId must be a positive number and must be at least 1", errorObject.error().getFirst());
     }
 
     @DisplayName("Error: Excessive Digits in BreweryId in POST /beer")
@@ -83,7 +83,7 @@ public class AddBeerNegativeTest {
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-        Assertions.assertEquals("breweryId must be at most 99999", errorObject.error().get(0));
+        Assertions.assertEquals("breweryId must be at most 99999", errorObject.error().getFirst());
     }
 
     @DisplayName("Multiple Validation Errors in POST /beer")

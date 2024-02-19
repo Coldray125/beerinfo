@@ -34,27 +34,27 @@ public class BeerRequest {
                 .thenReturn();
     }
 
-    @Step("Request to get beer record by id GET /beer/{id}")
+    @Step("Request to get beer record by id GET /beer/{beerId}")
     public GetBeerResponse getBeerByIdRequest(String idNumber) {
         Response response = given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
-                .pathParams("id", idNumber)
+                .queryParam("beerId", idNumber)
                 .basePath("/beer")
                 .when()
-                .get("/{id}")
+                .get()
                 .thenReturn();
 
         return response.as(GetBeerResponse.class);
     }
 
-    @Step("Request to get beer record by id GET /beer/{id}")
+    @Step("Request to get beer record by id GET /beer/{beerId}")
     public Response getBeerByIdRequestReturnResponse(String idNumber) {
         return given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
-                .pathParams("id", idNumber)
+                .queryParam("beerId", idNumber)
                 .basePath("/beer")
                 .when()
-                .get("/{id}")
+                .get()
                 .thenReturn();
     }
 
@@ -82,26 +82,27 @@ public class BeerRequest {
         return response.as(AddBeerResponse.class);
     }
 
-    @Step("Request to update beer record PUT /beer/{id}")
+    @Step("Request to update beer record PUT /beer/{beerId}")
     public UpdateBeerResponse updateBeerRequest(BeerRequestPojo beerObject, String idNumber) {
         Response response = given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
-                .pathParams("id", idNumber)
+                .queryParams("beerId", idNumber)
                 .body(beerObject)
                 .basePath("/beer")
                 .when()
-                .put("/{id}").thenReturn();
+                .put()
+                .thenReturn();
         return response.as(UpdateBeerResponse.class);
     }
 
-    @Step("Request to delete beer record DELETE /beer/{id}")
+    @Step("Request to delete beer record DELETE /beer/{beerId}")
     public Response deleteBeerRequestReturnResponse(String idNumber) {
         return given()
                 .spec(ApiRequestSpecification.deleteRequestSpecification())
-                .pathParams("id", idNumber)
+                .queryParam("beerId", idNumber)
                 .basePath("/beer")
                 .when()
-                .delete("/{id}")
+                .delete()
                 .thenReturn();
     }
 }

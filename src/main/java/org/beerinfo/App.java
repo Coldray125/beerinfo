@@ -24,7 +24,7 @@ public class App {
         BreweriesService breweriesService = new BreweriesService(sessionFactory);
 
         app.before(ctx -> {
-            String logMessage = STR."Received \{ctx.method()} \{ctx.path()} from \{ctx.ip()} with body: \{ctx.body()}";
+            String logMessage = STR."Received \{ctx.method()} \{ctx.fullUrl()} from \{ctx.ip()} with body: \{ctx.body()}";
             log.info(logMessage);
         });
 

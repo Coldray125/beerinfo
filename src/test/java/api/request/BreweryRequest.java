@@ -33,26 +33,27 @@ public class BreweryRequest {
                 .thenReturn();
     }
 
-    @Step("Request update brewery record PUT /brewery/{id}")
+    @Step("Request update brewery record PUT /brewery/{breweryId}")
     public UpdateBreweryResponse updateBreweryRequest(BreweryRequestPojo breweryObject, String idNumber) {
         Response response = given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
-                .pathParams("id", idNumber)
+                .queryParams("breweryId", idNumber)
                 .body(breweryObject)
                 .basePath("/brewery")
                 .when()
-                .put("/{id}").thenReturn();
+                .put()
+                .thenReturn();
         return response.as(UpdateBreweryResponse.class);
     }
 
-    @Step("Request update brewery record PUT /brewery/{id}")
+    @Step("Request update brewery record PUT /brewery/{breweryId}")
     public Response updateBreweryReturnResponse(BreweryRequestPojo breweryObject, String idNumber) {
         return given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
-                .pathParams("id", idNumber)
+                .queryParam("breweryId", idNumber)
                 .body(breweryObject)
                 .basePath("/brewery")
                 .when()
-                .put("/{id}").thenReturn();
+                .put("").thenReturn();
     }
 }

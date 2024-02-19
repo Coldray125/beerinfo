@@ -27,7 +27,7 @@ public class DeleteBeerByIdHandler implements Handler {
 
             if (deleteResult) {
                 context.status(200);
-                context.json(Map.of("message:", STR."Beer with beerId: \{beerId} was deleted"));
+                context.json(Map.of("message", STR."Beer with beerId: \{beerId} was deleted"));
             } else {
                 respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
             }
