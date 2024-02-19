@@ -34,14 +34,14 @@ public class DeleteBeerPositiveTest {
         beerId = String.valueOf(beerEntity.beerId());
     }
 
-    @DisplayName("Check DELETE /beer/{id} response message")
+    @DisplayName("Check DELETE /beer/{beerId} response message")
     @Test
     void checkDeleteBeerResponseText() {
         Response response = beerRequest.deleteBeerRequestReturnResponse(beerId);
-
+        response.prettyPrint();
         Assertions.assertEquals(SC_OK, response.getStatusCode());
 
-        String expectedText = String.format("Beer with id: %s was deleted.", beerId);
+        String expectedText = STR."Beer with beerId: \{beerId} was deleted";
         String responseText = response.body().path("message");
         Assertions.assertEquals(expectedText, responseText);
     }

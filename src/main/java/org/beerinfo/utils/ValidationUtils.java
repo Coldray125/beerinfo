@@ -11,7 +11,7 @@ import java.util.*;
 
 public class ValidationUtils {
 
-    public static  <T> String validateDTO(ObjectMapper objectMapper, T dto) throws JsonProcessingException {
+    public static  <T> Map<String, List<String>> validateDTO(T dto) throws JsonProcessingException {
         Validator validator;
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();
@@ -27,7 +27,7 @@ public class ValidationUtils {
 
             Map<String, List<String>> errors = new HashMap<>();
             errors.put("error", errorMessages);
-            return objectMapper.writeValueAsString(errors);
+            return errors;
         }
 
         return null;

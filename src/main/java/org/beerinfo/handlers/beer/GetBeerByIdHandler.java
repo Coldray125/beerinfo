@@ -36,19 +36,15 @@ public class GetBeerByIdHandler implements Handler {
             context.json("Invalid Beer ID format. Only numeric values are allowed.");
         }
 
-        try {
-            Optional<BeerEntity> beerOptional = beerService.getBeerById(id);
+        Optional<BeerEntity> beerOptional = beerService.getBeerById(id);
 
-            if (beerOptional.isPresent()) {
-                BeerEntity beer = beerOptional.get();
-                GetBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToGetBeerResponseDTO(beer);
-                context.status(200);
-                context.json(objectMapper.writeValueAsString(getBeerResponseDTO));
-            } else {
-               respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
-            }
-        } catch (IOException e) {
-            respondWithInternalServerError(context);
+        if (beerOptional.isPresent()) {
+            BeerEntity beer = beerOptional.get();
+            GetBeerResponseDTO getBeerResponseDTO = BeerMapper.MAPPER.mapToGetBeerResponseDTO(beer);
+            context.status(200);
+            context.json(getBeerResponseDTO);
+        } else {
+           respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
         }
     }
 }

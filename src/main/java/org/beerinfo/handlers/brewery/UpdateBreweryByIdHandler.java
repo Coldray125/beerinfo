@@ -11,6 +11,7 @@ import org.beerinfo.utils.ValidationUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.beerinfo.enums.SupportedCountry.isValidCountry;
@@ -33,9 +34,10 @@ public class UpdateBreweryByIdHandler implements Handler {
         try {
             BreweryCreationDTO breweryCreationDTO = objectMapper.readValue(context.body(), BreweryCreationDTO.class);
 
-            String validationError = ValidationUtils.validateDTO(objectMapper, breweryCreationDTO);
+            Map<String, List<String>> validationError = ValidationUtils.validateDTO(breweryCreationDTO);
             if (validationError != null) {
-                respondWithError(context, 400, validationError);
+                context.status(400);
+                context.json(validationError);
             }
 
             String country = breweryCreationDTO.getCountry();
