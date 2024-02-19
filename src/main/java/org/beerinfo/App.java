@@ -1,6 +1,8 @@
 package org.beerinfo;
 
 import io.javalin.Javalin;
+import io.javalin.http.HttpResponseException;
+import lombok.extern.slf4j.Slf4j;
 import org.beerinfo.handlers.beer.*;
 import org.beerinfo.handlers.brewery.GetAllBreweriesHandler;
 import org.beerinfo.handlers.brewery.UpdateBreweryByIdHandler;
@@ -8,7 +10,7 @@ import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
 import org.beerinfo.utils.HibernateUtil;
 import org.hibernate.SessionFactory;
-
+@Slf4j
 public class App {
     public static void main(String[] args) {
 
@@ -21,6 +23,11 @@ public class App {
         BeerService beerService = new BeerService(sessionFactory);
         BreweriesService breweriesService = new BreweriesService(sessionFactory);
 
+        app.before(ctx -> {
+            String logMessage = STR."Received \{ctx.method()} \{ctx.path()} from \{ctx.ip()} with body: \{ctx.body()}";
+            log.info(logMessage);
+        });
+
         app.get("/beers", new GetAllBeersHandler(beerService));
         app.get("/beer", new GetBeerByIdHandler(beerService));
         app.delete("/beer", new DeleteBeerByIdHandler(beerService));
@@ -29,7 +36,7 @@ public class App {
         app.get("/breweries", new GetAllBreweriesHandler(breweriesService));
         app.put("/brewery", new UpdateBreweryByIdHandler(breweriesService));
 
-        //app.error(404, new WrongEndpointRequestHandler());
+        app.exception(HttpResponseException.class, new WrongEndpointHandler());
 
         Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
 

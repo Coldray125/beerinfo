@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.http.Context;
-import io.javalin.http.Handler;
+import io.javalin.http.ExceptionHandler;
+import io.javalin.http.HttpResponseException;
 import org.jetbrains.annotations.NotNull;
 
-public class WrongEndpointRequestHandler implements Handler {
+public class WrongEndpointHandler implements ExceptionHandler <HttpResponseException> {
     @Override
-    public void handle(@NotNull Context context) {
+    public void handle(@NotNull HttpResponseException e, @NotNull Context context) {
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode errorJson = objectMapper.createObjectNode();
         errorJson.put("error", "Endpoint not found.");
