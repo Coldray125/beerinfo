@@ -1,8 +1,9 @@
 package api.beer_service;
 
 import api.db_query.BeerQuery;
-import api.extensions.BeerQueryParameterResolver;
-import api.extensions.BeerRequestParameterResolver;
+import api.extensions.LoggingExtension;
+import api.extensions.resolver.BeerQueryParameterResolver;
+import api.extensions.resolver.BeerRequestParameterResolver;
 import api.request.BeerRequest;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 
 @Story("Beer API")
+@ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class GetBeerByIdNegativeTest {
     BeerQuery beerQuery;

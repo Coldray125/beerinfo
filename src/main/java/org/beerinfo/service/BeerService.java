@@ -5,6 +5,7 @@ import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class BeerService {
@@ -28,7 +29,7 @@ public class BeerService {
     }
 
     public Optional<BeerEntity> getBeerById(long id) {
-        return HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BeerEntity.class, "beerId", id);
+        return HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BeerEntity.class, Map.of("beerId", id));
     }
 
     public boolean deleteBeerById(long id) {

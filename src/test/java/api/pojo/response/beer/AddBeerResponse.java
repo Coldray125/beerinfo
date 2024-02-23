@@ -9,6 +9,7 @@ public record AddBeerResponse(String message, BeerDetails beer) {
             String name,
             String style,
             int breweryId,
-            String ounces) {
+            String ounces
+    ) {
     }
 }

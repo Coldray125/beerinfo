@@ -1,9 +1,11 @@
 package api.beer_service;
 
 import api.db_query.BeerQuery;
-import api.extensions.BeerQueryParameterResolver;
-import api.extensions.BeerRequestParameterResolver;
+import api.extensions.LoggingExtension;
+import api.extensions.annotation.RandomBeerExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
+import api.extensions.resolver.BeerQueryParameterResolver;
+import api.extensions.resolver.BeerRequestParameterResolver;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.AddBeerResponse;
 import api.request.BeerRequest;
@@ -21,7 +23,8 @@ import static io.qameta.allure.Allure.step;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Beer API")
-@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
+@ExtendWith({LoggingExtension.class})
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class AddBeerPositiveTest {
     BeerQuery beerQuery;
     BeerRequest beerRequest;
@@ -31,9 +34,12 @@ public class AddBeerPositiveTest {
         this.beerRequest = beerRequest;
     }
 
+    @RandomBeerPojo
+    BeerRequestPojo request;
+
     @DisplayName("Verify Data in POST /beer Response and Database")
     @Test
-    void checkAddBeerWriteInDatabase(@RandomBeerPojo BeerRequestPojo request) {
+    void checkAddBeerWriteInDatabase() {
         AddBeerResponse fullResponse = beerRequest.addBeerRequest(request);
         AddBeerResponse.BeerDetails response = fullResponse.beer();
         GetBeerResponseDTO beerEntity = beerQuery.getBeerById(response.beerId());
@@ -52,8 +58,8 @@ public class AddBeerPositiveTest {
 
     @DisplayName("Ensure POST /beer Response Message")
     @Test
-    void checkAddBeerResponseText(@RandomBeerPojo BeerRequestPojo beerRequestPojo) {
-        Response response = beerRequest.addBeerRequestReturnResponse(beerRequestPojo);
+    void checkAddBeerResponseText() {
+        Response response = beerRequest.addBeerRequestReturnResponse(request);
 
         Assertions.assertEquals(SC_OK, response.getStatusCode());
 
@@ -63,14 +69,14 @@ public class AddBeerPositiveTest {
 
     @DisplayName("Validate POST /beer Response JSON Structure")
     @Test
-    void checkAddBeerResponseStructure(@RandomBeerPojo BeerRequestPojo beerRequestPojo) {
-        Response response = beerRequest.addBeerRequestReturnResponse(beerRequestPojo);
+    void checkAddBeerResponseStructure() {
+        Response response = beerRequest.addBeerRequestReturnResponse(request);
         ResponseValidator.assertResponseMatchesSchema(response, ADD_BEER_RESPONSE.getPath());
     }
 
     @DisplayName("Verify Data in POST /beer Response and Request")
     @Test
-    void checkValuesAddBeerResponse(@RandomBeerPojo BeerRequestPojo request) {
+    void checkValuesAddBeerResponse() {
         AddBeerResponse fullResponse = beerRequest.addBeerRequest(request);
         AddBeerResponse.BeerDetails responseObject = fullResponse.beer();
         Assertions.assertAll(

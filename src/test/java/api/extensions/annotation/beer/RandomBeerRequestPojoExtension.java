@@ -2,21 +2,34 @@ package api.extensions.annotation.beer;
 
 import api.pojo.request.BeerRequestPojo;
 import api.test_utils.data_generators.BeerObjectGenerator;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ParameterContext;
-import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.platform.commons.support.AnnotationSupport;
+import org.junit.platform.commons.support.ModifierSupport;
 
-class RandomBeerRequestPojoExtension implements ParameterResolver {
+import java.lang.reflect.Field;
+import java.util.function.Predicate;
 
-    private final BeerRequestPojo random = BeerObjectGenerator.generateRandomBeerPojo();
+public class RandomBeerRequestPojoExtension implements BeforeEachCallback {
 
     @Override
-    public boolean supportsParameter(ParameterContext pc, ExtensionContext ec) {
-        return pc.isAnnotated(RandomBeerPojo.class);
+    public void beforeEach(ExtensionContext context) {
+        Class<?> testClass = context.getRequiredTestClass();
+        Object testInstance = context.getRequiredTestInstance();
+        injectFields(testClass, testInstance, ModifierSupport::isNotStatic);
     }
 
-    @Override
-    public BeerRequestPojo resolveParameter(ParameterContext pc, ExtensionContext ec) {
-        return random;
+    private void injectFields(Class<?> testClass, Object testInstance, Predicate<Field> predicate) {
+        AnnotationSupport.findAnnotatedFields(testClass, RandomBeerPojo.class, predicate)
+                .forEach(field -> {
+                    if (BeerRequestPojo.class.isAssignableFrom(field.getType())) {
+                        try {
+                            field.setAccessible(true);
+                            field.set(testInstance, BeerObjectGenerator.generateRandomBeerPojo());
+                        } catch (IllegalAccessException ex) {
+                            throw new RuntimeException(STR."Failed to inject random BeerRequestPojo into field: \{field.getName()}", ex);
+                        }
+                    }
+                });
     }
 }

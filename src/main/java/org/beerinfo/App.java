@@ -8,8 +8,9 @@ import org.beerinfo.handlers.brewery.GetAllBreweriesHandler;
 import org.beerinfo.handlers.brewery.UpdateBreweryByIdHandler;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
-import org.beerinfo.utils.HibernateUtil;
-import org.hibernate.SessionFactory;
+
+import static org.beerinfo.db.Hibernate.getSessionFactory;
+
 @Slf4j
 public class App {
     public static void main(String[] args) {
@@ -18,13 +19,11 @@ public class App {
             config.http.defaultContentType = "application/json";
         }).start(8080);
 
-        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
-        BeerService beerService = new BeerService(sessionFactory);
-        BreweriesService breweriesService = new BreweriesService(sessionFactory);
+        BeerService beerService = new BeerService(getSessionFactory());
+        BreweriesService breweriesService = new BreweriesService(getSessionFactory());
 
         app.before(ctx -> {
-            String logMessage = STR."Received \{ctx.method()} \{ctx.fullUrl()} from \{ctx.ip()} with body: \{ctx.body()}";
+            String logMessage = STR."Received: \n\{ctx.method()} \{ctx.fullUrl()} \nfrom \{ctx.ip()} \nport: \{ctx.port()} \nwith body: \{ctx.body()}";
             log.info(logMessage);
         });
 

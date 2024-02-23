@@ -1,4 +1,4 @@
-package api.extensions;
+package api.extensions.resolver;
 
 import api.request.BreweryRequest;
 import org.junit.jupiter.api.extension.ExtensionContext;
