@@ -1,42 +1,53 @@
 package org.beerinfo.utils;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import org.hibernate.query.criteria.CriteriaDefinition;
+import org.hibernate.query.criteria.JpaRoot;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class HibernateQueryUtil {
-
     public static <T> Optional<List<T>> getAllEntities(SessionFactory sessionFactory, Class<T> entityClass) {
-        try (Session session = sessionFactory.openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
-            Root<T> root = criteriaQuery.from(entityClass);
-            criteriaQuery.select(root);
+        var criteria = new CriteriaDefinition<>(sessionFactory, entityClass) {
+            {
+                JpaRoot<T> root = from(entityClass);
+                select(root);
+            }
+        };
+        List<T> result = sessionFactory
+                .fromTransaction(_ -> sessionFactory.openSession().createSelectionQuery(criteria).getResultList());
 
-            Query<T> query = session.createQuery(criteriaQuery);
-            List<T> result = query.getResultList();
+        return Optional.of(result);
+    }
 
-            return Optional.of(result);
-        }
+    public static <T> Optional<T> getEntityByFieldValue(SessionFactory sessionFactory, Class<T> entityClass, Map<String, Object> criteriaParameters) {
+        var criteria = new CriteriaDefinition<>(sessionFactory, entityClass) {
+            {
+                JpaRoot<T> root = from(entityClass);
+                select(root);
+                where(createPredicates(getCriteriaBuilder(), root, criteriaParameters));
+            }
+        };
+        return sessionFactory
+                .fromTransaction(_ -> sessionFactory.openSession().createSelectionQuery(criteria).uniqueResultOptional());
     }
 
     public static <T> Optional<T> addEntityReturnEntity(SessionFactory sessionFactory, T entity) {
-        try (Session session = sessionFactory.openSession()) {
+        return sessionFactory.fromTransaction(_ ->
+        {
+            Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
             session.persist(entity);
             transaction.commit();
-
             return Optional.of(entity);
-        } catch (Exception e) {
-            return Optional.empty();
-        }
+        });
     }
 
     public static boolean updateEntityById(SessionFactory sessionFactory, Class<?> entityClass, long id, Object updatedEntity) {
@@ -77,16 +88,11 @@ public class HibernateQueryUtil {
         }
     }
 
-    public static <T, V> Optional<T> getEntityByFieldValue(SessionFactory sessionFactory, Class<T> entityClass, String fieldName, V value) {
-        try (Session session = sessionFactory.openSession()) {
-            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(entityClass);
-            Root<T> root = criteriaQuery.from(entityClass);
+    private static <T> Predicate createPredicates(CriteriaBuilder criteria, Root<T> root, Map<String, Object> parameters) {
+        Predicate[] predicates = parameters.entrySet().stream()
+                .map(entry -> criteria.equal(root.get(entry.getKey()), entry.getValue()))
+                .toArray(Predicate[]::new);
 
-            criteriaQuery.select(root);
-            criteriaQuery.where(criteriaBuilder.equal(root.get(fieldName), value));
-
-            return session.createQuery(criteriaQuery).uniqueResultOptional();
-        }
+        return criteria.and(predicates);
     }
 }

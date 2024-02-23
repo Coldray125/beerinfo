@@ -7,5 +7,6 @@ public record GetBeerResponse(
         String name,
         String style,
         int breweryId,
-        String ounces) {
+        String ounces
+) {
 }

@@ -1,13 +1,14 @@
 package api.breweries_service;
 
 import api.db_query.BreweryQuery;
-import api.extensions.BreweryQueryParameterResolver;
-import api.extensions.BreweryRequestParameterResolver;
+import api.extensions.LoggingExtension;
 import api.extensions.annotation.brewery.RandomBreweryPojo;
+import api.extensions.annotation.brewery.RandomBreweryRequestPojoExtension;
+import api.extensions.resolver.BreweryQueryParameterResolver;
+import api.extensions.resolver.BreweryRequestParameterResolver;
 import api.pojo.request.BreweryRequestPojo;
 import api.pojo.response.brewery.UpdateBreweryResponse;
 import api.request.BreweryRequest;
-import api.test_utils.data_generators.BreweryObjectGenerator;
 import io.qameta.allure.Story;
 import org.beerinfo.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.enums.SupportedCountry;
@@ -20,8 +21,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @Story("Beer API")
-@ExtendWith(value = BreweryRequestParameterResolver.class)
-@ExtendWith(value = BreweryQueryParameterResolver.class)
+@ExtendWith({LoggingExtension.class})
+@ExtendWith({BreweryRequestParameterResolver.class, BreweryQueryParameterResolver.class, RandomBreweryRequestPojoExtension.class})
 public class UpdateBreweryPositiveTest {
     BreweryQuery breweryQuery;
     BreweryRequest breweryRequest;
@@ -37,9 +38,12 @@ public class UpdateBreweryPositiveTest {
         breweryId = breweryQuery.addRandomBreweryReturnId();
     }
 
+    @RandomBreweryPojo
+    BreweryRequestPojo request;
+
     @DisplayName("Verify Data in PUT /brewery/{id} Response and Request")
     @Test
-    void checkUpdateBreweryResponseData(@RandomBreweryPojo BreweryRequestPojo request) {
+    void checkUpdateBreweryResponseData() {
         UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
         UpdateBreweryResponse.BreweryDetails responseObject = fullResponse.brewery();
         Assertions.assertAll(
@@ -51,7 +55,7 @@ public class UpdateBreweryPositiveTest {
 
     @DisplayName("Ensure POST /brewery Response Message")
     @Test
-    void checkUpdateBreweryResponseText(@RandomBreweryPojo BreweryRequestPojo request) {
+    void checkUpdateBreweryResponseText() {
         UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
         String expectedMessage = String.format("Brewery with id: %s was updated.", breweryId);
         Assertions.assertEquals(expectedMessage, fullResponse.message());
@@ -60,7 +64,7 @@ public class UpdateBreweryPositiveTest {
     @DisplayName("Verify Data Update in Database with valid Country POST /brewery")
     @ParameterizedTest
     @EnumSource(SupportedCountry.class)
-    void checkUpdateBreweryWithValidCountry(SupportedCountry country, @RandomBreweryPojo BreweryRequestPojo request) {
+    void checkUpdateBreweryWithValidCountry(SupportedCountry country) {
         request.setCountry(country.getCountryName());
         UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
         UpdateBreweryResponse.BreweryDetails updateResponse = fullResponse.brewery();

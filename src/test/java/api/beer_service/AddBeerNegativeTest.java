@@ -1,7 +1,9 @@
 package api.beer_service;
 
-import api.extensions.BeerRequestParameterResolver;
+import api.extensions.LoggingExtension;
+import api.extensions.annotation.RandomBeerExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
+import api.extensions.resolver.BeerRequestParameterResolver;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.BeerErrorResponse;
 import api.request.BeerRequest;
@@ -16,7 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 
 @Story("Beer API")
-@ExtendWith(value = BeerRequestParameterResolver.class)
+@ExtendWith({LoggingExtension.class})
+@ExtendWith({BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class AddBeerNegativeTest {
     Faker faker = new Faker();
     BeerRequest beerRequest;
@@ -25,10 +28,12 @@ public class AddBeerNegativeTest {
         this.beerRequest = beerRequest;
     }
 
+    @RandomBeerPojo
+    BeerRequestPojo request;
 
     @DisplayName("Error: Blank Name in POST /beer")
     @Test
-    void checkAddBeerErrorEmptyName(@RandomBeerPojo BeerRequestPojo request) {
+    void checkAddBeerErrorEmptyName() {
         request.setName("");
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
@@ -40,7 +45,7 @@ public class AddBeerNegativeTest {
 
     @DisplayName("Error: Blank Style in POST /beer")
     @Test
-    void checkAddBeerErrorEmptyStyle(@RandomBeerPojo BeerRequestPojo request) {
+    void checkAddBeerErrorEmptyStyle() {
         request.setStyle("");
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
@@ -52,7 +57,7 @@ public class AddBeerNegativeTest {
 
     @DisplayName("Error: Missing BreweryId in POST /beer")
     @Test
-    void checkAddBeerErrorEmptyBreweryId(@RandomBeerPojo BeerRequestPojo request) {
+    void checkAddBeerErrorEmptyBreweryId() {
         request.setBreweryId(null);
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
@@ -64,7 +69,7 @@ public class AddBeerNegativeTest {
 
     @DisplayName("Error: Negative BreweryId in POST /beer")
     @Test
-    void checkAddBeerErrorNegativeNumbersBreweryId(@RandomBeerPojo BeerRequestPojo request) {
+    void checkAddBeerErrorNegativeNumbersBreweryId() {
         request.setBreweryId(-faker.number().numberBetween(11111, 99999));
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
@@ -76,7 +81,7 @@ public class AddBeerNegativeTest {
 
     @DisplayName("Error: Excessive Digits in BreweryId in POST /beer")
     @Test
-    void checkAddBeerErrorAmountOfDigitsBreweryId(@RandomBeerPojo BeerRequestPojo request) {
+    void checkAddBeerErrorAmountOfDigitsBreweryId() {
         request.setBreweryId(faker.number().numberBetween(111111, 999999));
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
@@ -88,7 +93,7 @@ public class AddBeerNegativeTest {
 
     @DisplayName("Multiple Validation Errors in POST /beer")
     @Test
-    void checkAddBeerMultipleErrors(@RandomBeerPojo BeerRequestPojo request) {
+    void checkAddBeerMultipleErrors() {
         request.setName("");
         request.setStyle("");
         request.setBreweryId(null);

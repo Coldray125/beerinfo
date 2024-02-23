@@ -2,8 +2,9 @@ package api.beer_service;
 
 import api.conversion.BeerConverter;
 import api.db_query.BeerQuery;
-import api.extensions.BeerQueryParameterResolver;
-import api.extensions.BeerRequestParameterResolver;
+import api.extensions.LoggingExtension;
+import api.extensions.resolver.BeerQueryParameterResolver;
+import api.extensions.resolver.BeerRequestParameterResolver;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
@@ -22,6 +23,7 @@ import static api.test_utils.SchemaPaths.BEER_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Beer API")
+@ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class GetAllBeersTest {
     BeerQuery beerQuery;
