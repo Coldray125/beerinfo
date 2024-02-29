@@ -1,6 +1,7 @@
 package org.beerinfo.service;
 
 import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.entity.JoinedBeerBreweryEntity;
 import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.SessionFactory;
 
@@ -17,6 +18,10 @@ public class BeerService {
 
     public Optional<List<BeerEntity>> getAllBeers() {
         return HibernateQueryUtil.getAllEntities(sessionFactory, BeerEntity.class);
+    }
+
+    public Optional<JoinedBeerBreweryEntity> getBeerBreweryById(long id) {
+        return HibernateQueryUtil.getEntityByFieldValue(sessionFactory, JoinedBeerBreweryEntity.class, Map.of("beerId", id));
     }
 
     public Optional<BeerEntity> addBeer(BeerEntity beer) {

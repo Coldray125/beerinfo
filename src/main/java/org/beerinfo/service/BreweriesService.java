@@ -3,13 +3,14 @@ package org.beerinfo.service;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.entity.JoinedBreweryBeerEntity;
 import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class BreweriesService {
@@ -26,6 +27,10 @@ public class BreweriesService {
     public boolean updateBreweryById(BreweryEntity brewery, long id) {
         brewery.setBreweryId(id);
         return HibernateQueryUtil.updateEntityById(sessionFactory, BreweryEntity.class, id, brewery);
+    }
+
+    public Optional<JoinedBreweryBeerEntity> getBreweryBeersById(long id) {
+        return HibernateQueryUtil.getEntityByFieldValue(sessionFactory, JoinedBreweryBeerEntity.class, Map.of("breweryId", id));
     }
 
     public long getLastBreweryId() {

@@ -63,6 +63,9 @@ public class Hibernate {
         configuration.setProperty(SHOW_SQL, "true");
         configuration.setProperty(FORMAT_SQL, "true");
         configuration.setProperty(HIGHLIGHT_SQL, "true");
+        configuration.setProperty("hibernate.hikari.connectionTimeout", "250");
+        configuration.setProperty("hibernate.hikari.maximumPoolSize", "10");
+
         return configuration;
     }
 }

@@ -5,6 +5,7 @@ import io.javalin.http.HttpResponseException;
 import lombok.extern.slf4j.Slf4j;
 import org.beerinfo.handlers.beer.*;
 import org.beerinfo.handlers.brewery.GetAllBreweriesHandler;
+import org.beerinfo.handlers.brewery.GetBreweryBeersHandler;
 import org.beerinfo.handlers.brewery.UpdateBreweryByIdHandler;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
@@ -34,6 +35,8 @@ public class App {
         app.put("/beer", new UpdateBeerByIdHandler(beerService));
         app.get("/breweries", new GetAllBreweriesHandler(breweriesService));
         app.put("/brewery", new UpdateBreweryByIdHandler(breweriesService));
+        app.get("/brewery-beers", new GetBreweryBeersHandler(breweriesService));
+        app.get("/beer-brewery", new GetBeerBreweryHandler(beerService));
 
         app.exception(HttpResponseException.class, new WrongEndpointHandler());
 

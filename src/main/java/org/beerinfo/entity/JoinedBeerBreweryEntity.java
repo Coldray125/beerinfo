@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "Beer")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "Beer")
 public class JoinedBeerBreweryEntity {
     @Id
     @Column(name = "beer_id", nullable = false, unique = true)
