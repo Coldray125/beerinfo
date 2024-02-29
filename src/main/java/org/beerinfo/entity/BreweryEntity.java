@@ -6,12 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "Breweries")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "Breweries")
 public class BreweryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "brewery_seq")

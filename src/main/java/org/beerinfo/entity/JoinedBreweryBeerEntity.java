@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity
-@Table(name = "Breweries")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "Breweries")
 public class JoinedBreweryBeerEntity {
     @Id
     @Column(name = "brewery_id")

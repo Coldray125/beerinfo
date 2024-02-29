@@ -1,12 +1,14 @@
 package org.beerinfo.utils;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.criteria.CriteriaDefinition;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaRoot;
 
 import java.util.List;
@@ -37,6 +39,15 @@ public class HibernateQueryUtil {
         };
         return sessionFactory
                 .fromTransaction(_ -> sessionFactory.openSession().createSelectionQuery(criteria).uniqueResultOptional());
+    }
+
+    public static <T> Optional<List<T>> getAllEntityByFieldValue(SessionFactory sessionFactory, Class<T> entityClass, Map<String, Object> criteriaParameters) {
+        return sessionFactory.fromSession(session -> {
+            CriteriaQuery<T> criteriaQuery = createCriteriaQueryWithPredicate(session, entityClass, criteriaParameters);
+            List<T> result = session.createSelectionQuery(criteriaQuery).getResultList();
+
+            return Optional.ofNullable(result);
+        });
     }
 
     public static <T> Optional<T> addEntityReturnEntity(SessionFactory sessionFactory, T entity) {
@@ -94,5 +105,18 @@ public class HibernateQueryUtil {
                 .toArray(Predicate[]::new);
 
         return criteria.and(predicates);
+    }
+
+    private static <T> CriteriaQuery<T> createCriteriaQueryWithPredicate(Session session, Class<T> entityClass, Map<String, Object> criteriaParameters) {
+        HibernateCriteriaBuilder criteria = session.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteria.createQuery(entityClass);
+
+        Root<T> root = criteriaQuery.from(entityClass);
+
+        Predicate predicate = createPredicates(criteria, root, criteriaParameters);
+
+        criteriaQuery.where(predicate);
+
+        return criteriaQuery;
     }
 }
