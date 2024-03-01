@@ -19,7 +19,7 @@
 
 - ## Prerequisites
 
-- **Java:** 16+
+- **Java:** 21
 
 - **Maven:** 3.9.4+
 
@@ -45,7 +45,7 @@ This project utilizes the following technologies, libraries, and frameworks for 
 - **Other Dependencies:**
   - Lombok
   - Jackson Databind: Used for JSON serialization/deserialization.
-  - Spark Core: Used for building web services.
+  - Javalin: Used for building web services.
   - JavaFaker
 
 - **Testing Report Framework:**
@@ -56,45 +56,53 @@ This project utilizes the following technologies, libraries, and frameworks for 
 - ## Project Structure
 
 ```
-├───src
-   ├───main
-   │   ├───java
-   │   │   └───org
-   │   │       └───beerinfo
-   │   │           ├───converters
-   │   │           ├───dto
-   │   │           │   ├───api
-   │   │           │   │   ├───beer
-   │   │           │   │   └───brewery
-   │   │           │   └───data
-   │   │           ├───entity
-   │   │           ├───enums
-   │   │           ├───handlers
-   │   │           │   ├───beer
-   │   │           │   └───brewery
-   │   │           ├───service
-   │   │           └───utils
-   │   └───resources
-   │       ├───sqlscripts
-   │       
-   └───test
-       ├───java
-       │   └───api
-       │       ├───api_specifications
-       │       ├───beer_service
-       │       ├───breweries_service
-       │       ├───conversion
-       │       ├───db_query
-       │       ├───pojo
-       │       │   ├───request
-       │       │   └───response
-       │       │       ├───beer
-       │       │       └───brewery
-       │       ├───request
-       │       └───test_utils
-       │       └───data_generators
-       └───resources
-          └───schemas
-             ├───beer_service
-             └───brewerie_service
+├───main
+│   ├───java
+│   │   └───org
+│   │       └───beerinfo
+│   │           ├───config
+│   │           ├───db
+│   │           ├───dto
+│   │           │   ├───api
+│   │           │   │   ├───beer
+│   │           │   │   └───brewery
+│   │           │   └───data
+│   │           ├───entity
+│   │           ├───enums
+│   │           ├───handlers
+│   │           │   ├───beer
+│   │           │   └───brewery
+│   │           ├───mapper
+│   │           ├───service
+│   │           └───utils
+│   └───resources
+│       ├───META-INF
+│       ├───properties
+│       └───sqlscripts
+└───test
+    ├───java
+    │   └───api
+    │       ├───api_specifications
+    │       ├───beer_service
+    │       ├───breweries_service
+    │       ├───conversion
+    │       ├───db_query
+    │       ├───extensions
+    │       │   ├───annotation
+    │       │   │   ├───beer
+    │       │   │   └───brewery
+    │       │   └───resolver
+    │       ├───pojo
+    │       │   ├───request
+    │       │   └───response
+    │       │       ├───beer
+    │       │       └───brewery
+    │       ├───request
+    │       └───test_utils
+    │           └───data_generators
+    └───resources
+        └───schemas
+            ├───beer_service
+            └───brewery_service
+
 ```
