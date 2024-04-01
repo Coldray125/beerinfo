@@ -1,6 +1,7 @@
 package org.beerinfo.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.beerinfo.MyClass;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +17,16 @@ public final class PropertyUtil {
 
     private static final String stand = "dev";
     private static Properties properties;
+
+    static {
+        try {
+            properties = new Properties();
+            properties.load(PropertyUtil.class.getResourceAsStream("/properties/dev.properties"));
+            System.out.println(properties);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static String getProperty(String propertyName) {
         try {

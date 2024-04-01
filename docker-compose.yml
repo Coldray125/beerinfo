@@ -10,11 +10,11 @@ networks:
 services:
  app:
    image: amazoncorretto:21-alpine-jdk
-   command: java -jar /app/app.jar
+   command: java --enable-preview -jar /app/app.jar
    ports:
      - "8080:8080"
    volumes:
-     - ./target/restservice.jar:/app/app.jar
+     - ./target/beerinfo-1.0-shaded.jar:/app/app.jar
    depends_on:
      db:
        condition: service_healthy

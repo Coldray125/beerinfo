@@ -15,6 +15,7 @@ import io.restassured.response.Response;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -23,6 +24,7 @@ import static io.qameta.allure.Allure.step;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Beer API")
+@Tag("Beer API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class AddBeerPositiveTest {

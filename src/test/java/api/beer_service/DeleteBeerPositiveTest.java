@@ -8,15 +8,13 @@ import api.request.BeerRequest;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Beer API")
+@Tag("Beer API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class DeleteBeerPositiveTest {

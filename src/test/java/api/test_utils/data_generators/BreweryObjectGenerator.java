@@ -1,8 +1,8 @@
 package api.test_utils.data_generators;
 
 import api.pojo.request.BreweryRequestPojo;
-import com.github.javafaker.Faker;
 import io.qameta.allure.Step;
+import net.datafaker.Faker;
 import org.beerinfo.entity.BreweryEntity;
 import org.beerinfo.enums.SupportedCountry;
 

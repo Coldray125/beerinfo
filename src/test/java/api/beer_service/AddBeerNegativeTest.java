@@ -7,17 +7,19 @@ import api.extensions.resolver.BeerRequestParameterResolver;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.BeerErrorResponse;
 import api.request.BeerRequest;
-import com.github.javafaker.Faker;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 
 @Story("Beer API")
+@Tag("Beer API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class AddBeerNegativeTest {

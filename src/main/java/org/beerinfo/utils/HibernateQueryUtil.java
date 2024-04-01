@@ -24,7 +24,7 @@ public class HibernateQueryUtil {
             }
         };
         List<T> result = sessionFactory
-                .fromTransaction(_ -> sessionFactory.openSession().createSelectionQuery(criteria).getResultList());
+                .fromTransaction(v -> sessionFactory.openSession().createSelectionQuery(criteria).getResultList());
 
         return Optional.of(result);
     }

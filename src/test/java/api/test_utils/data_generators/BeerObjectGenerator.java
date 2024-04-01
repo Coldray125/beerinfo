@@ -1,10 +1,10 @@
 package api.test_utils.data_generators;
 
 import api.pojo.request.BeerRequestPojo;
-import com.github.javafaker.Faker;
+
 import io.qameta.allure.Step;
+import net.datafaker.Faker;
 import org.beerinfo.entity.BeerEntity;
-import org.junit.jupiter.api.Test;
 
 public class BeerObjectGenerator {
     static Faker faker = new Faker();

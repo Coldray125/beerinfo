@@ -32,7 +32,7 @@ public class BeerEntity {
     private String style;
 
     @Column(name = "brewery_id")
-    private int breweryId;
+    private long breweryId;
 
     @Column(name = "ounces")
     private String ounces;
