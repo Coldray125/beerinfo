@@ -1,8 +1,10 @@
 package org.beerinfo.db;
 
 import lombok.Getter;
-import org.beerinfo.config.PropertyUtil;
-import org.beerinfo.entity.*;
+import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.entity.JoinedBeerBreweryEntity;
+import org.beerinfo.entity.JoinedBreweryBeerEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -45,9 +47,7 @@ public class Hibernate {
     private static Metadata addAnnotatedClasses(StandardServiceRegistry serviceRegistry) {
         return new MetadataSources(serviceRegistry)
                 .addAnnotatedClass(BeerEntity.class)
-                .addAnnotatedClass(BeerEntity2.class)
                 .addAnnotatedClass(BreweryEntity.class)
-                .addAnnotatedClass(BreweryEntity2.class)
                 .addAnnotatedClass(JoinedBeerBreweryEntity.class)
                 .addAnnotatedClass(JoinedBreweryBeerEntity.class)
                 .getMetadataBuilder()
