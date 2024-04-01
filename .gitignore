@@ -4,6 +4,7 @@ target/
 !**/src/test/**/target/
 /.allure/
 /.allure-results/
+/allure-results/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
@@ -13,3 +14,5 @@ target/
 *.iws
 *.iml
 *.ipr
+/.idea/
+

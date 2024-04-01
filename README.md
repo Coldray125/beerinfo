@@ -52,6 +52,32 @@ This project utilizes the following technologies, libraries, and frameworks for 
 
   - Allure JUnit5
 
+## Installation
+
+For project working, environment postgresql.dev.uri in property file need to be updated to local ip address (IPv4 Address).
+
+Console command to find local ip address: `ipconfig` 
+
+path: `src/main/resources/properties/dev.properties`
+
+## Running Tests
+
+To execute JUnit tests from the console:
+
+- Run all tests:
+  `mvn test`
+
+- Run a specific test package:
+  `mvn test -Dtest="pathToTestPackage.**"`
+
+- Run a specific test class:
+  `mvn test -Dtest="TestClassName"`
+
+- Run a specific test method:
+  `mvn test -Dtest="TestClassName#TestMethodName"`
+
+- Run tests with specific tags:
+  `mvn clean test -Dgroups="tagName1, tagName2"`
 
 - ## Project Structure
 

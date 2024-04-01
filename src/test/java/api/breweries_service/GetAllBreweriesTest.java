@@ -8,6 +8,7 @@ import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -15,6 +16,7 @@ import static api.test_utils.SchemaPaths.BREWERY_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Brewery API")
+@Tag("Brewery API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith(value = BreweryRequestParameterResolver.class)
 public class GetAllBreweriesTest {

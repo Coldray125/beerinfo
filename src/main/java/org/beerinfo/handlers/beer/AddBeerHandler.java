@@ -47,7 +47,7 @@ public class AddBeerHandler implements Handler {
             final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
 
             long lastBreweryId = breweriesService.getLastBreweryId();
-            int breweryIdFromRequest = beer.getBreweryId();
+            long breweryIdFromRequest = beer.getBreweryId();
 
             if (breweryIdFromRequest > lastBreweryId) {
                 respondWithError(context, 404, STR."Wrong brewery id: \{breweryIdFromRequest}, brewery cannot be added.");
