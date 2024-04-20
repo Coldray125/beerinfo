@@ -23,8 +23,8 @@ import java.util.Optional;
 import static api.test_utils.SchemaPaths.BEER_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 
-@Story("Beer API")
-@Tag("Beer API")
+@Story("Beer_API")
+@Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class GetAllBeersTest {

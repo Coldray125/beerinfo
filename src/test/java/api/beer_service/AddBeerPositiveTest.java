@@ -23,8 +23,8 @@ import static api.test_utils.SchemaPaths.ADD_BEER_RESPONSE;
 import static io.qameta.allure.Allure.step;
 import static org.apache.http.HttpStatus.SC_OK;
 
-@Story("Beer API")
-@Tag("Beer API")
+@Story("Beer_API")
+@Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class AddBeerPositiveTest {

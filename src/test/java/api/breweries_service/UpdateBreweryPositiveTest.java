@@ -17,8 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-@Story("Beer API")
-@Tag("Brewery API")
+@Story("Brewery_API")
+@Tag("Brewery_API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BreweryRequestParameterResolver.class, BreweryQueryParameterResolver.class, RandomBreweryRequestPojoExtension.class})
 public class UpdateBreweryPositiveTest {

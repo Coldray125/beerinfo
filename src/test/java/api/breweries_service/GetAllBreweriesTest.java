@@ -15,8 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static api.test_utils.SchemaPaths.BREWERY_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 
-@Story("Brewery API")
-@Tag("Brewery API")
+@Story("Brewery_API")
+@Tag("Brewery_API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith(value = BreweryRequestParameterResolver.class)
 public class GetAllBreweriesTest {

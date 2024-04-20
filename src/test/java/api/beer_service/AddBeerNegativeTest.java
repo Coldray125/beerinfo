@@ -18,8 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 
-@Story("Beer API")
-@Tag("Beer API")
+@Story("Beer_API")
+@Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class AddBeerNegativeTest {
