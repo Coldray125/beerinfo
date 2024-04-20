@@ -38,7 +38,7 @@ public class HibernateQueryUtil {
             }
         };
         return sessionFactory
-                .fromTransaction(_ -> sessionFactory.openSession().createSelectionQuery(criteria).uniqueResultOptional());
+                .fromTransaction(v -> sessionFactory.openSession().createSelectionQuery(criteria).uniqueResultOptional());
     }
 
     public static <T> Optional<List<T>> getAllEntityByFieldValue(SessionFactory sessionFactory, Class<T> entityClass, Map<String, Object> criteriaParameters) {
@@ -51,7 +51,7 @@ public class HibernateQueryUtil {
     }
 
     public static <T> Optional<T> addEntityReturnEntity(SessionFactory sessionFactory, T entity) {
-        return sessionFactory.fromTransaction(_ ->
+        return sessionFactory.fromTransaction(v ->
         {
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();

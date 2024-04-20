@@ -16,8 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static io.qameta.allure.Allure.step;
 
-@Story("Beer API")
-@Tag("Beer API")
+@Story("Beer_API")
+@Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class UpdateBeerPositiveTest {

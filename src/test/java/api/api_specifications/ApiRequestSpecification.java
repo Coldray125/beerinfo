@@ -4,8 +4,10 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
+import static org.beerinfo.config.PropertyUtil.getProperty;
+
 public class ApiRequestSpecification {
-    private static final String BASE_URL = "http://localhost:8080/";
+    private static final String BASE_URL = getProperty("base.url");
 
     public static RequestSpecification getRequestSpecification() {
         return new RequestSpecBuilder()

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.apache.http.HttpStatus.SC_OK;
 
-@Story("Beer API")
-@Tag("Beer API")
+@Story("Beer_API")
+@Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class DeleteBeerPositiveTest {
