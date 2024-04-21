@@ -29,6 +29,14 @@ public class UpdateBeerByIdHandler implements Handler {
     public void handle(@NotNull Context context) {
         String beerId = context.queryParam("beerId");
 
+        long id;
+        try {
+            id = Long.parseLong(beerId);
+        } catch (NumberFormatException e) {
+            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed.");
+            return;
+        }
+
         try {
             BeerCreationDTO beerCreationDTO = objectMapper.readValue(context.body(), BeerCreationDTO.class);
             Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
@@ -38,8 +46,6 @@ public class UpdateBeerByIdHandler implements Handler {
             }
 
             final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
-
-            long id = Long.parseLong(beerId);
             boolean updateResult = beerService.updateBeerById(beer, id);
 
             if (updateResult) {

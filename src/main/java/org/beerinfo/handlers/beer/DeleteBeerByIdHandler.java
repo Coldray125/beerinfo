@@ -21,8 +21,15 @@ public class DeleteBeerByIdHandler implements Handler {
     public void handle(@NotNull Context context) {
         String beerId = context.queryParam("beerId");
 
+        long id;
         try {
-            long id = Long.parseLong(beerId);
+            id = Long.parseLong(beerId);
+        } catch (NumberFormatException e) {
+            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed.");
+            return;
+        }
+
+        try {
             boolean deleteResult = beerService.deleteBeerById(id);
 
             if (deleteResult) {
@@ -31,8 +38,6 @@ public class DeleteBeerByIdHandler implements Handler {
             } else {
                 respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
             }
-        } catch (NumberFormatException e) {
-            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed");
         } catch (Exception e) {
             respondWithInternalServerError(context);
         }
