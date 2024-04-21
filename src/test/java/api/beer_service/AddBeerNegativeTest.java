@@ -9,13 +9,14 @@ import api.pojo.response.beer.BeerErrorResponse;
 import api.request.BeerRequest;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import net.datafaker.Faker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static api.test_utils.RandomValueUtils.randomNegativeLong;
+import static api.test_utils.RandomValueUtils.randomPositiveLong;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 
 @Story("Beer_API")
@@ -23,7 +24,6 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerRequestParameterResolver.class, RandomBeerExtension.class})
 public class AddBeerNegativeTest {
-    Faker faker = new Faker();
     BeerRequest beerRequest;
 
     public AddBeerNegativeTest(BeerRequest beerRequest) {
@@ -72,7 +72,7 @@ public class AddBeerNegativeTest {
     @DisplayName("Error: Negative BreweryId in POST /beer")
     @Test
     void checkAddBeerErrorNegativeNumbersBreweryId() {
-        request.setBreweryId(-faker.number().numberBetween(11111L, 99999L));
+        request.setBreweryId(randomNegativeLong(111111L, 999999L));
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
@@ -84,7 +84,7 @@ public class AddBeerNegativeTest {
     @DisplayName("Error: Excessive Digits in BreweryId in POST /beer")
     @Test
     void checkAddBeerErrorAmountOfDigitsBreweryId() {
-        request.setBreweryId(faker.number().numberBetween(111111L, 999999L));
+        request.setBreweryId(randomPositiveLong(111111L, 999999L));
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
