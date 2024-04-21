@@ -1,15 +1,9 @@
 package org.beerinfo.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.beerinfo.MyClass;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 @Slf4j

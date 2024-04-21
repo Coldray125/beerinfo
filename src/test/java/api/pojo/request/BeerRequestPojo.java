@@ -14,6 +14,6 @@ public class BeerRequestPojo {
     private String ibuNumber;
     private String name;
     private String style;
-    private Integer breweryId;
+    private Long breweryId;
     private String ounces;
 }
