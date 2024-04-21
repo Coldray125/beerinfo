@@ -17,7 +17,7 @@ public class BreweryEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "brewery_seq")
     @SequenceGenerator(name = "brewery_seq", sequenceName = "breweries_brewery_id_seq", allocationSize = 1)
     @Column(name = "brewery_id")
-    private long breweryId;
+    private Long breweryId;
 
     @Column(name = "name")
     private String name;

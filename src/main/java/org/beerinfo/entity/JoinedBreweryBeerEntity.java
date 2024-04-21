@@ -17,7 +17,7 @@ import java.util.List;
 public class JoinedBreweryBeerEntity {
     @Id
     @Column(name = "brewery_id")
-    private long breweryId;
+    private Long breweryId;
 
     private String name;
 
@@ -27,6 +27,7 @@ public class JoinedBreweryBeerEntity {
 
     private String country;
 
-    @OneToMany(mappedBy = "breweryId", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "brewery_id")
     List<BeerEntity> beerEntities;
 }

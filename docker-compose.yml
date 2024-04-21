@@ -45,8 +45,9 @@ services:
       - /bin/bash
       - -c
       - |
-        mvn compile -f /usr/share/maven/ref/pom.xml
+        mvn dependency:resolve -f /usr/share/maven/ref/pom.xml
         mvn -version
+        java --version
         tail -F anything
     ports:
       - "8081:8080"

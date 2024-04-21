@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class JoinedBeerBreweryEntity {
     @Id
     @Column(name = "beer_id", nullable = false, unique = true)
-    private long beerId;
+    private Long beerId;
 
     private String abv;
 
@@ -27,7 +27,7 @@ public class JoinedBeerBreweryEntity {
     private String style;
 
     @Column(name = "brewery_id")
-    private int breweryId;
+    private Long breweryId;
 
     private String ounces;
 
