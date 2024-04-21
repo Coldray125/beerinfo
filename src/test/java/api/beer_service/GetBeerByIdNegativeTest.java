@@ -13,7 +13,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.stream.Stream;
+
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 
 @Story("Beer_API")
@@ -43,16 +49,20 @@ public class GetBeerByIdNegativeTest {
         Assertions.assertEquals(expectedResponse, actualResponse);
     }
 
+    static private Stream<String> nonValidIdProvider() {
+        return Stream.of("", "null", RandomStringUtils.randomAlphabetic(2));
+    }
+
     @DisplayName("Error: Retrieve Beer with Invalid ID Format")
-    @Test
-    void checkBeerByIdWrongFormatIdResponseMessage() {
-        String beerId = RandomStringUtils.randomAlphabetic(1);
+    @ParameterizedTest
+    @MethodSource("nonValidIdProvider")
+    void checkBeerByIdWrongFormatIdResponseMessage(String beerId) {
         Response response = beerRequest.getBeerByIdRequestReturnResponse(beerId);
 
-        Assertions.assertEquals(SC_NOT_FOUND, response.getStatusCode());
+        Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         String actualResponse = response.body().jsonPath().get("error");
-        String expectedResponse = STR."Beer with id: \{beerId} not found";
+        String expectedResponse = "Invalid Beer ID format. Only numeric values are allowed.";
 
         Assertions.assertEquals(expectedResponse, actualResponse);
     }

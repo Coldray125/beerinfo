@@ -18,8 +18,10 @@ public class WrongEndpointHandler implements ExceptionHandler <HttpResponseExcep
 
         ArrayNode availableEndpoints = objectMapper.createArrayNode();
         availableEndpoints.add("GET /beers");
+        availableEndpoints.add("GET /beer-brewery?beerId");
         availableEndpoints.add("GET /beer?beerId");
         availableEndpoints.add("GET /breweries");
+        availableEndpoints.add("GET /brewery-beers?breweryId");
         availableEndpoints.add("POST /beer");
         availableEndpoints.add("PUT /beer");
         availableEndpoints.add("DELETE /beer?beerId");

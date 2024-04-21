@@ -23,12 +23,12 @@ public class GetBeerByIdHandler implements Handler {
     public void handle(@NotNull Context context) {
         String beerId = context.queryParam("beerId");
 
-        long id = 0;
+        long id;
         try {
             id = Long.parseLong(beerId);
         } catch (NumberFormatException e) {
-            context.status(400);
-            context.json("Invalid Beer ID format. Only numeric values are allowed.");
+            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed.");
+            return;
         }
 
         Optional<BeerEntity> beerOptional = beerService.getBeerById(id);
