@@ -1,8 +1,8 @@
 package api.beer_service;
 
 import api.extensions.LoggingExtension;
-import api.extensions.annotation.RandomBeerExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
+import api.extensions.annotation.beer.RandomBeerRequestPojoExtension;
 import api.extensions.resolver.BeerRequestParameterResolver;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.BeerErrorResponse;
@@ -22,7 +22,7 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BeerRequestParameterResolver.class, RandomBeerExtension.class})
+@ExtendWith({BeerRequestParameterResolver.class, RandomBeerRequestPojoExtension.class})
 public class AddBeerNegativeTest {
     BeerRequest beerRequest;
 
