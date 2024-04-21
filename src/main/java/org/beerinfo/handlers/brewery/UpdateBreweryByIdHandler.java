@@ -38,11 +38,13 @@ public class UpdateBreweryByIdHandler implements Handler {
             if (validationError != null) {
                 context.status(400);
                 context.json(validationError);
+                return;
             }
 
             String country = breweryCreationDTO.getCountry();
             if (!isValidCountry(country)) {
                 respondWithError(context, 400, STR."Country \{country} is not supported. Please provide a valid country");
+                return;
             }
 
             final BreweryEntity brewery = BreweryMapper.MAPPER.mapToBreweryEntity(breweryCreationDTO);
