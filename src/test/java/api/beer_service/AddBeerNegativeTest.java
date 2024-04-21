@@ -72,7 +72,7 @@ public class AddBeerNegativeTest {
     @DisplayName("Error: Negative BreweryId in POST /beer")
     @Test
     void checkAddBeerErrorNegativeNumbersBreweryId() {
-        request.setBreweryId(-faker.number().numberBetween(11111, 99999));
+        request.setBreweryId(-faker.number().numberBetween(11111L, 99999L));
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
@@ -84,7 +84,7 @@ public class AddBeerNegativeTest {
     @DisplayName("Error: Excessive Digits in BreweryId in POST /beer")
     @Test
     void checkAddBeerErrorAmountOfDigitsBreweryId() {
-        request.setBreweryId(faker.number().numberBetween(111111, 999999));
+        request.setBreweryId(faker.number().numberBetween(111111L, 999999L));
         Response response = beerRequest.addBeerRequestReturnResponse(request);
 
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
