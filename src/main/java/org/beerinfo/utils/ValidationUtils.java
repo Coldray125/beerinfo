@@ -1,7 +1,6 @@
 package org.beerinfo.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -11,7 +10,7 @@ import java.util.*;
 
 public class ValidationUtils {
 
-    public static  <T> Map<String, List<String>> validateDTO(T dto) throws JsonProcessingException {
+    public static <T> Map<String, List<String>> validateDTO(T dto) throws JsonProcessingException {
         Validator validator;
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();
@@ -29,7 +28,6 @@ public class ValidationUtils {
             errors.put("error", errorMessages);
             return errors;
         }
-
         return null;
     }
 }

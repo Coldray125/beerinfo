@@ -1,6 +1,5 @@
 package org.beerinfo.handlers.beer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.beerinfo.dto.api.beer.PostBeerResponseDTO;
@@ -9,6 +8,7 @@ import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
+import org.beerinfo.utils.JsonUtils;
 import org.beerinfo.utils.ValidationUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,18 +24,16 @@ import static org.beerinfo.utils.ResponseUtil.respondWithInternalServerError;
 public class AddBeerHandler implements Handler {
     private final BeerService beerService;
     private final BreweriesService breweriesService;
-    private final ObjectMapper objectMapper;
 
     public AddBeerHandler(BeerService beerService, BreweriesService breweriesService) {
         this.beerService = beerService;
         this.breweriesService = breweriesService;
-        this.objectMapper = new ObjectMapper();
     }
 
     @Override
     public void handle(@NotNull Context context) {
         try {
-            BeerCreationDTO beerCreationDTO = objectMapper.readValue(context.body(), BeerCreationDTO.class);
+            BeerCreationDTO beerCreationDTO = JsonUtils.jsonStringToObject(context.body(), BeerCreationDTO.class);
 
             Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
             if (validationError != null) {

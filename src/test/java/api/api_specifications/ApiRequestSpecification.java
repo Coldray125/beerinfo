@@ -1,6 +1,8 @@
 package api.api_specifications;
 
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.ErrorLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
@@ -13,6 +15,8 @@ public class ApiRequestSpecification {
         return new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
                 .setAccept(ContentType.JSON)
+                .addFilter(new AllureRestAssured())
+                .addFilter(new ErrorLoggingFilter())
                 .build();
     }
 
@@ -20,6 +24,8 @@ public class ApiRequestSpecification {
         return new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
                 .setContentType(ContentType.JSON)
+                .addFilter(new AllureRestAssured())
+                .addFilter(new ErrorLoggingFilter())
                 .build();
     }
 
@@ -27,6 +33,8 @@ public class ApiRequestSpecification {
         return new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
                 .setContentType(ContentType.JSON)
+                .addFilter(new AllureRestAssured())
+                .addFilter(new ErrorLoggingFilter())
                 .build();
     }
 
@@ -34,6 +42,8 @@ public class ApiRequestSpecification {
         return new RequestSpecBuilder()
                 .setBaseUri(BASE_URL)
                 .setAccept(ContentType.JSON)
+                .addFilter(new AllureRestAssured())
+                .addFilter(new ErrorLoggingFilter())
                 .build();
     }
 }
