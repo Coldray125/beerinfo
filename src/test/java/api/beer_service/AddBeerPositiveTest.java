@@ -3,7 +3,6 @@ package api.beer_service;
 import api.db_query.BeerQuery;
 import api.extensions.LoggingExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
-import api.extensions.annotation.beer.RandomBeerRequestPojoExtension;
 import api.extensions.resolver.BeerQueryParameterResolver;
 import api.extensions.resolver.BeerRequestParameterResolver;
 import api.pojo.request.BeerRequestPojo;
@@ -26,18 +25,17 @@ import static org.apache.http.HttpStatus.SC_OK;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class, RandomBeerRequestPojoExtension.class})
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class AddBeerPositiveTest {
     BeerQuery beerQuery;
     BeerRequest beerRequest;
+    @RandomBeerPojo
+    BeerRequestPojo request;
 
     public AddBeerPositiveTest(BeerQuery beerQuery, BeerRequest beerRequest) {
         this.beerQuery = beerQuery;
         this.beerRequest = beerRequest;
     }
-
-    @RandomBeerPojo
-    BeerRequestPojo request;
 
     @DisplayName("Verify Data in POST /beer Response and Database")
     @Test

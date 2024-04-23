@@ -3,7 +3,6 @@ package api.breweries_service;
 import api.db_query.BreweryQuery;
 import api.extensions.LoggingExtension;
 import api.extensions.annotation.brewery.RandomBreweryPojo;
-import api.extensions.annotation.brewery.RandomBreweryRequestPojoExtension;
 import api.extensions.resolver.BreweryQueryParameterResolver;
 import api.extensions.resolver.BreweryRequestParameterResolver;
 import api.pojo.request.BreweryRequestPojo;
@@ -20,11 +19,13 @@ import org.junit.jupiter.params.provider.EnumSource;
 @Story("Brewery_API")
 @Tag("Brewery_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BreweryRequestParameterResolver.class, BreweryQueryParameterResolver.class, RandomBreweryRequestPojoExtension.class})
+@ExtendWith({BreweryRequestParameterResolver.class, BreweryQueryParameterResolver.class})
 public class UpdateBreweryPositiveTest {
     BreweryQuery breweryQuery;
     BreweryRequest breweryRequest;
     long breweryId;
+    @RandomBreweryPojo
+    BreweryRequestPojo request;
 
     public UpdateBreweryPositiveTest(BreweryQuery breweryQuery, BreweryRequest breweryRequest) {
         this.breweryQuery = breweryQuery;
@@ -35,9 +36,6 @@ public class UpdateBreweryPositiveTest {
     void createBeerEntityInDB() {
         breweryId = breweryQuery.addRandomBreweryReturnId();
     }
-
-    @RandomBreweryPojo
-    BreweryRequestPojo request;
 
     @DisplayName("Verify Data in PUT /brewery/{id} Response and Request")
     @Test
