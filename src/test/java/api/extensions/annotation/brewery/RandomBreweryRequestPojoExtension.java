@@ -1,6 +1,5 @@
 package api.extensions.annotation.brewery;
 
-import api.pojo.request.BeerRequestPojo;
 import api.pojo.request.BreweryRequestPojo;
 import api.test_utils.data_generators.BreweryObjectGenerator;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -13,23 +12,24 @@ import java.util.function.Predicate;
 
 public class RandomBreweryRequestPojoExtension implements BeforeEachCallback {
 
+    private final Predicate<Field> predicate = field ->
+            ModifierSupport.isNotStatic(field) && field.getType().isAssignableFrom(BreweryRequestPojo.class);
+
     @Override
     public void beforeEach(ExtensionContext context) {
         Class<?> testClass = context.getRequiredTestClass();
         Object testInstance = context.getRequiredTestInstance();
-        injectFields(testClass, testInstance, ModifierSupport::isNotStatic);
+        injectFields(testClass, testInstance, predicate);
     }
 
     private void injectFields(Class<?> testClass, Object testInstance, Predicate<Field> predicate) {
         AnnotationSupport.findAnnotatedFields(testClass, RandomBreweryPojo.class, predicate)
                 .forEach(field -> {
-                    if (BreweryRequestPojo.class.isAssignableFrom(field.getType())) {
-                        try {
-                            field.setAccessible(true);
-                            field.set(testInstance, BreweryObjectGenerator.generateRandomBreweryPojo());
-                        } catch (IllegalAccessException ex) {
-                            throw new RuntimeException(STR."Failed to inject random BreweryRequestPojo into field: \{field.getName()}", ex);
-                        }
+                    try {
+                        field.setAccessible(true);
+                        field.set(testInstance, BreweryObjectGenerator.generateRandomBreweryPojo());
+                    } catch (IllegalAccessException ex) {
+                        throw new RuntimeException(STR."Failed to inject random BreweryRequestPojo into field: \{field.getName()}", ex);
                     }
                 });
     }

@@ -3,7 +3,6 @@ package api.beer_service;
 import api.db_query.BeerQuery;
 import api.extensions.LoggingExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
-import api.extensions.annotation.beer.RandomBeerRequestPojoExtension;
 import api.extensions.resolver.BeerQueryParameterResolver;
 import api.extensions.resolver.BeerRequestParameterResolver;
 import api.pojo.request.BeerRequestPojo;
@@ -19,11 +18,13 @@ import static io.qameta.allure.Allure.step;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class, RandomBeerRequestPojoExtension.class})
+@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class UpdateBeerPositiveTest {
     String beerId;
     BeerQuery beerQuery;
     BeerRequest beerRequest;
+    @RandomBeerPojo
+    BeerRequestPojo request;
 
     public UpdateBeerPositiveTest(BeerQuery beerQuery, BeerRequest beerRequest) {
         this.beerQuery = beerQuery;
@@ -35,9 +36,6 @@ public class UpdateBeerPositiveTest {
         GetBeerResponseDTO entity = beerQuery.addRandomBeerReturnDTO();
         beerId = String.valueOf(entity.beerId());
     }
-
-    @RandomBeerPojo
-    BeerRequestPojo request;
 
     @DisplayName("Verify Response Text for PUT /beer/{id}")
     @Test
