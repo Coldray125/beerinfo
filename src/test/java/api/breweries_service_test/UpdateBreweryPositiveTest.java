@@ -1,4 +1,4 @@
-package api.breweries_service;
+package api.breweries_service_test;
 
 import api.db_query.BreweryQuery;
 import api.extensions.LoggingExtension;

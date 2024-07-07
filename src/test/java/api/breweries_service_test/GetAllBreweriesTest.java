@@ -1,4 +1,4 @@
-package api.breweries_service;
+package api.breweries_service_test;
 
 import api.extensions.LoggingExtension;
 import api.extensions.resolver.BreweryRequestParameterResolver;
