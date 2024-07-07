@@ -18,7 +18,7 @@ public class BeerCreationDTO {
     @NotBlank(message = "Style cannot be blank")
     private String style;
 
-    @NotNull(message = "BreweryId cannot be empty")
+    @NotNull(message = "BreweryId cannot be null")
     @Min(value = 1, message = "breweryId must be a positive number and must be at least 1")
     @Max(value = 99999, message = "breweryId must be at most 99999")
     private Integer breweryId;

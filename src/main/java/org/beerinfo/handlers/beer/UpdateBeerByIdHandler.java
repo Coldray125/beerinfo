@@ -3,7 +3,6 @@ package org.beerinfo.handlers.beer;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.beerinfo.dto.data.BeerCreationDTO;
-import org.beerinfo.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.utils.JsonUtils;
@@ -28,6 +27,7 @@ public class UpdateBeerByIdHandler implements Handler {
         String beerId = context.queryParam("beerId");
 
         long id;
+
         try {
             id = Long.parseLong(beerId);
         } catch (NumberFormatException e) {
@@ -36,15 +36,16 @@ public class UpdateBeerByIdHandler implements Handler {
         }
 
         try {
-            BeerCreationDTO beerCreationDTO = JsonUtils.jsonStringToObject(context.body(), BeerCreationDTO.class);
+            var beerCreationDTO = JsonUtils.jsonStringToObject(context.body(), BeerCreationDTO.class);
             Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
             if (validationError != null) {
                 context.status(400);
                 context.json(validationError);
+                return;
             }
 
-            final BeerEntity beer = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
-            boolean updateResult = beerService.updateBeerById(beer, id);
+            final var beerEntity = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
+            boolean updateResult = beerService.updateBeerById(beerEntity, id);
 
             if (updateResult) {
                 context.status(200);

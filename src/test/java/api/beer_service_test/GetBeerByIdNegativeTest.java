@@ -1,4 +1,4 @@
-package api.beer_service;
+package api.beer_service_test;
 
 import api.db_query.BeerQuery;
 import api.extensions.LoggingExtension;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 

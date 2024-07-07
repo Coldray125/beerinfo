@@ -1,4 +1,4 @@
-package api.beer_service;
+package api.beer_service_test;
 
 import api.conversion.BeerConverter;
 import api.db_query.BeerQuery;
