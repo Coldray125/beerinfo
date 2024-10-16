@@ -29,5 +29,5 @@ public class JoinedBreweryBeerEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "brewery_id")
-    List<BeerEntity> beerEntities;
+    private List<BeerEntity> beerEntities;
 }

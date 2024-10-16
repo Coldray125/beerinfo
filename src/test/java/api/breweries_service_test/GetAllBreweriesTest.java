@@ -20,7 +20,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith(value = BreweryRequestParameterResolver.class)
 public class GetAllBreweriesTest {
-    BreweryRequest breweryRequest;
+    private final BreweryRequest breweryRequest;
 
     public GetAllBreweriesTest(BreweryRequest breweryRequest) {
         this.breweryRequest = breweryRequest;

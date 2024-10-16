@@ -1,7 +1,7 @@
 package api.extensions.resolver;
 
 import api.db_query.BeerQuery;
-import org.beerinfo.db.Hibernate;
+import org.beerinfo.db.PostgresSessionProvider;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -18,6 +18,6 @@ public class BeerQueryParameterResolver implements ParameterResolver {
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return new BeerQuery(Hibernate.getSessionFactory());
+        return new BeerQuery(PostgresSessionProvider.getSessionFactory());
     }
 }

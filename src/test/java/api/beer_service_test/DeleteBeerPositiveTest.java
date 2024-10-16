@@ -18,10 +18,10 @@ import static org.apache.http.HttpStatus.SC_OK;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class DeleteBeerPositiveTest {
-    GetBeerResponseDTO beerEntity;
-    String beerId;
-    BeerQuery beerQuery;
-    BeerRequest beerRequest;
+    private GetBeerResponseDTO beerEntity;
+    private String beerId;
+    private final BeerQuery beerQuery;
+    private final BeerRequest beerRequest;
 
     public DeleteBeerPositiveTest(BeerQuery beerQuery, BeerRequest beerRequest) {
         this.beerQuery = beerQuery;

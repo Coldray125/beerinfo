@@ -33,5 +33,5 @@ public class JoinedBeerBreweryEntity {
 
     @ManyToOne
     @JoinColumn(name = "brewery_id", insertable = false, updatable = false)
-    BreweryEntity breweryEntity;
+    private BreweryEntity breweryEntity;
 }

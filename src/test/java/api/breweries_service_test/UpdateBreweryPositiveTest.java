@@ -21,9 +21,9 @@ import org.junit.jupiter.params.provider.EnumSource;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BreweryRequestParameterResolver.class, BreweryQueryParameterResolver.class})
 public class UpdateBreweryPositiveTest {
-    BreweryQuery breweryQuery;
-    BreweryRequest breweryRequest;
-    long breweryId;
+    private final BreweryQuery breweryQuery;
+    private final BreweryRequest breweryRequest;
+    private long breweryId;
     @RandomBreweryPojo
     BreweryRequestPojo request;
 

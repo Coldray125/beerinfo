@@ -62,9 +62,6 @@
         </encoder>
     </appender>
 
-    <!-- Blocking error logs from AllureLifecycle -->
-    <logger name="io.qameta.allure.AllureLifecycle" level="OFF"/>
-
     <!-- The logging level setup -->
     <root level="INFO">
         <appender-ref ref="TRACE_CONSOLE"/>
