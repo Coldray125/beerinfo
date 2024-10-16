@@ -60,6 +60,12 @@ Console command to find local ip address: `ipconfig`
 
 path: `src/main/resources/properties/dev.properties`
 
+To build application jar:
+`mvn package -DskipTests`
+
+To run tests from console
+`docker attach [container name]`
+
 ## Running Tests
 
 To execute JUnit tests from the console:

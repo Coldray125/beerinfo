@@ -23,7 +23,7 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerRequestParameterResolver.class})
 public class AddBeerNegativeTest {
-    BeerRequest beerRequest;
+    private final BeerRequest beerRequest;
     @RandomBeerPojo
     BeerRequestPojo request;
 
@@ -64,7 +64,7 @@ public class AddBeerNegativeTest {
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-        Assertions.assertEquals("BreweryId cannot be empty", errorObject.error().getFirst());
+        Assertions.assertEquals("BreweryId cannot be null", errorObject.error().getFirst());
     }
 
     @DisplayName("Error: Negative BreweryId in POST /beer")
@@ -106,7 +106,7 @@ public class AddBeerNegativeTest {
         Assertions.assertAll(
                 () -> Assertions.assertTrue(errorObject.error().contains("Name cannot be blank")),
                 () -> Assertions.assertTrue(errorObject.error().contains("Style cannot be blank")),
-                () -> Assertions.assertTrue(errorObject.error().contains("BreweryId cannot be empty"))
+                () -> Assertions.assertTrue(errorObject.error().contains("BreweryId cannot be null"))
         );
     }
 }

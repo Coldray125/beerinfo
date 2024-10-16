@@ -27,8 +27,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class AddBeerPositiveTest {
-    BeerQuery beerQuery;
-    BeerRequest beerRequest;
+    private BeerQuery beerQuery;
+    private BeerRequest beerRequest;
     @RandomBeerPojo
     BeerRequestPojo request;
 

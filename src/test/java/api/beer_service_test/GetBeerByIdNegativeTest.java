@@ -26,8 +26,9 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class GetBeerByIdNegativeTest {
-    BeerQuery beerQuery;
-    BeerRequest beerRequest;
+
+    private final BeerQuery beerQuery;
+    private final BeerRequest beerRequest;
 
     public GetBeerByIdNegativeTest(BeerQuery beerQuery, BeerRequest beerRequest) {
         this.beerQuery = beerQuery;

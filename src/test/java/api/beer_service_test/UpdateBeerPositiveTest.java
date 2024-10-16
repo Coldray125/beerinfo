@@ -20,9 +20,9 @@ import static io.qameta.allure.Allure.step;
 @ExtendWith({LoggingExtension.class})
 @ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
 public class UpdateBeerPositiveTest {
-    String beerId;
-    BeerQuery beerQuery;
-    BeerRequest beerRequest;
+    private String beerId;
+    private final BeerQuery beerQuery;
+    private final BeerRequest beerRequest;
     @RandomBeerPojo
     BeerRequestPojo request;
 

@@ -14,11 +14,11 @@ import static org.beerinfo.config.PropertyUtil.getProperty;
 import static org.hibernate.cfg.AvailableSettings.*;
 
 @Getter
-public class Hibernate {
+public class PostgresSessionProvider {
 
     private static SessionFactory sessionFactory;
 
-    private Hibernate() {
+    private PostgresSessionProvider() {
     }
 
     public static SessionFactory getSessionFactory() {

@@ -10,7 +10,9 @@ import org.beerinfo.handlers.brewery.UpdateBreweryByIdHandler;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
 
-import static org.beerinfo.db.Hibernate.getSessionFactory;
+import java.util.Scanner;
+
+import static org.beerinfo.db.PostgresSessionProvider.getSessionFactory;
 
 @Slf4j
 public class App {
@@ -43,8 +45,12 @@ public class App {
         Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
 
         app.events(event -> {
-            event.serverStopping(() -> { /* Your code here, executed when server is stopping */ });
-            event.serverStopped(() -> { /* Your code here, executed after server has stopped */ });
+            event.serverStopping(() -> {
+                log.info("server stopping");
+            });
+            event.serverStopped(() -> {
+                log.info("server stopped");
+            });
         });
     }
 }
