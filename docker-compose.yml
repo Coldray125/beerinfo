@@ -8,7 +8,7 @@ services:
   app:
     networks:
       - beerInfo
-    image: amazoncorretto:22-alpine-full
+    image: amazoncorretto:23-alpine-full
     command: java --enable-preview -jar /app/app.jar
     stdin_open: true   # Keep stdin open for input
     tty: true          # Allocate a pseudo-TTY for interaction
@@ -42,7 +42,7 @@ services:
   maven:
     networks:
       - beerInfo
-    image: maven:3.9.9-eclipse-temurin-22
+    image: maven:3.9.9-eclipse-temurin-23
     command:
       - /bin/bash
       - -c

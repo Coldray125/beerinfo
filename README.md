@@ -8,7 +8,6 @@
 - [Technology Stack](#technology-stack)
 - [Installation](#installation)
 - [Running Tests](#running-tests)
-- [Usage](#usage)
 - [Project Structure](#project-structure)
 
 - ## Project summary
@@ -19,18 +18,18 @@
 
 - ## Prerequisites
 
-- **Java:** 21
+- **Java:** 23
 
-- **Maven:** 3.9.4+
+- **Maven:** 3.9.9
 
 - ## Technology Stack
 
 This project utilizes the following technologies, libraries, and frameworks for development and testing:
 
-- **Database:** PostgreSQL
+- **Database:**
+  - PostgreSQL
 
 - **Testing Frameworks:**
-
   - JUnit 5
   - Rest-assured
   - JSON Schema Validator
@@ -49,7 +48,6 @@ This project utilizes the following technologies, libraries, and frameworks for 
   - JavaFaker
 
 - **Testing Report Framework:**
-
   - Allure JUnit5
 
 ## Installation
@@ -59,6 +57,12 @@ For project working, environment postgresql.dev.uri in property file need to be 
 Console command to find local ip address: `ipconfig` 
 
 path: `src/main/resources/properties/dev.properties`
+
+#### Checking Java Version and Set Environment Variables for Java
+
+- In Command Prompt or PowerShell : `java -version`
+- Set the JAVA_HOME environment variable: `setx JAVA_HOME "C:\Path\To\Your\Java\Installation" /M`
+- Add %JAVA_HOME%\bin to the Path environment variable: `setx Path "%Path%;%JAVA_HOME%\bin" /M`
 
 To build application jar:
 `mvn package -DskipTests`
@@ -85,7 +89,10 @@ To execute JUnit tests from the console:
 - Run tests with specific tags:
   `mvn clean test -Dgroups="tagName1, tagName2"`
 
-- ## Project Structure
+- Run tests with retry:
+  `mvn clean test "-Dsurefire.rerunFailingTestsCount=2"`
+
+## Project Structure
 
 ```
 ├───main
