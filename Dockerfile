@@ -1,4 +1,3 @@
-# Use the official Jenkins LTS image with JDK 17
 FROM jenkins/jenkins:alpine-jdk21
 
 # Copy the plugins.txt file to the Jenkins reference directory

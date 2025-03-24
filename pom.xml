@@ -10,23 +10,25 @@
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.release>22</maven.compiler.release>
+        <maven.compiler.release>23</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.version>3.9.8</maven.version>
+        <maven.version>3.9.9</maven.version>
         <javalin.version>6.3.0</javalin.version>
-        <hibernate.version>6.6.0.Final</hibernate.version>
+        <hibernate.version>6.6.2.Final</hibernate.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <postgres.version>42.7.3</postgres.version>
+        <postgres.version>42.7.5</postgres.version>
         <jakarta.version>3.1.0</jakarta.version>
-        <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <junit5.version>5.11.0</junit5.version>
-        <restassured.version>5.5.0</restassured.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <junit5.version>5.12.1</junit5.version>
+        <junit-platform-suite.version>1.12.1</junit-platform-suite.version>
+        <restassured.version>5.5.1</restassured.version>
         <allure.version>2.29.0</allure.version>
-        <aspectj.version>1.9.22</aspectj.version>
-        <jackson.version>2.17.2</jackson.version>
-        <lombok.version>1.18.34</lombok.version>
+        <allure-maven.version>2.15.2</allure-maven.version>
+        <aspectj.version>1.9.23</aspectj.version>
+        <jackson.version>2.18.3</jackson.version>
+        <lombok.version>1.18.36</lombok.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
     </properties>
 
     <dependencies>
@@ -100,7 +102,7 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
-            <version>1.11.0</version>
+            <version>${junit-platform-suite.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -175,7 +177,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <release>22</release>
+                    <release>23</release>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                         <arg>-Xlint:unchecked,deprecation</arg>
@@ -288,18 +290,11 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.14.0</version>
+                <version>${allure-maven.version}</version>
                 <configuration>
                     <reportVersion>${allure.version}</reportVersion>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>maven_central</id>
-            <name>Maven Central</name>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
 </project>
