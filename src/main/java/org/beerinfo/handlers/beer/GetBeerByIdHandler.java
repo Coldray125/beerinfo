@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
+/// Get all beers by breweryId with query param
 public class GetBeerByIdHandler implements Handler {
     private final BeerService beerService;
 

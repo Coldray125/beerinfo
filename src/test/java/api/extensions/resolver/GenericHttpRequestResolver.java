@@ -2,8 +2,6 @@ package api.extensions.resolver;
 
 import api.request.BeerRequest;
 import api.request.BreweryRequest;
-import org.beerinfo.db.PostgresSessionProvider;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -22,7 +20,6 @@ public class GenericHttpRequestResolver implements ParameterResolver {
     }
 
     private void registerQueryClasses() {
-        SessionFactory sessionFactory = PostgresSessionProvider.getBeerInfoSessionFactory();
         registerQuery(BeerRequest.class, BeerRequest::new);
         registerQuery(BreweryRequest.class, BreweryRequest::new);
     }
