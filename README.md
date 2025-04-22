@@ -18,7 +18,7 @@
 
 - ## Prerequisites
 
-- **Java:** 23
+- **Java:** 24
 
 - **Maven:** 3.9.9
 
@@ -35,10 +35,9 @@ This project utilizes the following technologies, libraries, and frameworks for 
   - JSON Schema Validator
     
 - **Persistence and Data Validation:**
-
   - Hibernate Core 6
   - Hibernate Validator
-  - Jakarta EL and Jakarta EL API: Used for Expression Language support.
+  - Glassfish expressly: Used for Jakarta Expression Language support in Hibernate Validator.
   - Jakarta Validation API: Used for validation.
 
 - **Other Dependencies:**
@@ -137,6 +136,7 @@ To execute JUnit tests from the console:
     │       │       ├───beer
     │       │       └───brewery
     │       ├───request
+    │       ├───test_suites
     │       └───test_utils
     │           └───data_generators
     └───resources

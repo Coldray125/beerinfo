@@ -2,7 +2,7 @@ package api.beer_service_test;
 
 import api.extensions.LoggingExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
-import api.extensions.resolver.BeerRequestParameterResolver;
+import api.extensions.resolver.GenericHttpRequestResolver;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.BeerErrorResponse;
 import api.request.BeerRequest;
@@ -21,11 +21,13 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BeerRequestParameterResolver.class})
+@ExtendWith({GenericHttpRequestResolver.class})
 public class AddBeerNegativeTest {
+
     private final BeerRequest beerRequest;
+
     @RandomBeerPojo
-    BeerRequestPojo request;
+    private BeerRequestPojo request;
 
     public AddBeerNegativeTest(BeerRequest beerRequest) {
         this.beerRequest = beerRequest;

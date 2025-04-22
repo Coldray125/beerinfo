@@ -2,7 +2,7 @@ package org.beerinfo.handlers.beer;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import org.beerinfo.dto.data.BeerCreationDTO;
+import org.beerinfo.data.dto.BeerCreationDTO;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.utils.JsonUtils;
@@ -51,10 +51,10 @@ public class UpdateBeerByIdHandler implements Handler {
                 context.status(200);
                 Map<String, Object> responseData = new HashMap<>();
                 responseData.put("beer", beerCreationDTO);
-                responseData.put("message", STR."Beer with id: \{beerId} was updated.");
+                responseData.put("message", "Beer with id: " + beerId + " was updated.");
                 context.json(responseData);
             } else {
-                respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
+                respondWithError(context, 404, "Beer with id: " + beerId + " not found");
             }
         } catch (NumberFormatException e) {
             respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed");

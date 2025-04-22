@@ -1,7 +1,7 @@
 package org.beerinfo.service;
 
-import org.beerinfo.entity.BeerEntity;
-import org.beerinfo.entity.JoinedBeerBreweryEntity;
+import org.beerinfo.data.entity.BeerEntity;
+import org.beerinfo.data.entity.JoinedBeerBreweryEntity;
 import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.SessionFactory;
 

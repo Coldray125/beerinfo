@@ -1,4 +1,4 @@
-package org.beerinfo.dto.api.brewery;
+package org.beerinfo.data.dto.api.brewery;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -8,14 +8,18 @@ import java.io.IOException;
 @Slf4j
 public final class JsonUtils {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private JsonUtils() {
+    }
+
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     public static <T> T jsonStringToObject(String jsonString, Class<T> clazz) {
-        T parsedObject = null;
+        T parsedObject;
         try {
-            parsedObject = objectMapper.reader().readValue(jsonString, clazz);
+            parsedObject = MAPPER.readValue(jsonString, clazz);
         } catch (IOException e) {
             log.error("Error converting JSON to parsedObject: {}", e.getMessage(), e);
+            throw new RuntimeException("Failed to deserialize JSON", e);
         }
         return parsedObject;
     }

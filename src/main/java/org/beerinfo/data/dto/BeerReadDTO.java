@@ -1,4 +1,4 @@
-package org.beerinfo.dto.data;
+package org.beerinfo.data.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

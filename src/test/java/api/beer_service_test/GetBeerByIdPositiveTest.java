@@ -2,14 +2,14 @@ package api.beer_service_test;
 
 import api.db_query.BeerQuery;
 import api.extensions.LoggingExtension;
-import api.extensions.resolver.BeerQueryParameterResolver;
-import api.extensions.resolver.BeerRequestParameterResolver;
+import api.extensions.resolver.GenericHttpRequestResolver;
+import api.extensions.resolver.GenericQueryResolver;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
+import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -19,8 +19,9 @@ import static org.apache.http.HttpStatus.SC_OK;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
+@ExtendWith({GenericQueryResolver.class, GenericHttpRequestResolver.class})
 public class GetBeerByIdPositiveTest {
+
     private String beerId;
     private GetBeerResponseDTO beerEntity;
     private final BeerQuery beerQuery;
