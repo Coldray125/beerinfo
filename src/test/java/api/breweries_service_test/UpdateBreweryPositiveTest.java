@@ -3,13 +3,13 @@ package api.breweries_service_test;
 import api.db_query.BreweryQuery;
 import api.extensions.LoggingExtension;
 import api.extensions.annotation.brewery.RandomBreweryPojo;
-import api.extensions.resolver.BreweryQueryParameterResolver;
-import api.extensions.resolver.BreweryRequestParameterResolver;
+import api.extensions.resolver.GenericHttpRequestResolver;
+import api.extensions.resolver.GenericQueryResolver;
 import api.pojo.request.BreweryRequestPojo;
 import api.pojo.response.brewery.UpdateBreweryResponse;
 import api.request.BreweryRequest;
 import io.qameta.allure.Story;
-import org.beerinfo.dto.api.brewery.GetBreweryResponseDTO;
+import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.enums.SupportedCountry;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,18 +19,20 @@ import org.junit.jupiter.params.provider.EnumSource;
 @Story("Brewery_API")
 @Tag("Brewery_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BreweryRequestParameterResolver.class, BreweryQueryParameterResolver.class})
+@ExtendWith({GenericHttpRequestResolver.class, GenericQueryResolver.class})
 public class UpdateBreweryPositiveTest {
-    private final BreweryQuery breweryQuery;
-    private final BreweryRequest breweryRequest;
-    private long breweryId;
-    @RandomBreweryPojo
-    BreweryRequestPojo request;
 
     public UpdateBreweryPositiveTest(BreweryQuery breweryQuery, BreweryRequest breweryRequest) {
         this.breweryQuery = breweryQuery;
         this.breweryRequest = breweryRequest;
     }
+
+    private final BreweryQuery breweryQuery;
+    private final BreweryRequest breweryRequest;
+    private long breweryId;
+
+    @RandomBreweryPojo
+    private BreweryRequestPojo request;
 
     @BeforeEach
     void createBeerEntityInDB() {

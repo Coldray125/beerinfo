@@ -1,4 +1,4 @@
-package org.beerinfo.entity;
+package org.beerinfo.data.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,10 @@
 package org.beerinfo.mapper;
 
-import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.beerinfo.dto.api.beer.PostBeerResponseDTO;
-import org.beerinfo.dto.api.beer.PutBeerResponseDTO;
-import org.beerinfo.dto.data.BeerCreationDTO;
-import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
+import org.beerinfo.data.dto.api.beer.PostBeerResponseDTO;
+import org.beerinfo.data.dto.api.beer.PutBeerResponseDTO;
+import org.beerinfo.data.dto.BeerCreationDTO;
+import org.beerinfo.data.entity.BeerEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

@@ -3,15 +3,15 @@ package api.beer_service_test;
 import api.db_query.BeerQuery;
 import api.extensions.LoggingExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
-import api.extensions.resolver.BeerQueryParameterResolver;
-import api.extensions.resolver.BeerRequestParameterResolver;
+import api.extensions.resolver.GenericHttpRequestResolver;
+import api.extensions.resolver.GenericQueryResolver;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.AddBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
+import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -25,12 +25,14 @@ import static org.apache.http.HttpStatus.SC_OK;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
+@ExtendWith({GenericQueryResolver.class, GenericHttpRequestResolver.class})
 public class AddBeerPositiveTest {
-    private BeerQuery beerQuery;
-    private BeerRequest beerRequest;
+
+    private final BeerQuery beerQuery;
+    private final BeerRequest beerRequest;
+
     @RandomBeerPojo
-    BeerRequestPojo request;
+    private BeerRequestPojo request;
 
     public AddBeerPositiveTest(BeerQuery beerQuery, BeerRequest beerRequest) {
         this.beerQuery = beerQuery;

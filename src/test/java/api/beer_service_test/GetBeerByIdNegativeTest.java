@@ -2,8 +2,8 @@ package api.beer_service_test;
 
 import api.db_query.BeerQuery;
 import api.extensions.LoggingExtension;
-import api.extensions.resolver.BeerQueryParameterResolver;
-import api.extensions.resolver.BeerRequestParameterResolver;
+import api.extensions.resolver.GenericHttpRequestResolver;
+import api.extensions.resolver.GenericQueryResolver;
 import api.request.BeerRequest;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
@@ -24,7 +24,7 @@ import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({BeerQueryParameterResolver.class, BeerRequestParameterResolver.class})
+@ExtendWith({GenericQueryResolver.class, GenericHttpRequestResolver.class})
 public class GetBeerByIdNegativeTest {
 
     private final BeerQuery beerQuery;
@@ -38,13 +38,13 @@ public class GetBeerByIdNegativeTest {
     @DisplayName("Error: Retrieve Nonexistent Beer by ID")
     @Test
     void checkBeerByIdWrongIdResponseMessage() {
-        long lastBeerId = beerQuery.getLastBeerId();
+        long lastBeerId = beerQuery.getLastBeerId() + 1000;
         Response response = beerRequest.getBeerByIdRequestReturnResponse(String.valueOf(lastBeerId + 1));
 
         Assertions.assertEquals(SC_NOT_FOUND, response.getStatusCode());
 
         String actualResponse = response.body().jsonPath().get("error");
-        String expectedResponse = STR."Beer with id: \{lastBeerId + 1} not found";
+        String expectedResponse = "Beer with id: " + (lastBeerId + 1) + " not found";
 
         Assertions.assertEquals(expectedResponse, actualResponse);
     }

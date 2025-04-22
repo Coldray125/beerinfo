@@ -2,8 +2,8 @@ package org.beerinfo.handlers.brewery;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import org.beerinfo.dto.data.BreweryCreationDTO;
-import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.data.dto.BreweryCreationDTO;
+import org.beerinfo.data.entity.BreweryEntity;
 import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.service.BreweriesService;
 import org.beerinfo.utils.JsonUtils;
@@ -41,7 +41,7 @@ public class UpdateBreweryByIdHandler implements Handler {
 
             String country = breweryCreationDTO.getCountry();
             if (!isValidCountry(country)) {
-                respondWithError(context, 400, STR."Country \{country} is not supported. Please provide a valid country");
+                respondWithError(context, 400, "Country " + country + " is not supported. Please provide a valid country");
                 return;
             }
 
@@ -54,10 +54,10 @@ public class UpdateBreweryByIdHandler implements Handler {
                 context.status(200);
                 Map<String, Object> responseData = new HashMap<>();
                 responseData.put("brewery", breweryCreationDTO);
-                responseData.put("message", STR."Brewery with id: \{breweryId} was updated.");
+                responseData.put("message", "Brewery with id: " + breweryId + " was updated.");
                 context.json(responseData);
             } else {
-                respondWithError(context, 404, STR."Brewery with id: \{breweryId} not found");
+                respondWithError(context, 404, "Brewery with id: " + breweryId + " not found");
             }
         } catch (NumberFormatException e) {
             respondWithError(context, 400, "Invalid Brewery ID format. Only numeric values are allowed");

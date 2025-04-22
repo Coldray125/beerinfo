@@ -8,8 +8,8 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
-import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
+import org.beerinfo.data.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.Session;
@@ -31,7 +31,7 @@ public class BeerQuery {
         if (beerEntity.isPresent()) {
             return BeerMapper.MAPPER.mapToGetBeerResponseDTO(beerEntity.get());
         }
-        throw new EntityNotFoundException(STR."BeerEntity not found for ID: \{id}");
+        throw new EntityNotFoundException("BeerEntity not found for ID: " + id);
     }
 
     @Step("Add Beer record to Postgres")
@@ -41,7 +41,7 @@ public class BeerQuery {
         if (beerEntity.isPresent()) {
             return BeerMapper.MAPPER.mapToGetBeerResponseDTO(beerEntity.get());
         }
-        throw new PersistenceException(STR."Failed to add BeerEntity: \n\{randomEntity}");
+        throw new PersistenceException("Failed to add BeerEntity: \n" + randomEntity);
     }
 
     @Step("Update Beer record in Postgres with ID: {beer} and Beer: {id}")

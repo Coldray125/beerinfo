@@ -2,8 +2,8 @@ package org.beerinfo.handlers.brewery;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.beerinfo.entity.JoinedBreweryBeerEntity;
+import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
+import org.beerinfo.data.entity.JoinedBreweryBeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BreweriesService;
 import org.jetbrains.annotations.NotNull;

@@ -16,7 +16,6 @@ public final class PropertyUtil {
         try {
             properties = new Properties();
             properties.load(PropertyUtil.class.getResourceAsStream("/properties/dev.properties"));
-            System.out.println(properties);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -26,19 +25,19 @@ public final class PropertyUtil {
         try {
             if (properties == null) {
                 properties = new Properties();
-                var fileInputStream = new FileInputStream(STR."src/main/resources/properties/\{stand}.properties");
+                var fileInputStream = new FileInputStream("src/main/resources/properties/" + stand + ".properties");
                 properties.load(fileInputStream);
             }
 
             String propertyValue = properties.getProperty(propertyName);
 
             if (propertyValue == null) {
-                log.warn(STR."Warning: Property '\{propertyName}' is not found in the properties file.");
+                log.warn("Warning: Property '{}' is not found in the properties file.", propertyName);
                 return "Default_Value";
             }
             return propertyValue;
         } catch (IOException ex) {
-            log.error(STR."Error loading properties file: \{ex.getMessage()}");
+            log.error("Error loading properties file: {}", ex.getMessage());
             return "Error_Value";
         }
     }

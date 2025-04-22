@@ -2,7 +2,7 @@ package api.test_utils.data_generators;
 
 import api.pojo.request.BreweryRequestPojo;
 import io.qameta.allure.Step;
-import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.data.entity.BreweryEntity;
 
 import static api.test_utils.RandomValueUtils.*;
 

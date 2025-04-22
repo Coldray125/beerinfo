@@ -10,9 +10,7 @@ import org.beerinfo.handlers.brewery.UpdateBreweryByIdHandler;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
 
-import java.util.Scanner;
-
-import static org.beerinfo.db.PostgresSessionProvider.getSessionFactory;
+import static org.beerinfo.db.PostgresSessionProvider.getBeerInfoSessionFactory;
 
 @Slf4j
 public class App {
@@ -22,11 +20,12 @@ public class App {
             config.http.defaultContentType = "application/json";
         }).start(8080);
 
-        BeerService beerService = new BeerService(getSessionFactory());
-        BreweriesService breweriesService = new BreweriesService(getSessionFactory());
+        BeerService beerService = new BeerService(getBeerInfoSessionFactory());
+        BreweriesService breweriesService = new BreweriesService(getBeerInfoSessionFactory());
 
         app.before(ctx -> {
-            String logMessage = STR."Received: \n\{ctx.method()} \{ctx.fullUrl()} \nfrom \{ctx.ip()} \nport: \{ctx.port()} \nwith body: \{ctx.body()}";
+            String logMessage = String.format("📥 %s %s | IP: %s:%d | Body: %s",
+                    ctx.method(), ctx.fullUrl(), ctx.ip(), ctx.port(), ctx.body());
             log.info(logMessage);
         });
 
@@ -45,12 +44,8 @@ public class App {
         Runtime.getRuntime().addShutdownHook(new Thread(app::stop));
 
         app.events(event -> {
-            event.serverStopping(() -> {
-                log.info("server stopping");
-            });
-            event.serverStopped(() -> {
-                log.info("server stopped");
-            });
+            event.serverStopping(() -> log.info("server stopping"));
+            event.serverStopped(() -> log.info("server stopped"));
         });
     }
 }

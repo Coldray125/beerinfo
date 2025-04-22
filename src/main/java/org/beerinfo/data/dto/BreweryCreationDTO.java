@@ -1,4 +1,4 @@
-package org.beerinfo.dto.data;
+package org.beerinfo.data.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

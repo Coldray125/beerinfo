@@ -2,9 +2,9 @@ package org.beerinfo.handlers.beer;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import org.beerinfo.dto.api.beer.PostBeerResponseDTO;
-import org.beerinfo.dto.data.BeerCreationDTO;
-import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.data.dto.api.beer.PostBeerResponseDTO;
+import org.beerinfo.data.dto.BeerCreationDTO;
+import org.beerinfo.data.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
@@ -48,7 +48,7 @@ public class AddBeerHandler implements Handler {
             long breweryIdFromRequest = beer.getBreweryId();
 
             if (breweryIdFromRequest > lastBreweryId) {
-                respondWithError(context, 404, STR."Wrong brewery id: \{breweryIdFromRequest}, brewery cannot be added.");
+                respondWithError(context, 404, "Wrong brewery id: " + breweryIdFromRequest + ", brewery cannot be added.");
                 return;
             }
 

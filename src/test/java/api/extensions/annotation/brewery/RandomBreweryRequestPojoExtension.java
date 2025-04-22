@@ -29,7 +29,7 @@ public class RandomBreweryRequestPojoExtension implements BeforeEachCallback {
                         field.setAccessible(true);
                         field.set(testInstance, BreweryObjectGenerator.generateRandomBreweryPojo());
                     } catch (IllegalAccessException ex) {
-                        throw new RuntimeException(STR."Failed to inject random BreweryRequestPojo into field: \{field.getName()}", ex);
+                        throw new RuntimeException("Failed to inject random BreweryRequestPojo into field: " + field.getName(), ex);
                     }
                 });
     }

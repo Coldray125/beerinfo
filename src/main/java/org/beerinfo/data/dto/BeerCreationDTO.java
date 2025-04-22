@@ -1,4 +1,4 @@
-package org.beerinfo.dto.data;
+package org.beerinfo.data.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

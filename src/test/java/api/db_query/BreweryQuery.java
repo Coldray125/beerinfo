@@ -4,8 +4,8 @@ import api.test_utils.data_generators.BreweryObjectGenerator;
 import io.qameta.allure.Step;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
-import org.beerinfo.dto.api.brewery.GetBreweryResponseDTO;
-import org.beerinfo.entity.BreweryEntity;
+import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
+import org.beerinfo.data.entity.BreweryEntity;
 import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.utils.HibernateQueryUtil;
 import org.hibernate.SessionFactory;
@@ -26,7 +26,7 @@ public class BreweryQuery {
         if (breweryEntity.isPresent()) {
             return BreweryMapper.MAPPER.mapToGetBreweryResponseDTO(breweryEntity.get());
         }
-        throw new EntityNotFoundException(STR."BeerEntity not found for ID: \{id}");
+        throw new EntityNotFoundException("BeerEntity not found for ID: " + id);
     }
 
     @Step("Add Brewery record to Postgres")
@@ -36,6 +36,6 @@ public class BreweryQuery {
         if (beerEntity.isPresent()) {
             return beerEntity.get().getBreweryId();
         }
-        throw new PersistenceException(STR."Failed to add BeerEntity: \n\{breweryEntity}");
+        throw new PersistenceException("Failed to add BeerEntity: \n" + breweryEntity);
     }
 }

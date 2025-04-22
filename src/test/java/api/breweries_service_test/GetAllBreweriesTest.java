@@ -1,7 +1,7 @@
 package api.breweries_service_test;
 
 import api.extensions.LoggingExtension;
-import api.extensions.resolver.BreweryRequestParameterResolver;
+import api.extensions.resolver.GenericHttpRequestResolver;
 import api.request.BreweryRequest;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Story;
@@ -18,8 +18,9 @@ import static org.apache.http.HttpStatus.SC_OK;
 @Story("Brewery_API")
 @Tag("Brewery_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith(value = BreweryRequestParameterResolver.class)
+@ExtendWith(value = GenericHttpRequestResolver.class)
 public class GetAllBreweriesTest {
+
     private final BreweryRequest breweryRequest;
 
     public GetAllBreweriesTest(BreweryRequest breweryRequest) {

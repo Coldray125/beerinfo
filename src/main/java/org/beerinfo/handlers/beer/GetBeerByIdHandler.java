@@ -2,8 +2,8 @@ package org.beerinfo.handlers.beer;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
-import org.beerinfo.dto.api.beer.GetBeerResponseDTO;
-import org.beerinfo.entity.BeerEntity;
+import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
+import org.beerinfo.data.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public class GetBeerByIdHandler implements Handler {
             context.status(200);
             context.json(getBeerResponseDTO);
         } else {
-            respondWithError(context, 404, STR."Beer with id: \{beerId} not found");
+            respondWithError(context, 404, "Beer with id: " + beerId + " not found");
         }
     }
 }
