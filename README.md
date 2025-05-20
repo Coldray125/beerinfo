@@ -49,28 +49,29 @@ This project utilizes the following technologies, libraries, and frameworks for 
 - **Testing Report Framework:**
   - Allure JUnit5
 
-## Installation
 
-For project working, environment postgresql.dev.uri in property file need to be updated to local ip address (IPv4 Address).
+## Prerequisites
 
-Console command to find local ip address: `ipconfig` 
-
-path: `src/main/resources/properties/dev.properties`
-
-#### Checking Java Version and Set Environment Variables for Java
-
+#### Check Java Version and Set Environment Variables
 - In Command Prompt or PowerShell : `java -version`
 - Set the JAVA_HOME environment variable: `setx JAVA_HOME "C:\Path\To\Your\Java\Installation" /M`
 - Add %JAVA_HOME%\bin to the Path environment variable: `setx Path "%Path%;%JAVA_HOME%\bin" /M`
 
-To build application jar:
-`mvn package -DskipTests`
+#### Configure IP Address
+For project working, environment postgresql.dev.uri in property file need to be updated to local ip address (IPv4 Address).
 
-To run tests from console
-`docker attach [container name]`
+- Console command to find local ip address: `ipconfig`
+- Path to properties file: `src/main/resources/properties/dev.properties`
+
+#### Build and Launch the Application
+- Build JAR file (skipping tests): `mvn package -DskipTests`
+- Launch all services in docker: `docker-compose up -d`
+
+#### Connecting to Maven Application (Optional)
+- To connect to a running container: `docker exec -it restendpoint-maven-1 bash`
+- Move to pom.xml file: `cd /usr/share/maven/ref`
 
 ## Running Tests
-
 To execute JUnit tests from the console:
 
 - Run all tests:
@@ -92,7 +93,6 @@ To execute JUnit tests from the console:
   `mvn clean test "-Dsurefire.rerunFailingTestsCount=2"`
 
 ## Project Structure
-
 ```
 ├───main
 │   ├───java
@@ -114,7 +114,6 @@ To execute JUnit tests from the console:
 │   │           ├───service
 │   │           └───utils
 │   └───resources
-│       ├───META-INF
 │       ├───properties
 │       └───sqlscripts
 └───test
@@ -143,5 +142,4 @@ To execute JUnit tests from the console:
         └───schemas
             ├───beer_service
             └───brewery_service
-
 ```
