@@ -1,5 +1,6 @@
 package org.beerinfo.handlers.beer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.beerinfo.data.dto.BeerCreationDTO;
@@ -9,12 +10,12 @@ import org.beerinfo.utils.JsonUtils;
 import org.beerinfo.utils.ValidationUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
+/// PUT /beer
 public class UpdateBeerByIdHandler implements Handler {
     private final BeerService beerService;
 
@@ -24,42 +25,37 @@ public class UpdateBeerByIdHandler implements Handler {
 
     @Override
     public void handle(@NotNull Context context) {
-        String beerId = context.queryParam("beerId");
+        Long beerId = ValidationUtils.extractAndValidateQueryParam(
+                context, "beerId", Long::parseLong, "Invalid Beer ID format. Only numeric values are allowed.");
 
-        long id;
+        if (beerId == null) return;
+
+        BeerCreationDTO beerCreationDTO;
 
         try {
-            id = Long.parseLong(beerId);
-        } catch (NumberFormatException e) {
-            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed.");
+            beerCreationDTO = JsonUtils.jsonStringToObject(context.body(), BeerCreationDTO.class);
+        } catch (JsonProcessingException e) {
+            respondWithError(context, 400, "Invalid value format in body");
             return;
         }
 
-        try {
-            var beerCreationDTO = JsonUtils.jsonStringToObject(context.body(), BeerCreationDTO.class);
-            Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
-            if (validationError != null) {
-                context.status(400);
-                context.json(validationError);
-                return;
-            }
-
-            final var beerEntity = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
-            boolean updateResult = beerService.updateBeerById(beerEntity, id);
-
-            if (updateResult) {
-                context.status(200);
-                Map<String, Object> responseData = new HashMap<>();
-                responseData.put("beer", beerCreationDTO);
-                responseData.put("message", "Beer with id: " + beerId + " was updated.");
-                context.json(responseData);
-            } else {
-                respondWithError(context, 404, "Beer with id: " + beerId + " not found");
-            }
-        } catch (NumberFormatException e) {
-            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed");
-        } catch (Exception e) {
-            respondWithError(context, 500, "Error occurred while processing the request.");
+        Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
+        if (validationError != null) {
+            context.status(400);
+            context.json(validationError);
+            return;
         }
+
+        final var beerEntity = BeerMapper.MAPPER.mapToBeerEntity(beerCreationDTO);
+        boolean updated = beerService.updateBeerById(beerEntity, beerId);
+
+        if (!updated) {
+            respondWithError(context, 404, "Beer with id: " + beerId + " not found");
+            return;
+        }
+
+        context.status(200).json(Map.of(
+                "beer", beerCreationDTO,
+                "message", "Beer with id: " + beerId + " was updated."));
     }
 }

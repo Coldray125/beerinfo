@@ -1,6 +1,7 @@
 package org.beerinfo.handlers.beer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.javalin.http.Context;
@@ -9,14 +10,16 @@ import io.javalin.http.HttpResponseException;
 import org.jetbrains.annotations.NotNull;
 
 public class WrongEndpointHandler implements ExceptionHandler <HttpResponseException> {
+
+    private static final ObjectMapper MAPPER = new JsonMapper();
+
     @Override
     public void handle(@NotNull HttpResponseException e, @NotNull Context context) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectNode errorJson = objectMapper.createObjectNode();
+        ObjectNode errorJson = MAPPER.createObjectNode();
         errorJson.put("error", "Endpoint not found.");
         errorJson.put("status", 404);
 
-        ArrayNode availableEndpoints = objectMapper.createArrayNode();
+        ArrayNode availableEndpoints = MAPPER.createArrayNode();
         availableEndpoints.add("GET /beers");
         availableEndpoints.add("GET /beer-brewery?beerId");
         availableEndpoints.add("GET /beer?beerId");
@@ -28,6 +31,6 @@ public class WrongEndpointHandler implements ExceptionHandler <HttpResponseExcep
 
         errorJson.set("availableEndpoints", availableEndpoints);
 
-        context.json(errorJson);
+        context.status(404).json(errorJson);
     }
 }

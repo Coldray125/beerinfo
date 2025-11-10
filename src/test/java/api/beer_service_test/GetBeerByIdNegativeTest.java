@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
@@ -49,20 +50,22 @@ public class GetBeerByIdNegativeTest {
         Assertions.assertEquals(expectedResponse, actualResponse);
     }
 
-    static private Stream<String> nonValidIdProvider() {
-        return Stream.of("", "null", RandomStringUtils.randomAlphabetic(2));
+    static private Stream<Arguments> nonValidIdProvider() {
+        return Stream.of(
+                Arguments.of("", "Missing 'beerId' query parameter"),
+                Arguments.of("null", "Invalid Beer ID format. Only numeric values are allowed."),
+                Arguments.of(RandomStringUtils.randomAlphabetic(2), "Invalid Beer ID format. Only numeric values are allowed."));
     }
 
     @DisplayName("Error: Retrieve Beer with Invalid ID Format")
     @ParameterizedTest
     @MethodSource("nonValidIdProvider")
-    void checkBeerByIdWrongFormatIdResponseMessage(String beerId) {
+    void checkBeerByIdWrongFormatIdResponseMessage(String beerId, String expectedResponse) {
         Response response = beerRequest.getBeerByIdRequestReturnResponse(beerId);
 
         Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode());
 
         String actualResponse = response.body().jsonPath().get("error");
-        String expectedResponse = "Invalid Beer ID format. Only numeric values are allowed.";
 
         Assertions.assertEquals(expectedResponse, actualResponse);
     }

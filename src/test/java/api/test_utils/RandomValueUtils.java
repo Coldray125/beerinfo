@@ -8,7 +8,7 @@ import java.util.Locale;
 
 public final class RandomValueUtils {
 
-    static private final Faker faker = new Faker(Locale.US);
+    static private final Faker faker = new Faker(Locale.ENGLISH);
 
     public static String randomBeerName() {
         return faker.beer().name();

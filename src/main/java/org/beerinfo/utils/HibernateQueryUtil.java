@@ -66,7 +66,7 @@ public class HibernateQueryUtil {
             Transaction transaction = session.beginTransaction();
 
             try {
-                Object entity = session.get(entityClass, id);
+                Object entity = session.find(entityClass, id);
                 if (entity != null) {
                     session.merge(updatedEntity);
                     transaction.commit();
@@ -86,7 +86,7 @@ public class HibernateQueryUtil {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
 
-            Object entity = session.get(entityClass, id);
+            Object entity = session.find(entityClass, id);
 
             if (entity != null) {
                 session.remove(entity);

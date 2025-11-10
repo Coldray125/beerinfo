@@ -27,7 +27,8 @@ public class BeerQuery {
 
     @Step("Get Beer from Postgres with ID: {id}")
     public GetBeerResponseDTO getBeerById(long id) {
-        Optional<BeerEntity> beerEntity = HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BeerEntity.class, Map.of("beerId", id));
+        Optional<BeerEntity> beerEntity = HibernateQueryUtil.getEntityByFieldValue(
+                sessionFactory, BeerEntity.class, Map.of("beerId", id));
         if (beerEntity.isPresent()) {
             return BeerMapper.MAPPER.mapToGetBeerResponseDTO(beerEntity.get());
         }
