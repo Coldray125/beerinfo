@@ -39,7 +39,7 @@ public class DeleteBeerPositiveTest {
         Response response = beerRequest.deleteBeerRequestReturnResponse(beerId);
         Assertions.assertEquals(SC_OK, response.getStatusCode());
 
-        String expectedText = "Beer with beerId: " + beerId + " was deleted";
+        String expectedText = "Beer with id: " + beerId + " was deleted";
         String responseText = response.body().path("message");
         Assertions.assertEquals(expectedText, responseText);
     }

@@ -10,6 +10,8 @@ import org.beerinfo.handlers.brewery.UpdateBreweryByIdHandler;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
 
+import java.util.Map;
+
 import static org.beerinfo.db.PostgresSessionProvider.getBeerInfoSessionFactory;
 
 @Slf4j
@@ -27,6 +29,15 @@ public class App {
             String logMessage = String.format("📥 %s %s | IP: %s:%d | Body: %s",
                     ctx.method(), ctx.fullUrl(), ctx.ip(), ctx.port(), ctx.body());
             log.info(logMessage);
+        });
+
+        //Todo Проверить работу без него. Какая будет ошибка и код
+        //global exception handler
+        app.exception(Exception.class, (e, ctx) -> {
+            ctx.status(500).json(Map.of(
+                    "error", "Unexpected server error",
+                    "message", e.getMessage()
+            ));
         });
 
         app.get("/beers", new GetAllBeersHandler(beerService));

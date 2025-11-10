@@ -195,6 +195,7 @@
                         <arg>-Xlint:unchecked,deprecation</arg>
                     </compilerArgs>
 
+                    <!-- Remove lombok if only records used -->
                     <!-- Mapstruct -->
                     <annotationProcessorPaths>
                         <path>

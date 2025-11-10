@@ -1,9 +1,9 @@
 package org.beerinfo.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
 
 @Slf4j
 public final class JsonUtils {
@@ -11,16 +11,9 @@ public final class JsonUtils {
     private JsonUtils() {
     }
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new JsonMapper();
 
-    public static <T> T jsonStringToObject(String jsonString, Class<T> clazz) {
-        T parsedObject;
-        try {
-            parsedObject = MAPPER.readValue(jsonString, clazz);
-        } catch (IOException e) {
-            log.error("Error converting JSON to parsedObject: {}", e.getMessage(), e);
-            throw new RuntimeException("Failed to deserialize JSON", e);
-        }
-        return parsedObject;
+    public static <T> T jsonStringToObject(String jsonString, Class<T> clazz) throws JsonProcessingException {
+        return MAPPER.readValue(jsonString, clazz);
     }
 }

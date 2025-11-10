@@ -6,6 +6,7 @@ import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.data.entity.JoinedBeerBreweryEntity;
 import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.service.BeerService;
+import org.beerinfo.utils.ValidationUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -22,18 +23,12 @@ public class GetBeerBreweryHandler implements Handler {
 
     @Override
     public void handle(@NotNull Context context) {
-        String beerId = context.queryParam("beerId");
+        Long beerId = ValidationUtils.extractAndValidateQueryParam(
+                context,"beerId", Long::parseLong,"Invalid Beer ID format. Only numeric values are allowed.");
 
-        long id;
-        try {
-            id = Long.parseLong(beerId);
-        } catch (NumberFormatException e) {
-            context.status(400);
-            context.json("Invalid Beer ID format. Only numeric values are allowed.");
-            return;
-        }
+        if (beerId == null) return;
 
-        Optional<JoinedBeerBreweryEntity> beerOptional = beerService.getBeerBreweryById(id);
+        Optional<JoinedBeerBreweryEntity> beerOptional = beerService.getBeerBreweryById(beerId);
         GetBreweryResponseDTO breweryDTO;
         if (beerOptional.isEmpty()) {
             respondWithError(context, 404, "Entity not found");

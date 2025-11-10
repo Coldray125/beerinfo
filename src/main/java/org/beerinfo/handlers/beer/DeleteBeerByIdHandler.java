@@ -3,6 +3,7 @@ package org.beerinfo.handlers.beer;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import org.beerinfo.service.BeerService;
+import org.beerinfo.utils.ValidationUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -19,22 +20,17 @@ public class DeleteBeerByIdHandler implements Handler {
 
     @Override
     public void handle(@NotNull Context context) {
-        String beerId = context.queryParam("beerId");
+        Long beerId = ValidationUtils.extractAndValidateQueryParam(
+                context,"beerId", Long::parseLong,"Invalid Beer ID format. Only numeric values are allowed.");
 
-        long id;
-        try {
-            id = Long.parseLong(beerId);
-        } catch (NumberFormatException e) {
-            respondWithError(context, 400, "Invalid Beer ID format. Only numeric values are allowed.");
-            return;
-        }
+        if (beerId == null) return;
 
         try {
-            boolean deleteResult = beerService.deleteBeerById(id);
+            boolean deleteResult = beerService.deleteBeerById(beerId);
 
             if (deleteResult) {
                 context.status(200);
-                context.json(Map.of("message", "Beer with beerId: " + beerId + " was deleted"));
+                context.json(Map.of("message", "Beer with id: " + beerId + " was deleted"));
             } else {
                 respondWithError(context, 404, "Beer with id: " + beerId + " not found");
             }

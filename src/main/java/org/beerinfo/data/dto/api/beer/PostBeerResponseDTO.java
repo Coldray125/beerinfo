@@ -1,8 +1,5 @@
 package org.beerinfo.data.dto.api.beer;
 
-import lombok.Builder;
-
-@Builder
 public record PostBeerResponseDTO(
         long beerId,
         String abv,

@@ -68,9 +68,9 @@ public class UpdateBreweryPositiveTest {
         UpdateBreweryResponse.BreweryDetails updateResponse = fullResponse.brewery();
         GetBreweryResponseDTO entity = breweryQuery.getBreweryById(breweryId);
         Assertions.assertAll(
-                () -> Assertions.assertEquals(updateResponse.name(), entity.getName()),
-                () -> Assertions.assertEquals(updateResponse.city(), entity.getCity()),
-                () -> Assertions.assertEquals(updateResponse.state(), entity.getState()),
-                () -> Assertions.assertEquals(updateResponse.country(), entity.getCountry()));
+                () -> Assertions.assertEquals(updateResponse.name(), entity.name()),
+                () -> Assertions.assertEquals(updateResponse.city(), entity.city()),
+                () -> Assertions.assertEquals(updateResponse.state(), entity.state()),
+                () -> Assertions.assertEquals(updateResponse.country(), entity.country()));
     }
 }
