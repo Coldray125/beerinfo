@@ -10,19 +10,19 @@
 - [Running Tests](#running-tests)
 - [Project Structure](#project-structure)
 
-- ## Project summary
+## Project summary
 - This project serves as a showcase of my endpoint testing skills while also providing a fully controlled testing environment. It involves interactions with Docker and Jenkins, enabling efficient and automated testing workflows.
 
-- ## Disclaimer
+## Disclaimer
 - While the endpoint code and tests are good to go, I'm still working on Docker and Jenkins integration. They're currently under research and development.
 
-- ## Prerequisites
+## Prerequisites
 
-- **Java:** 24
+- **Java:** 25
 
-- **Maven:** 3.9.9
+- **Maven:** 3.9.11
 
-- ## Technology Stack
+## Technology Stack
 
 This project utilizes the following technologies, libraries, and frameworks for development and testing:
 
@@ -48,7 +48,6 @@ This project utilizes the following technologies, libraries, and frameworks for 
 
 - **Testing Report Framework:**
   - Allure JUnit5
-
 
 ## Prerequisites
 

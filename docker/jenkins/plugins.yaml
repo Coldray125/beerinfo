@@ -1,0 +1,39 @@
+# https://github.com/jenkinsci/plugin-installation-manager-tool
+plugins:
+  - artifactId: configuration-as-code
+  #- artifactId: allure-jenkins-plugin
+  #- artifactId: theme-manager
+  - artifactId: dark-theme
+
+  #- artifactId: workflow-aggregator
+  #- artifactId: workflow-step-api
+  #- artifactId: workflow-api
+  #- artifactId: workflow-support
+  #- artifactId: workflow-cps
+  #- artifactId: workflow-job
+  #- artifactId: workflow-basic-steps
+  #- artifactId: workflow-scm-step
+  #- artifactId: workflow-durable-task-step
+  #- artifactId: workflow-multibranch
+
+  #- artifactId: pipeline-milestone-step
+  #- artifactId: pipeline-build-step
+  #- artifactId: pipeline-stage-step
+  #- artifactId: pipeline-model-api
+  #- artifactId: pipeline-model-extensions
+  #- artifactId: pipeline-input-step
+  #- artifactId: pipeline-model-definition
+  #- artifactId: pipeline-github-lib
+  #- artifactId: pipeline-graph-analysis
+  #- artifactId: pipeline-rest-api
+  #- artifactId: pipeline-stage-view
+
+  #- artifactId: git-client
+  #- artifactId: github-api
+  #- artifactId: git
+  #- artifactId: github
+  #- artifactId: github-branch-source
+
+  #- artifactId: maven-plugin
+  #- artifactId: junit
+  #- artifactId: blueocean

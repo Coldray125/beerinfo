@@ -1,0 +1,25 @@
+FROM jenkins/jenkins:alpine-jdk21
+
+# Switch to root to install Docker
+USER root
+
+RUN apk update && \
+    apk add tree && \
+    apk add --no-cache bash && \
+    apk add --no-cache docker-cli
+
+# Add alias for bash
+RUN echo "alias ls='ls --color=auto'" > /etc/bash/bashrc
+RUN echo "alias tree='tree -C'" >> /etc/bash/bashrc
+
+# Switch back to jenkins user
+USER jenkins
+
+# Copy the plugins.txt file to the Jenkins reference directory
+COPY --chown=jenkins:jenkins docker/jenkins/plugins.yaml /usr/share/jenkins/ref/plugins.yaml
+
+# Copy Jenkins Configuration as Code (YAML config)
+COPY --chown=jenkins:jenkins docker/jenkins/jenkins-config.yaml /var/jenkins_home/casc_configs/
+
+#Run the jenkins-plugin-cli to install plugins listed in plugins.yaml
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.yaml
