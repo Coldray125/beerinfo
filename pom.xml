@@ -10,26 +10,29 @@
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.release>24</maven.compiler.release>
+        <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.version>3.9.9</maven.version>
-        <javalin.version>6.6.0</javalin.version>
-        <hibernate.version>6.6.2.Final</hibernate.version>
-        <hibernate-validator.version>8.0.2.Final</hibernate-validator.version>
-        <postgres.version>42.7.5</postgres.version>
-        <jakarta.version>3.1.0</jakarta.version>
+        <maven.version>3.9.11</maven.version>
+        <javalin.version>6.7.0</javalin.version>
+        <hibernate.version>7.1.7.Final</hibernate.version>
+        <hibernate-validator.version>9.1.0.Final</hibernate-validator.version>
+        <postgres.version>42.7.8</postgres.version>
+        <jakarta.version>3.2.0</jakarta.version>
         <mapstruct.version>1.6.3</mapstruct.version>
-        <junit5.version>5.12.1</junit5.version>
-        <junit-platform-suite.version>1.12.1</junit-platform-suite.version>
-        <restassured.version>5.5.1</restassured.version>
-        <allure.version>2.29.1</allure.version>
-        <allure-maven.version>2.15.2</allure-maven.version>
-        <aspectj.version>1.9.24</aspectj.version>
-        <jackson.version>2.18.3</jackson.version>
-        <lombok.version>1.18.38</lombok.version>
-        <faker.version>2.4.3</faker.version>
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
+        <junit5.version>6.0.1</junit5.version>
+        <restassured.version>5.5.6</restassured.version>
+        <allure.version>2.30.0</allure.version>
+        <allure-maven.version>2.16.1</allure-maven.version>
+        <aspectj.version>1.9.25</aspectj.version>
+
+        <!-- 3.0 is not supported by Javalin 6.7.0 -->
+        <jackson.version>2.20.1</jackson.version>
+
+        <lombok.version>1.18.42</lombok.version>
+        <faker.version>2.5.3</faker.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+        <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -55,7 +58,7 @@
 
         <!-- Hibernate Core -->
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
@@ -80,7 +83,7 @@
             <version>${hibernate.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
@@ -89,7 +92,7 @@
         <dependency>
             <groupId>org.glassfish.expressly</groupId>
             <artifactId>expressly</artifactId>
-            <version>5.0.0</version>
+            <version>6.0.0</version>
         </dependency>
 
         <!-- Mapstruct -->
@@ -123,7 +126,7 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-suite</artifactId>
-            <version>${junit-platform-suite.version}</version>
+            <version>${junit5.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -170,12 +173,12 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.5.18</version>
+            <version>1.5.20</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.5.18</version>
+            <version>1.5.20</version>
         </dependency>
     </dependencies>
 
@@ -186,7 +189,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <release>24</release>
+                    <release>25</release>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                         <arg>-Xlint:unchecked,deprecation</arg>
@@ -246,7 +249,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven-shade-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>

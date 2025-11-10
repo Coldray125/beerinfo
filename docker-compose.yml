@@ -6,7 +6,7 @@ services:
   app:
     networks:
       - beerInfo
-    image: amazoncorretto:24-alpine-full
+    image: eclipse-temurin:25-alpine
     command: java --enable-preview -jar /app/app.jar
     stdin_open: true   # Keep stdin open for input
     tty: true          # Allocate a pseudo-TTY for interaction
@@ -31,6 +31,7 @@ services:
     volumes:
       - ./src/main/resources/sqlscripts/Beers.sql:/docker-entrypoint-initdb.d/Beers.sql
       - ./src/main/resources/sqlscripts/Breweries.sql:/docker-entrypoint-initdb.d/Breweries.sql
+      - beerinfo_db_data:/var/lib/postgresql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
@@ -40,7 +41,7 @@ services:
   maven:
     networks:
       - beerInfo
-    image: maven:3.9.9-eclipse-temurin-24
+    image: maven:3.9.11-eclipse-temurin-25
     command:
       - /bin/bash
       - -c
@@ -55,33 +56,37 @@ services:
       - ./pom.xml:/usr/share/maven/ref/pom.xml
       - ./src:/usr/share/maven/ref/src/
 
-  #jenkins:
-  #  build:
-  #    context: .  # Use the current directory as the build context
-  #    dockerfile: Dockerfile  # Use the Dockerfile in the current directory
-  #  container_name: jenkins
-  #  user: root
-  #  ports:
-  #    - "8888:8080"
-  #  volumes:
-  #    - jenkins_home:/var/jenkins_home
-  #    - /var/run/docker.sock:/var/run/docker.sock
-  #  environment:
-  #    - JENKINS_OPTS=--prefix=/jenkins
-  #    - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
-  #    - Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true
-  #    #- JAVA_HOME=/usr/lib/jvm/java-21-openjdk
-  #    #- PATH=$PATH:$JAVA_HOME/bin /opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-  #    #- -Djenkins.security.csrf.DefaultCrumbIssuer.EXCLUDE=true
-  #  restart: always
-  #  healthcheck:
-  #    test: [ "CMD", "curl", "-f", "http://192.168.1.10:8888/jenkins/" ]
-  #    interval: 5s
-  #    timeout: 5s
-  #    retries: 10
-  #volumes:
+  jenkins:
+    networks:
+      - beerInfo
+    build:
+      context: .  # Use the current directory as the build context (Возможно нужно убрать одну точку)
+      dockerfile: docker/jenkins/Dockerfile-Jenkins  # Use the Dockerfile.Jenkins in the current directory
+    container_name: jenkins
+    user: root
+    ports:
+      - "8888:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # gives access to host Docker daemon
+      #- /usr/bin/docker:/usr/bin/docker            # gives access to Docker CLI
+    environment:
+      - JENKINS_OPTS=--prefix=/
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins-config.yaml
+      #- -Djenkins.security.csrf.DefaultCrumbIssuer.EXCLUDE=true
+    restart: always
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://jenkins:8080/login" ]
+      interval: 5s
+      timeout: 15s
+      retries: 2
+      start_period: 2s
+volumes:
+  jenkins_home:
+  beerinfo_db_data:
   #pgadmin_data:
-  #jenkins_home:
 
   # pgadmin:
   #   image: dpage/pgadmin4:latest
