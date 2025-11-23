@@ -10,17 +10,22 @@ import org.beerinfo.handlers.brewery.UpdateBreweryByIdHandler;
 import org.beerinfo.service.BeerService;
 import org.beerinfo.service.BreweriesService;
 
-import java.util.Map;
-
+import static org.beerinfo.config.OpenApiConfig.configureOpenApi;
+import static org.beerinfo.config.OpenApiConfig.logDocumentationUrls;
+import static org.beerinfo.config.PropertyUtil.getProperty;
 import static org.beerinfo.db.PostgresSessionProvider.getBeerInfoSessionFactory;
+import static org.beerinfo.utils.ResponseUtil.respondWithInternalServerError;
 
 @Slf4j
 public class App {
+    private static final int PORT = Integer.parseInt(getProperty("application.port"));
+
     public static void main(String[] args) {
 
         Javalin app = Javalin.create(config -> {
             config.http.defaultContentType = "application/json";
-        }).start(8080);
+            configureOpenApi(config);
+        }).start(PORT);
 
         BeerService beerService = new BeerService(getBeerInfoSessionFactory());
         BreweriesService breweriesService = new BreweriesService(getBeerInfoSessionFactory());
@@ -31,13 +36,10 @@ public class App {
             log.info(logMessage);
         });
 
-        //Todo Проверить работу без него. Какая будет ошибка и код
         //global exception handler
         app.exception(Exception.class, (e, ctx) -> {
-            ctx.status(500).json(Map.of(
-                    "error", "Unexpected server error",
-                    "message", e.getMessage()
-            ));
+            log.error("Unexpected server error at {} {}", ctx.method(), ctx.path(), e);
+            respondWithInternalServerError(ctx);
         });
 
         app.get("/beers", new GetAllBeersHandler(beerService));
@@ -58,5 +60,7 @@ public class App {
             event.serverStopping(() -> log.info("server stopping"));
             event.serverStopped(() -> log.info("server stopped"));
         });
+
+        logDocumentationUrls(app);
     }
 }

@@ -14,7 +14,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.version>3.9.11</maven.version>
         <javalin.version>6.7.0</javalin.version>
-        <hibernate.version>7.1.7.Final</hibernate.version>
+        <openapi.version>6.7.0-2</openapi.version>
+        <hibernate.version>7.1.9.Final</hibernate.version>
         <hibernate-validator.version>9.1.0.Final</hibernate-validator.version>
         <postgres.version>42.7.8</postgres.version>
         <jakarta.version>3.2.0</jakarta.version>
@@ -54,6 +55,24 @@
             <groupId>io.javalin</groupId>
             <artifactId>javalin</artifactId>
             <version>${javalin.version}</version>
+        </dependency>
+        <!-- OpenApi plugin -->
+        <dependency>
+            <groupId>io.javalin.community.openapi</groupId>
+            <artifactId>javalin-openapi-plugin</artifactId>
+            <version>${openapi.version}</version>
+        </dependency>
+        <!-- Swagger plugin -->
+        <dependency>
+            <groupId>io.javalin.community.openapi</groupId>
+            <artifactId>javalin-swagger-plugin</artifactId>
+            <version>${openapi.version}</version>
+        </dependency>
+        <!-- ReDoc plugin -->
+        <dependency>
+            <groupId>io.javalin.community.openapi</groupId>
+            <artifactId>javalin-redoc-plugin</artifactId>
+            <version>${openapi.version}</version>
         </dependency>
 
         <!-- Hibernate Core -->
@@ -188,36 +207,45 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
+
                 <configuration>
                     <release>25</release>
+
                     <compilerArgs>
                         <arg>--enable-preview</arg>
                         <arg>-Xlint:unchecked,deprecation</arg>
                     </compilerArgs>
 
-                    <!-- Remove lombok if only records used -->
-                    <!-- Mapstruct -->
                     <annotationProcessorPaths>
+
+                        <!-- Javalin OpenAPI annotation processor -->
                         <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct</artifactId>
-                            <version>${mapstruct.version}</version>
+                            <groupId>io.javalin.community.openapi</groupId>
+                            <artifactId>openapi-annotation-processor</artifactId>
+                            <version>${openapi.version}</version>
                         </path>
+
+                        <!-- MapStruct -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
                         </path>
+
+                        <!-- Lombok -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+
+                        <!-- Lombok + MapStruct binding -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
                             <version>0.2.0</version>
                         </path>
+
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>

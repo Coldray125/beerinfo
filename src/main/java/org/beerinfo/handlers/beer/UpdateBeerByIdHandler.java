@@ -3,6 +3,7 @@ package org.beerinfo.handlers.beer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import io.javalin.openapi.*;
 import org.beerinfo.data.dto.BeerCreationDTO;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
@@ -15,7 +16,63 @@ import java.util.Map;
 
 import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
-/// PUT /beer
+@OpenApi(
+        summary = "Update beer by ID",
+        operationId = "updateBeerById",
+        path = "/beer",
+        methods = HttpMethod.PUT,
+        tags = {"Beer"},
+        queryParams = {
+                @OpenApiParam(
+                        name = "beerId",
+                        required = true,
+                        description = "ID of the beer to update",
+                        type = Long.class,
+                        example = "42"
+                )
+        },
+        requestBody = @OpenApiRequestBody(
+                required = true,
+                description = "Beer update payload",
+                content = @OpenApiContent(from = BeerCreationDTO.class)
+        ),
+        responses = {
+                @OpenApiResponse(
+                        status = "200",
+                        description = "Beer updated successfully",
+                        content = @OpenApiContent(
+                                type = "object",
+                                example = """
+                                          {
+                                            "beer": {
+                                              "name": "Updated Beer Name",
+                                              "alcoholPercent": 5.0,
+                                              "breweryId": 1
+                                            },
+                                            "message": "Beer with id: 42 was updated."
+                                          }
+                                        """
+                        )
+                ),
+                @OpenApiResponse(
+                        status = "400",
+                        description = "Invalid query param or validation errors",
+                        content = @OpenApiContent(
+                                type = "object",
+                                example = """
+                                          {
+                                            "beerId": ["Invalid Beer ID format. Only numeric values are allowed."],
+                                            "name": ["must not be blank"]
+                                          }
+                                        """
+                        )
+                ),
+                @OpenApiResponse(
+                        status = "404",
+                        description = "Beer with given ID not found"
+                )
+        }
+)
 public class UpdateBeerByIdHandler implements Handler {
     private final BeerService beerService;
 
