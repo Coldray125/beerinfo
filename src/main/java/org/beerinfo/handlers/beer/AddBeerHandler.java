@@ -3,7 +3,9 @@ package org.beerinfo.handlers.beer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import io.javalin.openapi.*;
 import org.beerinfo.data.dto.BeerCreationDTO;
+import org.beerinfo.data.dto.api.beer.PostBeerResponseDTO;
 import org.beerinfo.data.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
 import org.beerinfo.service.BeerService;
@@ -18,6 +20,41 @@ import java.util.Optional;
 
 import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
+@OpenApi(
+        summary = "Add a new beer",
+        operationId = "addBeer",
+        path = "/beer",
+        methods = HttpMethod.POST,
+        tags = {"Beer"},
+        requestBody = @OpenApiRequestBody(
+                required = true,
+                description = "Beer creation payload",
+                content = @OpenApiContent(from = BeerCreationDTO.class)
+        ),
+        responses = {
+                @OpenApiResponse(
+                        status = "200",
+                        description = "Beer added successfully",
+                        content = {@OpenApiContent(from = PostBeerResponseDTO[].class)}
+                ),
+                @OpenApiResponse(
+                        status = "400",
+                        description = "Invalid body or validation errors",
+                        content = @OpenApiContent(
+                                type = "object",
+                                example = """
+                                          {
+                                            "fieldName": ["must not be null", "must be greater than 0"]
+                                          }
+                                        """
+                        )
+                ),
+                @OpenApiResponse(
+                        status = "404",
+                        description = "Wrong brewery id: {breweryIdFromRequest} brewery cannot be added"
+                )
+        }
+)
 public class AddBeerHandler implements Handler {
     private final BeerService beerService;
     private final BreweriesService breweriesService;

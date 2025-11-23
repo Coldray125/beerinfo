@@ -2,6 +2,7 @@ package org.beerinfo.utils;
 
 import io.javalin.http.Context;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ResponseUtil {
@@ -12,7 +13,11 @@ public class ResponseUtil {
     }
 
     public static void respondWithInternalServerError(Context ctx) {
-        ctx.status(500);
-        ctx.json(Map.of("error", "Error occurred while processing the request"));
+        var errorResponse = new LinkedHashMap<String, Object>();
+        errorResponse.put("error", "Internal server error");
+        errorResponse.put("status", 500);
+        errorResponse.put("message", "An unexpected error occurred. Please try again later.");
+
+        ctx.status(500).json(errorResponse);
     }
 }

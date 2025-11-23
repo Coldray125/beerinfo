@@ -3,6 +3,7 @@ package org.beerinfo.handlers.brewery;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import io.javalin.openapi.*;
 import org.beerinfo.data.dto.BreweryCreationDTO;
 import org.beerinfo.data.entity.BreweryEntity;
 import org.beerinfo.mapper.BreweryMapper;
@@ -17,6 +18,62 @@ import java.util.Map;
 import static org.beerinfo.enums.SupportedCountry.isValidCountry;
 import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
+@OpenApi(
+        summary = "Update brewery by ID",
+        operationId = "updateBreweryById",
+        path = "/brewery",
+        methods = HttpMethod.PUT,
+        tags = {"Brewery"},
+        queryParams = {
+                @OpenApiParam(
+                        name = "breweryId",
+                        required = true,
+                        description = "ID of the brewery to update",
+                        type = Long.class,
+                        example = "1"
+                )
+        },
+        requestBody = @OpenApiRequestBody(
+                required = true,
+                description = "Brewery update payload",
+                content = @OpenApiContent(from = BreweryCreationDTO.class)
+        ),
+        responses = {
+                @OpenApiResponse(
+                        status = "200",
+                        description = "Brewery updated successfully",
+                        content = @OpenApiContent(
+                                type = "object",
+                                example = """
+                                          {
+                                            "brewery": {
+                                              "name": "Updated Brewery Name",
+                                              "country": "Germany"
+                                            },
+                                            "message": "Brewery with id: 1 was updated."
+                                          }
+                                        """
+                        )
+                ),
+                @OpenApiResponse(
+                        status = "400",
+                        description = "Invalid query param, body format, or validation errors",
+                        content = @OpenApiContent(
+                                type = "object",
+                                example = """
+                                          {
+                                            "breweryId": ["Invalid Brewery ID format. Only numeric values are allowed."],
+                                            "country": ["Country France is not supported. Please provide a valid country"]
+                                          }
+                                        """
+                        )
+                ),
+                @OpenApiResponse(
+                        status = "404",
+                        description = "Brewery with given ID not found"
+                )
+        }
+)
 public class UpdateBreweryByIdHandler implements Handler {
     private final BreweriesService breweriesService;
 

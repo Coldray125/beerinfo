@@ -2,6 +2,10 @@ package org.beerinfo.handlers.brewery;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
+import io.javalin.openapi.HttpMethod;
+import io.javalin.openapi.OpenApi;
+import io.javalin.openapi.OpenApiContent;
+import io.javalin.openapi.OpenApiResponse;
 import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.data.entity.BreweryEntity;
 import org.beerinfo.mapper.BreweryMapper;
@@ -13,6 +17,24 @@ import java.util.Optional;
 
 import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
+@OpenApi(
+        summary = "Get all breweries",
+        operationId = "getAllBreweries",
+        path = "/breweries",
+        methods = HttpMethod.GET,
+        tags = {"Brewery"},
+        responses = {
+                @OpenApiResponse(
+                        status = "200",
+                        description = "List of all breweries",
+                        content = @OpenApiContent(from = GetBreweryResponseDTO[].class)
+                ),
+                @OpenApiResponse(
+                        status = "404",
+                        description = "No breweries found"
+                )
+        }
+)
 public class GetAllBreweriesHandler implements Handler {
     private final BreweriesService breweriesService;
 
