@@ -62,6 +62,48 @@
         </encoder>
     </appender>
 
+
+    <!-- Hibernate logs level setup
+   <logger name="org.hibernate" level="debug" additivity="false">
+       <appender-ref ref="TRACE_CONSOLE"/>
+       <appender-ref ref="DEBUG_CONSOLE"/>
+       <appender-ref ref="INFO_CONSOLE"/>
+       <appender-ref ref="ERROR_CONSOLE"/>
+       <appender-ref ref="WARN_CONSOLE"/>
+   </logger>
+   <logger name="org.hibernate.SQL" level="trace" additivity="false">
+       <appender-ref ref="TRACE_CONSOLE"/>
+       <appender-ref ref="DEBUG_CONSOLE"/>
+       <appender-ref ref="INFO_CONSOLE"/>
+       <appender-ref ref="ERROR_CONSOLE"/>
+       <appender-ref ref="WARN_CONSOLE"/>
+   </logger>
+   <logger name="org.hibernate.orm.jdbc.bind" level="trace" additivity="false">
+       <appender-ref ref="TRACE_CONSOLE"/>
+       <appender-ref ref="DEBUG_CONSOLE"/>
+       <appender-ref ref="INFO_CONSOLE"/>
+       <appender-ref ref="ERROR_CONSOLE"/>
+       <appender-ref ref="WARN_CONSOLE"/>
+   </logger>
+   <logger name="org.hibernate.orm.jdbc.extract" level="trace" additivity="false">
+       <appender-ref ref="TRACE_CONSOLE"/>
+       <appender-ref ref="DEBUG_CONSOLE"/>
+       <appender-ref ref="INFO_CONSOLE"/>
+       <appender-ref ref="ERROR_CONSOLE"/>
+       <appender-ref ref="WARN_CONSOLE"/>
+   </logger> -->
+
+    <!-- Blocking Hibernate initiation logs  -->
+    <logger name="org.hibernate.orm.connections.pooling" level="error"/>
+    <logger name="org.hibernate.orm.core" level="error"/>
+
+    <!-- Blocking Hikari CP initiation logs -->
+    <logger name="com.zaxxer.hikari.pool.PoolBase" level="error"/>
+    <logger name="com.zaxxer.hikari.pool.HikariPool" level="error"/>
+    <logger name="com.zaxxer.hikari.HikariConfig" level="error"/>
+    <logger name="com.zaxxer.hikari.util.UtilityElf" level="error"/>
+    <logger name="com.zaxxer.hikari.HikariDataSource" level="error"/>
+
     <!-- The logging level setup -->
     <root level="INFO">
         <appender-ref ref="TRACE_CONSOLE"/>

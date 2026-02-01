@@ -2,7 +2,7 @@ package org.beerinfo.service;
 
 import org.beerinfo.data.entity.BeerEntity;
 import org.beerinfo.data.entity.JoinedBeerBreweryEntity;
-import org.beerinfo.utils.HibernateQueryUtil;
+import org.beerinfo.db.GenericHibernateQuery;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -17,27 +17,27 @@ public class BeerService {
     }
 
     public Optional<List<BeerEntity>> getAllBeers() {
-        return HibernateQueryUtil.getAllEntities(sessionFactory, BeerEntity.class);
+        return GenericHibernateQuery.getAllEntities(sessionFactory, BeerEntity.class);
     }
 
     public Optional<JoinedBeerBreweryEntity> getBeerBreweryById(long id) {
-        return HibernateQueryUtil.getEntityByFieldValue(sessionFactory, JoinedBeerBreweryEntity.class, Map.of("beerId", id));
+        return GenericHibernateQuery.getEntityByFieldValue(sessionFactory, JoinedBeerBreweryEntity.class, Map.of("beerId", id));
     }
 
     public Optional<BeerEntity> addBeer(BeerEntity beer) {
-        return HibernateQueryUtil.addEntityReturnEntity(sessionFactory, beer);
+        return GenericHibernateQuery.addEntityReturnEntity(sessionFactory, beer);
     }
 
     public boolean updateBeerById(BeerEntity beer, long id) {
         beer.setBeerId(id);
-        return HibernateQueryUtil.updateEntityById(sessionFactory, BeerEntity.class, id, beer);
+        return GenericHibernateQuery.updateEntityById(sessionFactory, BeerEntity.class, id, beer);
     }
 
     public Optional<BeerEntity> getBeerById(long id) {
-        return HibernateQueryUtil.getEntityByFieldValue(sessionFactory, BeerEntity.class, Map.of("beerId", id));
+        return GenericHibernateQuery.getEntityByFieldValue(sessionFactory, BeerEntity.class, Map.of("beerId", id));
     }
 
     public boolean deleteBeerById(long id) {
-        return HibernateQueryUtil.deleteEntityById(sessionFactory, BeerEntity.class, id);
+        return GenericHibernateQuery.deleteEntityById(sessionFactory, BeerEntity.class, id);
     }
 }

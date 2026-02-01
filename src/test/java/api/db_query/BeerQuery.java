@@ -2,7 +2,6 @@ package api.db_query;
 
 import api.test_utils.data_generators.BeerObjectGenerator;
 import io.qameta.allure.Step;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -11,7 +10,7 @@ import jakarta.persistence.criteria.Root;
 import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
 import org.beerinfo.data.entity.BeerEntity;
 import org.beerinfo.mapper.BeerMapper;
-import org.beerinfo.utils.HibernateQueryUtil;
+import org.beerinfo.db.GenericHibernateQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -27,18 +26,18 @@ public class BeerQuery {
 
     @Step("Get Beer from Postgres with ID: {id}")
     public GetBeerResponseDTO getBeerById(long id) {
-        Optional<BeerEntity> beerEntity = HibernateQueryUtil.getEntityByFieldValue(
+        Optional<BeerEntity> beerEntity = GenericHibernateQuery.getEntityByFieldValue(
                 sessionFactory, BeerEntity.class, Map.of("beerId", id));
         if (beerEntity.isPresent()) {
             return BeerMapper.MAPPER.mapToGetBeerResponseDTO(beerEntity.get());
         }
-        throw new EntityNotFoundException("BeerEntity not found for ID: " + id);
+        throw new ExpectedEntityNotFoundException("BeerEntity not found for ID: " + id);
     }
 
     @Step("Add Beer record to Postgres")
     public GetBeerResponseDTO addRandomBeerReturnDTO() {
         BeerEntity randomEntity = BeerObjectGenerator.generateRandomBeerEntity();
-        Optional<BeerEntity> beerEntity = HibernateQueryUtil.addEntityReturnEntity(sessionFactory, randomEntity);
+        Optional<BeerEntity> beerEntity = GenericHibernateQuery.addEntityReturnEntity(sessionFactory, randomEntity);
         if (beerEntity.isPresent()) {
             return BeerMapper.MAPPER.mapToGetBeerResponseDTO(beerEntity.get());
         }
@@ -48,12 +47,12 @@ public class BeerQuery {
     @Step("Update Beer record in Postgres with ID: {beer} and Beer: {id}")
     public boolean updateBeerById(BeerEntity beer, long id) {
         beer.setBeerId(id);
-        return HibernateQueryUtil.updateEntityById(sessionFactory, BeerEntity.class, id, beer);
+        return GenericHibernateQuery.updateEntityById(sessionFactory, BeerEntity.class, id, beer);
     }
 
     @Step("Delete Beer record in Postgres with ID: {id}")
     public boolean deleteBeerById(long id) {
-        return HibernateQueryUtil.deleteEntityById(sessionFactory, BeerEntity.class, id);
+        return GenericHibernateQuery.deleteEntityById(sessionFactory, BeerEntity.class, id);
     }
 
     @Step("Find last Beer record Id in Postgres")

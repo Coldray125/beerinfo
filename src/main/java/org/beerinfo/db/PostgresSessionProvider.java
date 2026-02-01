@@ -36,7 +36,8 @@ public class PostgresSessionProvider {
 
         Metadata metadata = addAnnotatedClasses(serviceRegistry);
 
-        SessionFactoryBuilder sessionFactoryBuilder = metadata.getSessionFactoryBuilder();
+        SessionFactoryBuilder sessionFactoryBuilder = metadata.getSessionFactoryBuilder()
+                .applyInterceptor(new LoggingInterceptor());
 
         return sessionFactoryBuilder.build();
     }

@@ -5,7 +5,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.beerinfo.data.entity.BreweryEntity;
 import org.beerinfo.data.entity.JoinedBreweryBeerEntity;
-import org.beerinfo.utils.HibernateQueryUtil;
+import org.beerinfo.db.GenericHibernateQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -21,16 +21,16 @@ public class BreweriesService {
     }
 
     public Optional<List<BreweryEntity>> getAllBreweries() {
-        return HibernateQueryUtil.getAllEntities(sessionFactory, BreweryEntity.class);
+        return GenericHibernateQuery.getAllEntities(sessionFactory, BreweryEntity.class);
     }
 
     public boolean updateBreweryById(BreweryEntity brewery, long id) {
         brewery.setBreweryId(id);
-        return HibernateQueryUtil.updateEntityById(sessionFactory, BreweryEntity.class, id, brewery);
+        return GenericHibernateQuery.updateEntityById(sessionFactory, BreweryEntity.class, id, brewery);
     }
 
     public Optional<JoinedBreweryBeerEntity> getBreweryBeersById(long id) {
-        return HibernateQueryUtil.getEntityByFieldValue(sessionFactory, JoinedBreweryBeerEntity.class, Map.of("breweryId", id));
+        return GenericHibernateQuery.getEntityByFieldValue(sessionFactory, JoinedBreweryBeerEntity.class, Map.of("breweryId", id));
     }
 
     public long getLastBreweryId() {
