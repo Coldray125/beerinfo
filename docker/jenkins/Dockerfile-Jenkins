@@ -6,7 +6,8 @@ USER root
 RUN apk update && \
     apk add tree && \
     apk add --no-cache bash && \
-    apk add --no-cache docker-cli
+    apk add --no-cache docker-cli && \
+    apk add --no-cache fastfetch
 
 # Add alias for bash
 RUN echo "alias ls='ls --color=auto'" > /etc/bash/bashrc

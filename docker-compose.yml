@@ -22,6 +22,7 @@ services:
     networks:
       - beerInfo
     image: postgres:latest
+    container_name: beerinfo-db
     ports:
       - "5432:5432"
     environment:
@@ -41,7 +42,7 @@ services:
   maven:
     networks:
       - beerInfo
-    image: maven:3.9.11-eclipse-temurin-25
+    image: maven:3.9.12-eclipse-temurin-25
     command:
       - /bin/bash
       - -c
@@ -62,7 +63,7 @@ services:
     build:
       context: .  # Use the current directory as the build context (Возможно нужно убрать одну точку)
       dockerfile: docker/jenkins/Dockerfile-Jenkins  # Use the Dockerfile.Jenkins in the current directory
-    container_name: jenkins
+    container_name: beerinfo-jenkins
     user: root
     ports:
       - "8888:8080"
