@@ -1,6 +1,5 @@
 package org.beerinfo.handlers.beer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.openapi.*;
@@ -13,6 +12,7 @@ import org.beerinfo.service.BreweriesService;
 import org.beerinfo.utils.JsonUtils;
 import org.beerinfo.utils.ValidationUtils;
 import org.jetbrains.annotations.NotNull;
+import tools.jackson.core.JacksonException;
 
 import java.util.List;
 import java.util.Map;
@@ -70,7 +70,7 @@ public class AddBeerHandler implements Handler {
 
         try {
             beerCreationDTO = JsonUtils.jsonStringToObject(context.body(), BeerCreationDTO.class);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             respondWithError(context, 400, "Invalid value format in body");
             return;
         }

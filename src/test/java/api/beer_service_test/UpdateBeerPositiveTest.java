@@ -70,6 +70,7 @@ public class UpdateBeerPositiveTest {
 
         step("Validate response JSON against database values");
         Assertions.assertAll(
+                ()-> Assertions.assertTrue(fullResponse.message().contains(String.valueOf(beerEntity.beerId()))),
                 () -> Assertions.assertEquals(response.abv(), beerEntity.abv()),
                 () -> Assertions.assertEquals(response.name(), beerEntity.name()),
                 () -> Assertions.assertEquals(response.ibuNumber(), beerEntity.ibuNumber()),

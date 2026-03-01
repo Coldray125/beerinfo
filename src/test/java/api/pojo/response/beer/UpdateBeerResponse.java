@@ -2,7 +2,6 @@ package api.pojo.response.beer;
 
 public record UpdateBeerResponse(String message, BeerDetails beer) {
     public record BeerDetails(
-            long beerId,
             String abv,
             String ibuNumber,
             String id,
