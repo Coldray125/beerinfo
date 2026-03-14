@@ -1,6 +1,5 @@
 package api.beer_service_test;
 
-import api.extensions.LoggingExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.BeerErrorResponse;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static api.test_utils.RandomValueUtils.randomNegativeLong;
 import static api.test_utils.RandomValueUtils.randomPositiveLong;
@@ -19,7 +17,6 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-@ExtendWith({LoggingExtension.class})
 public class AddBeerNegativeTest {
 
     @RandomBeerPojo

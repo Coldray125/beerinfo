@@ -1,7 +1,6 @@
 package api.beer_service_test;
 
 import api.db_query.BeerQuery;
-import api.extensions.LoggingExtension;
 import api.extensions.annotation.beer.RandomBeerPojo;
 import api.pojo.request.BeerRequestPojo;
 import api.pojo.response.beer.UpdateBeerResponse;
@@ -10,11 +9,9 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-@ExtendWith({LoggingExtension.class})
 public class UpdateBeerPositiveTest {
     private String beerId;
 

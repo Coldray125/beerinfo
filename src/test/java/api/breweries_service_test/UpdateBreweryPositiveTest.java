@@ -1,7 +1,6 @@
 package api.breweries_service_test;
 
 import api.db_query.BreweryQuery;
-import api.extensions.LoggingExtension;
 import api.extensions.annotation.brewery.RandomBreweryPojo;
 import api.pojo.request.BreweryRequestPojo;
 import api.pojo.response.brewery.UpdateBreweryResponse;
@@ -11,13 +10,11 @@ import io.qameta.allure.Story;
 import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.enums.SupportedCountry;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @Story("Brewery_API")
 @Tag("Brewery_API")
-@ExtendWith({LoggingExtension.class})
 public class UpdateBreweryPositiveTest {
 
     private long breweryId;

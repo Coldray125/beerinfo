@@ -2,7 +2,6 @@ package api.beer_service_test;
 
 import api.conversion.BeerConverter;
 import api.db_query.BeerQuery;
-import api.extensions.LoggingExtension;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +21,6 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-@ExtendWith({LoggingExtension.class})
 public class GetAllBeersTest {
 
     @DisplayName("Verify response contains record added to Postgres in GET /beers")

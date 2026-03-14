@@ -1,6 +1,5 @@
 package api.breweries_service_test;
 
-import api.extensions.LoggingExtension;
 import api.request.BreweryRequest;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
@@ -9,14 +8,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static api.test_utils.SchemaPaths.BREWERY_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 
 @Story("Brewery_API")
 @Tag("Brewery_API")
-@ExtendWith({LoggingExtension.class})
 public class GetAllBreweriesTest {
 
     @DisplayName("Verify response JSON Structure for GET /breweries")
