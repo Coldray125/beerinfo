@@ -13,7 +13,6 @@ import org.beerinfo.service.BreweriesService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.beerinfo.utils.ResponseUtil.respondWithError;
 
@@ -44,13 +43,13 @@ public class GetAllBreweriesHandler implements Handler {
 
     @Override
     public void handle(@NotNull Context context) {
-        Optional<List<BreweryEntity>> breweries = breweriesService.getAllBreweries();
+        List<BreweryEntity> breweries = breweriesService.getAllBreweries();
         List<GetBreweryResponseDTO> getBreweryResponseDTO;
 
         if (breweries.isEmpty()) {
             respondWithError(context, 404, "Breweries not found");
         } else {
-            getBreweryResponseDTO = BreweryMapper.MAPPER.mapToGetBeerResponseDTOList(breweries.get());
+            getBreweryResponseDTO = BreweryMapper.MAPPER.mapToGetBeerResponseDTOList(breweries);
             context.status(200);
             context.json(getBreweryResponseDTO);
         }

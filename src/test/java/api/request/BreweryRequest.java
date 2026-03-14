@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.given;
 
 public class BreweryRequest {
     @Step("Request to get all brewery records GET /breweries")
-    public List<?> getBreweriesRequest() {
+    public static List<?> getBreweriesRequest() {
         Response response = given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .basePath("/breweries")
@@ -24,7 +24,7 @@ public class BreweryRequest {
     }
 
     @Step("Request get all brewery records GET /breweries")
-    public Response getBreweriesRequestReturnResponse() {
+    public static Response getBreweriesRequestReturnResponse() {
         return given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .basePath("/breweries")
@@ -34,7 +34,7 @@ public class BreweryRequest {
     }
 
     @Step("Request update brewery record PUT /brewery/{breweryId}")
-    public UpdateBreweryResponse updateBreweryRequest(BreweryRequestPojo breweryObject, String breweryId) {
+    public static UpdateBreweryResponse updateBreweryRequest(BreweryRequestPojo breweryObject, String breweryId) {
         Response response = given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
                 .queryParams("breweryId", breweryId)
@@ -47,7 +47,7 @@ public class BreweryRequest {
     }
 
     @Step("Request update brewery record PUT /brewery/{breweryId}")
-    public Response updateBreweryReturnResponse(BreweryRequestPojo breweryObject, String breweryId) {
+    public static Response updateBreweryReturnResponse(BreweryRequestPojo breweryObject, String breweryId) {
         return given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
                 .queryParam("breweryId", breweryId)

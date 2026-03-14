@@ -15,17 +15,16 @@ import java.util.Map;
 import java.util.Optional;
 
 public class GenericHibernateQuery {
-    public static <Type> Optional<List<Type>> getAllEntities(SessionFactory sessionFactory, Class<Type> entityClass) {
+    public static <Type> List<Type> getAllEntities(SessionFactory sessionFactory, Class<Type> entityClass) {
         var criteria = new CriteriaDefinition<>(sessionFactory, entityClass) {
             {
                 JpaRoot<Type> root = from(entityClass);
                 select(root);
             }
         };
-        List<Type> result = sessionFactory
-                .fromTransaction(session -> session.createSelectionQuery(criteria).getResultList());
 
-        return Optional.of(result);
+        return sessionFactory
+                .fromTransaction(session -> session.createSelectionQuery(criteria).getResultList());
     }
 
     public static <Type> Optional<Type> getEntityByFieldValue(SessionFactory sessionFactory, Class<Type> entityClass,
@@ -41,13 +40,12 @@ public class GenericHibernateQuery {
                 .fromTransaction(session -> session.createSelectionQuery(criteria).uniqueResultOptional());
     }
 
-    public static <Type> Optional<List<Type>> getAllEntityByFieldValue(SessionFactory sessionFactory, Class<Type> entityClass,
+    public static <Type> List<Type> getAllEntityByFieldValue(SessionFactory sessionFactory, Class<Type> entityClass,
                                                                        Map<String, Object> criteriaParameters) {
         return sessionFactory.fromSession(session -> {
             CriteriaQuery<Type> criteriaQuery = createCriteriaQueryWithPredicate(session, entityClass, criteriaParameters);
-            List<Type> result = session.createSelectionQuery(criteriaQuery).getResultList();
 
-            return Optional.ofNullable(result);
+            return session.createSelectionQuery(criteriaQuery).getResultList();
         });
     }
 
@@ -59,7 +57,6 @@ public class GenericHibernateQuery {
         });
     }
 
-    //todo .persist (as update) instead of .merge ?
     public static <Type> boolean updateEntityById(SessionFactory sessionFactory, Class<Type> entityClass, long id, Type updatedEntity) {
         return sessionFactory.fromTransaction(session ->
         {

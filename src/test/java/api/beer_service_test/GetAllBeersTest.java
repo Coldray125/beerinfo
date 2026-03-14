@@ -3,13 +3,11 @@ package api.beer_service_test;
 import api.conversion.BeerConverter;
 import api.db_query.BeerQuery;
 import api.extensions.LoggingExtension;
-import api.extensions.resolver.GenericHttpRequestResolver;
-import api.extensions.resolver.GenericQueryResolver;
 import api.pojo.response.beer.GetBeerResponse;
 import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
-import io.restassured.response.Response;
 import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -26,44 +24,44 @@ import static org.apache.http.HttpStatus.SC_OK;
 @Story("Beer_API")
 @Tag("Beer_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({GenericQueryResolver.class, GenericHttpRequestResolver.class})
 public class GetAllBeersTest {
 
-    private final BeerQuery beerQuery;
-    private final BeerRequest beerRequest;
-
-    public GetAllBeersTest(BeerQuery beerQuery, BeerRequest beerRequest) {
-        this.beerQuery = beerQuery;
-        this.beerRequest = beerRequest;
-    }
-
-    @DisplayName("Verify GET /beers response contains record added to Postgres")
+    @DisplayName("Verify response contains record added to Postgres in GET /beers")
     @Test
     void checkGetAllBeersContainsAddedRecord() {
-        GetBeerResponseDTO entityDTO = beerQuery.addRandomBeerReturnDTO();
-        List<GetBeerResponse> responseList = beerRequest.getBeerRequestReturnList();
+        GetBeerResponseDTO entityDTO = BeerQuery.addRandomBeerReturnDTO();
+        List<GetBeerResponse> responseList = BeerRequest.getBeerRequestReturnList();
 
-        Optional<GetBeerResponse> matchingResponse = responseList.stream()
-                .filter(response -> response.beerId() == entityDTO.beerId())
-                .findFirst();
+        var filteredResponse = Allure.step("Check response contains the added record", () -> {
+            Optional<GetBeerResponse> matchingResponse = responseList.stream()
+                    .filter(response -> response.beerId() == entityDTO.beerId())
+                    .findFirst();
 
-        Assertions.assertTrue(matchingResponse.isPresent());
+            Assertions.assertTrue(matchingResponse.isPresent(), "Record should exist in the response");
+            return matchingResponse.get();
+        });
 
-        GetBeerResponseDTO responseDTO = BeerConverter.MAPPER.convertToGetBeerResponseDTO(matchingResponse.get());
-        Assertions.assertEquals(entityDTO, responseDTO, "Response contains the record added to Postgres");
+        var responseDTO = BeerConverter.MAPPER.convertToGetBeerResponseDTO(filteredResponse);
+
+        Allure.step("Verify response record matches database", () ->
+                Assertions.assertEquals(entityDTO, responseDTO, "Response record should match database"));
     }
 
-    @DisplayName("Verify GET /beers Response JSON Structure")
+    @DisplayName("Verify response JSON structure in GET /beers ")
     @Test
     void checkGetAllBeersResponseStructure() {
-        Response response = beerRequest.getBeerRequestReturnResponse();
-        ResponseValidator.assertResponseMatchesSchema(response, BEER_ARRAY.getPath());
+        var response = BeerRequest.getBeerRequestReturnResponse();
+
+        Allure.step("Validate response JSON structure", () ->
+                ResponseValidator.assertResponseMatchesSchema(response, BEER_ARRAY.getPath()));
     }
 
-    @DisplayName("Ensure GET /beers Response Code")
+    @DisplayName("Verify response code for GET /beers")
     @Test
     void checkGetAllBeersStatusCode() {
-        Response response = beerRequest.getBeerRequestReturnResponse();
-        Assertions.assertEquals(SC_OK, response.getStatusCode());
+        var response = BeerRequest.getBeerRequestReturnResponse();
+
+        Allure.step("Check response status code", () ->
+                Assertions.assertEquals(SC_OK, response.getStatusCode()));
     }
 }

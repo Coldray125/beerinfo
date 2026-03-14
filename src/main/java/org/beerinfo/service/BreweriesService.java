@@ -6,7 +6,6 @@ import jakarta.persistence.criteria.Root;
 import org.beerinfo.data.entity.BreweryEntity;
 import org.beerinfo.data.entity.JoinedBreweryBeerEntity;
 import org.beerinfo.db.GenericHibernateQuery;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class BreweriesService {
         this.sessionFactory = sessionFactory;
     }
 
-    public Optional<List<BreweryEntity>> getAllBreweries() {
+    public List<BreweryEntity> getAllBreweries() {
         return GenericHibernateQuery.getAllEntities(sessionFactory, BreweryEntity.class);
     }
 
@@ -33,19 +32,17 @@ public class BreweriesService {
         return GenericHibernateQuery.getEntityByFieldValue(sessionFactory, JoinedBreweryBeerEntity.class, Map.of("breweryId", id));
     }
 
+    /// Returns 0 if brewery table is empty.
     public long getLastBreweryId() {
-        try (Session session = sessionFactory.openSession()) {
+       return sessionFactory.fromSession(session -> {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
             Root<BreweryEntity> root = criteriaQuery.from(BreweryEntity.class);
 
             criteriaQuery.select(criteriaBuilder.max(root.get("breweryId")));
 
-            Long lastBreweryId = session.createQuery(criteriaQuery).uniqueResult();
-            return lastBreweryId != null ? lastBreweryId : 0L; // Return 0 if the table is empty.
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0L; // Return 0 in case of any errors.
-        }
+           Long lastBreweryId = session.createQuery(criteriaQuery).uniqueResult();
+           return lastBreweryId != null ? lastBreweryId : 0L;
+        });
     }
 }

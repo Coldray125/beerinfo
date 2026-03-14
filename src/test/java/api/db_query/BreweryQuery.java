@@ -5,22 +5,20 @@ import io.qameta.allure.Step;
 import jakarta.persistence.PersistenceException;
 import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.data.entity.BreweryEntity;
-import org.beerinfo.mapper.BreweryMapper;
 import org.beerinfo.db.GenericHibernateQuery;
+import org.beerinfo.db.PostgresSessionProvider;
+import org.beerinfo.mapper.BreweryMapper;
 import org.hibernate.SessionFactory;
 
 import java.util.Map;
 import java.util.Optional;
 
 public class BreweryQuery {
-    private final SessionFactory sessionFactory;
+    private static final SessionFactory sessionFactory = PostgresSessionProvider.getBeerInfoSessionFactory();
 
-    public BreweryQuery(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Step("Get Brewery from Postgres with ID: {id}")
-    public GetBreweryResponseDTO getBreweryById(long id) {
+    public static GetBreweryResponseDTO getBreweryById(long id) {
         Optional<BreweryEntity> breweryEntity = GenericHibernateQuery.getEntityByFieldValue(
                 sessionFactory, BreweryEntity.class, Map.of("breweryId", id));
         if (breweryEntity.isPresent()) {
@@ -30,7 +28,7 @@ public class BreweryQuery {
     }
 
     @Step("Add Brewery record to Postgres")
-    public long addRandomBreweryReturnId() {
+    public static long addRandomBreweryReturnId() {
         var breweryEntity = BreweryObjectGenerator.generateRandomBreweryEntity();
         Optional<BreweryEntity> beerEntity = GenericHibernateQuery.addEntityReturnEntity(sessionFactory, breweryEntity);
         if (beerEntity.isPresent()) {

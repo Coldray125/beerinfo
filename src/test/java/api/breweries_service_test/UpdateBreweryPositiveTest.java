@@ -3,11 +3,10 @@ package api.breweries_service_test;
 import api.db_query.BreweryQuery;
 import api.extensions.LoggingExtension;
 import api.extensions.annotation.brewery.RandomBreweryPojo;
-import api.extensions.resolver.GenericHttpRequestResolver;
-import api.extensions.resolver.GenericQueryResolver;
 import api.pojo.request.BreweryRequestPojo;
 import api.pojo.response.brewery.UpdateBreweryResponse;
 import api.request.BreweryRequest;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.enums.SupportedCountry;
@@ -19,16 +18,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 @Story("Brewery_API")
 @Tag("Brewery_API")
 @ExtendWith({LoggingExtension.class})
-@ExtendWith({GenericHttpRequestResolver.class, GenericQueryResolver.class})
 public class UpdateBreweryPositiveTest {
 
-    public UpdateBreweryPositiveTest(BreweryQuery breweryQuery, BreweryRequest breweryRequest) {
-        this.breweryQuery = breweryQuery;
-        this.breweryRequest = breweryRequest;
-    }
-
-    private final BreweryQuery breweryQuery;
-    private final BreweryRequest breweryRequest;
     private long breweryId;
 
     @RandomBreweryPojo
@@ -36,41 +27,48 @@ public class UpdateBreweryPositiveTest {
 
     @BeforeEach
     void createBeerEntityInDB() {
-        breweryId = breweryQuery.addRandomBreweryReturnId();
+        breweryId = BreweryQuery.addRandomBreweryReturnId();
     }
 
-    @DisplayName("Verify Data in PUT /brewery/{id} Response and Request")
+    @DisplayName("Verify response data matches request for PUT /brewery/{breweryId}")
     @Test
     void checkUpdateBreweryResponseData() {
-        UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
+        UpdateBreweryResponse fullResponse = BreweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
         UpdateBreweryResponse.BreweryDetails responseObject = fullResponse.brewery();
-        Assertions.assertAll(
+
+        Allure.step("Check response fields match request data", () -> Assertions.assertAll(
                 () -> Assertions.assertEquals(request.getName(), responseObject.name()),
                 () -> Assertions.assertEquals(request.getCity(), responseObject.city()),
                 () -> Assertions.assertEquals(request.getState(), responseObject.state()),
-                () -> Assertions.assertEquals(request.getCountry(), responseObject.country()));
+                () -> Assertions.assertEquals(request.getCountry(), responseObject.country())
+        ));
     }
 
-    @DisplayName("Ensure POST /brewery Response Message")
+    @DisplayName("Verify response message for successful PUT /brewery/{breweryId}")
     @Test
     void checkUpdateBreweryResponseText() {
-        UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
+        UpdateBreweryResponse fullResponse = BreweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
         String expectedMessage = String.format("Brewery with id: %s was updated.", breweryId);
-        Assertions.assertEquals(expectedMessage, fullResponse.message());
+
+        Allure.step("Check response message indicates successful update", () ->
+                Assertions.assertEquals(expectedMessage, fullResponse.message()));
     }
 
-    @DisplayName("Verify Data Update in Database with valid Country POST /brewery")
+    @DisplayName("Verify database data update with valid country for PUT /brewery/{breweryId}")
     @ParameterizedTest
     @EnumSource(SupportedCountry.class)
     void checkUpdateBreweryWithValidCountry(SupportedCountry country) {
         request.setCountry(country.getCountryName());
-        UpdateBreweryResponse fullResponse = breweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
+        UpdateBreweryResponse fullResponse = BreweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
         UpdateBreweryResponse.BreweryDetails updateResponse = fullResponse.brewery();
-        GetBreweryResponseDTO entity = breweryQuery.getBreweryById(breweryId);
-        Assertions.assertAll(
+
+        GetBreweryResponseDTO entity = BreweryQuery.getBreweryById(breweryId);
+
+        Allure.step("Check response fields match database values", () -> Assertions.assertAll(
                 () -> Assertions.assertEquals(updateResponse.name(), entity.name()),
                 () -> Assertions.assertEquals(updateResponse.city(), entity.city()),
                 () -> Assertions.assertEquals(updateResponse.state(), entity.state()),
-                () -> Assertions.assertEquals(updateResponse.country(), entity.country()));
+                () -> Assertions.assertEquals(updateResponse.country(), entity.country())
+        ));
     }
 }

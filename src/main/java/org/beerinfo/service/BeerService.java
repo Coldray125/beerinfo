@@ -16,7 +16,7 @@ public class BeerService {
         this.sessionFactory = sessionFactory;
     }
 
-    public Optional<List<BeerEntity>> getAllBeers() {
+    public List<BeerEntity> getAllBeers() {
         return GenericHibernateQuery.getAllEntities(sessionFactory, BeerEntity.class);
     }
 

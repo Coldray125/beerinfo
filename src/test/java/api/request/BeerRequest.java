@@ -12,9 +12,9 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class BeerRequest {
+public final class BeerRequest {
     @Step("Request to get all beer records GET /beers")
-    public List<GetBeerResponse> getBeerRequestReturnList() {
+    public static List<GetBeerResponse> getBeerRequestReturnList() {
         Response response = given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .basePath("/beers")
@@ -25,7 +25,7 @@ public class BeerRequest {
     }
 
     @Step("Request to get all beer records GET /beers")
-    public Response getBeerRequestReturnResponse() {
+    public static Response getBeerRequestReturnResponse() {
         return given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .basePath("/beers")
@@ -35,7 +35,7 @@ public class BeerRequest {
     }
 
     @Step("Request to get beer record by id GET /beer/(beerId)")
-    public GetBeerResponse getBeerByIdRequest(String beerId) {
+    public static GetBeerResponse getBeerByIdRequest(String beerId) {
         Response response = given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .queryParam("beerId", beerId)
@@ -48,7 +48,7 @@ public class BeerRequest {
     }
 
     @Step("Request to get beer record by id GET /beer/(beerId)")
-    public Response getBeerByIdRequestReturnResponse(String beerId) {
+    public static Response getBeerByIdRequestReturnResponse(String beerId) {
         return given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .queryParam("beerId", beerId)
@@ -59,7 +59,7 @@ public class BeerRequest {
     }
 
     @Step("Request to add a new beer record POST /beer")
-    public Response addBeerRequestReturnResponse(BeerRequestPojo beerObject) {
+    public static Response addBeerRequestReturnResponse(BeerRequestPojo beerObject) {
         return given()
                 .spec(ApiRequestSpecification.postRequestSpecification())
                 .body(beerObject)
@@ -70,7 +70,7 @@ public class BeerRequest {
     }
 
     @Step("Request to add a new beer record POST /beer")
-    public AddBeerResponse addBeerRequest(BeerRequestPojo beerObject) {
+    public static AddBeerResponse addBeerRequest(BeerRequestPojo beerObject) {
         Response response = given()
                 .spec(ApiRequestSpecification.postRequestSpecification())
                 .body(beerObject)
@@ -83,7 +83,7 @@ public class BeerRequest {
     }
 
     @Step("Request to update beer record PUT /beer/(beerId)")
-    public UpdateBeerResponse updateBeerRequest(BeerRequestPojo beerObject, String idNumber) {
+    public static UpdateBeerResponse updateBeerRequest(BeerRequestPojo beerObject, String idNumber) {
         Response response = given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
                 .queryParams("beerId", idNumber)
@@ -96,7 +96,7 @@ public class BeerRequest {
     }
 
     @Step("Request to delete beer record DELETE /beer/(beerId)")
-    public Response deleteBeerRequestReturnResponse(String beerId) {
+    public static Response deleteBeerRequestReturnResponse(String beerId) {
         return given()
                 .spec(ApiRequestSpecification.deleteRequestSpecification())
                 .queryParam("beerId", beerId)
