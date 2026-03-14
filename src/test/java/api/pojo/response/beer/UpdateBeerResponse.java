@@ -7,7 +7,7 @@ public record UpdateBeerResponse(String message, BeerDetails beer) {
             String id,
             String name,
             String style,
-            int breweryId,
+            long breweryId,
             String ounces
     ) {
     }

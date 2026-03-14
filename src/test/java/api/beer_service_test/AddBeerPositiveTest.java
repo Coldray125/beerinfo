@@ -8,17 +8,18 @@ import api.request.BeerRequest;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static api.test_utils.SchemaPaths.ADD_BEER_RESPONSE;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-public class AddBeerPositiveTest {
+class AddBeerPositiveTest {
 
     @RandomBeerPojo
     private BeerRequestPojo request;
@@ -30,15 +31,15 @@ public class AddBeerPositiveTest {
         AddBeerResponse.BeerDetails responseObject = response.beer();
         var beerEntity = BeerQuery.getBeerById(responseObject.beerId());
 
-        Allure.step("Verify response fields against database values", () -> Assertions.assertAll(
-                () -> Assertions.assertEquals(responseObject.beerId(), beerEntity.getBeerId()),
-                () -> Assertions.assertEquals(responseObject.abv(), beerEntity.getAbv()),
-                () -> Assertions.assertEquals(responseObject.name(), beerEntity.getName()),
-                () -> Assertions.assertEquals(responseObject.ibuNumber(), beerEntity.getIbuNumber()),
-                () -> Assertions.assertEquals(responseObject.style(), beerEntity.getStyle()),
-                () -> Assertions.assertEquals(responseObject.breweryId(), beerEntity.getBreweryId()),
-                () -> Assertions.assertEquals(responseObject.ounces(), beerEntity.getOunces())
-        ));
+        Allure.step("Verify response fields against database values", () -> assertSoftly(softly -> {
+            softly.assertThat(beerEntity.getBeerId()).as("beer_id").isEqualTo(responseObject.beerId());
+            softly.assertThat(beerEntity.getAbv()).as("abv").isEqualTo(responseObject.abv());
+            softly.assertThat(beerEntity.getName()).as("name").isEqualTo(responseObject.name());
+            softly.assertThat(beerEntity.getIbuNumber()).as("ibu_number").isEqualTo(responseObject.ibuNumber());
+            softly.assertThat(beerEntity.getStyle()).as("style").isEqualTo(responseObject.style());
+            softly.assertThat(beerEntity.getBreweryId()).as("brewery_id").isEqualTo(responseObject.breweryId());
+            softly.assertThat(beerEntity.getOunces()).as("ounces").isEqualTo(responseObject.ounces());
+        }));
     }
 
     @DisplayName("Verify response message for POST /beer")
@@ -47,11 +48,11 @@ public class AddBeerPositiveTest {
         var response = BeerRequest.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_OK, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_OK));
 
         Allure.step("Check response message", () -> {
             String responseText = response.body().path("message");
-            Assertions.assertEquals("Beer added successfully.", responseText);
+            assertThat(responseText).isEqualTo("Beer added successfully.");
         });
     }
 
@@ -70,12 +71,13 @@ public class AddBeerPositiveTest {
         AddBeerResponse fullResponse = BeerRequest.addBeerRequest(request);
         AddBeerResponse.BeerDetails responseObject = fullResponse.beer();
 
-        Allure.step("Check response fields against request values", () -> Assertions.assertAll(
-                () -> Assertions.assertEquals(request.getAbv(), responseObject.abv()),
-                () -> Assertions.assertEquals(request.getName(), responseObject.name()),
-                () -> Assertions.assertEquals(request.getIbuNumber(), responseObject.ibuNumber()),
-                () -> Assertions.assertEquals(request.getStyle(), responseObject.style()),
-                () -> Assertions.assertEquals(request.getBreweryId(), responseObject.breweryId()),
-                () -> Assertions.assertEquals(request.getOunces(), responseObject.ounces())));
+        Allure.step("Check response fields against request values", () -> assertSoftly(softly -> {
+            softly.assertThat(responseObject.abv()).as("abv").isEqualTo(responseObject.abv());
+            softly.assertThat(responseObject.name()).as("name").isEqualTo(responseObject.name());
+            softly.assertThat(responseObject.ibuNumber()).as("ibu_number").isEqualTo(responseObject.ibuNumber());
+            softly.assertThat(responseObject.style()).as("style").isEqualTo(responseObject.style());
+            softly.assertThat(responseObject.breweryId()).as("brewery_id").isEqualTo(responseObject.breweryId());
+            softly.assertThat(responseObject.ounces()).as("ounces").isEqualTo(responseObject.ounces());
+        }));
     }
 }

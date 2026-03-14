@@ -8,7 +8,6 @@ import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,10 +17,11 @@ import java.util.Optional;
 
 import static api.test_utils.SchemaPaths.BEER_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-public class GetAllBeersTest {
+class GetAllBeersTest {
 
     @DisplayName("Verify response contains record added to Postgres in GET /beers")
     @Test
@@ -34,14 +34,14 @@ public class GetAllBeersTest {
                     .filter(response -> response.beerId() == entityDTO.beerId())
                     .findFirst();
 
-            Assertions.assertTrue(matchingResponse.isPresent(), "Record should exist in the response");
+            assertThat(matchingResponse.isPresent()).as("Record should exist in the response").isTrue();
             return matchingResponse.get();
         });
 
         var responseDTO = BeerConverter.MAPPER.convertToGetBeerResponseDTO(filteredResponse);
 
         Allure.step("Verify response record matches database", () ->
-                Assertions.assertEquals(entityDTO, responseDTO, "Response record should match database"));
+                assertThat(responseDTO).as("Response record should match database").isEqualTo(entityDTO));
     }
 
     @DisplayName("Verify response JSON structure in GET /beers ")
@@ -59,6 +59,6 @@ public class GetAllBeersTest {
         var response = BeerRequest.getBeerRequestReturnResponse();
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_OK, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_OK));
     }
 }

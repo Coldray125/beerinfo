@@ -6,7 +6,6 @@ import api.test_utils.RandomValueUtils;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -18,10 +17,11 @@ import java.util.stream.Stream;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-public class GetBeerByIdNegativeTest {
+class GetBeerByIdNegativeTest {
 
     @DisplayName("Error: Retrieve Nonexistent Beer by ID in GET /beer/(beerId)")
     @Test
@@ -30,12 +30,12 @@ public class GetBeerByIdNegativeTest {
         var response = BeerRequest.getBeerByIdRequestReturnResponse(String.valueOf(lastBeerId));
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_NOT_FOUND, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_NOT_FOUND));
 
         Allure.step("Check error message for nonexistent ID", () -> {
             String actualResponse = response.body().jsonPath().get("error");
             String expectedResponse = "Beer with id: " + (lastBeerId) + " not found";
-            Assertions.assertEquals(expectedResponse, actualResponse);
+            assertThat(actualResponse).isEqualTo(expectedResponse);
         });
     }
 
@@ -53,11 +53,11 @@ public class GetBeerByIdNegativeTest {
         Response response = BeerRequest.getBeerByIdRequestReturnResponse(beerId);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
 
         Allure.step("Check error message for invalid ID format", () -> {
             String actualResponse = response.body().jsonPath().get("error");
-            Assertions.assertEquals(expectedResponse, actualResponse);
+            assertThat(actualResponse).isEqualTo(expectedResponse);
         });
     }
 }

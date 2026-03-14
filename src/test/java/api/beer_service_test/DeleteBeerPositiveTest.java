@@ -6,13 +6,17 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-public class DeleteBeerPositiveTest {
+class DeleteBeerPositiveTest {
     private String beerId;
 
     @BeforeEach
@@ -27,12 +31,12 @@ public class DeleteBeerPositiveTest {
         Response response = BeerRequest.deleteBeerRequestReturnResponse(beerId);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_OK, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_OK));
 
         Allure.step("Check response message indicates deletion", () -> {
             String expectedText = "Beer with id: " + beerId + " was deleted";
             String responseText = response.body().path("message");
-            Assertions.assertEquals(expectedText, responseText);
+            assertThat(responseText).isEqualTo(expectedText);
         });
     }
 }

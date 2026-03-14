@@ -4,17 +4,17 @@ import api.request.BreweryRequest;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static api.test_utils.SchemaPaths.BREWERY_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Story("Brewery_API")
 @Tag("Brewery_API")
-public class GetAllBreweriesTest {
+class GetAllBreweriesTest {
 
     @DisplayName("Verify response JSON Structure for GET /breweries")
     @Test
@@ -31,6 +31,6 @@ public class GetAllBreweriesTest {
         var response = BreweryRequest.getBreweriesRequestReturnResponse();
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_OK, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_OK));
     }
 }

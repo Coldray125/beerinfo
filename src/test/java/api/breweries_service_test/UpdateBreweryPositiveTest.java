@@ -9,13 +9,19 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
 import org.beerinfo.enums.SupportedCountry;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
 @Story("Brewery_API")
 @Tag("Brewery_API")
-public class UpdateBreweryPositiveTest {
+class UpdateBreweryPositiveTest {
 
     private long breweryId;
 
@@ -33,12 +39,12 @@ public class UpdateBreweryPositiveTest {
         UpdateBreweryResponse fullResponse = BreweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
         UpdateBreweryResponse.BreweryDetails responseObject = fullResponse.brewery();
 
-        Allure.step("Check response fields match request data", () -> Assertions.assertAll(
-                () -> Assertions.assertEquals(request.getName(), responseObject.name()),
-                () -> Assertions.assertEquals(request.getCity(), responseObject.city()),
-                () -> Assertions.assertEquals(request.getState(), responseObject.state()),
-                () -> Assertions.assertEquals(request.getCountry(), responseObject.country())
-        ));
+        Allure.step("Check response fields match request data", () -> assertSoftly(softly -> {
+            softly.assertThat(responseObject.name()).as("name").isEqualTo(request.getName());
+            softly.assertThat(responseObject.city()).as("city").isEqualTo(request.getCity());
+            softly.assertThat(responseObject.state()).as("state").isEqualTo(request.getState());
+            softly.assertThat(responseObject.country()).as("country").isEqualTo(request.getCountry());
+        }));
     }
 
     @DisplayName("Verify response message for successful PUT /brewery/{breweryId}")
@@ -48,7 +54,7 @@ public class UpdateBreweryPositiveTest {
         String expectedMessage = String.format("Brewery with id: %s was updated.", breweryId);
 
         Allure.step("Check response message indicates successful update", () ->
-                Assertions.assertEquals(expectedMessage, fullResponse.message()));
+                assertThat(fullResponse.message()).isEqualTo(expectedMessage));
     }
 
     @DisplayName("Verify database data update with valid country for PUT /brewery/{breweryId}")
@@ -61,11 +67,11 @@ public class UpdateBreweryPositiveTest {
 
         GetBreweryResponseDTO entity = BreweryQuery.getBreweryById(breweryId);
 
-        Allure.step("Check response fields match database values", () -> Assertions.assertAll(
-                () -> Assertions.assertEquals(updateResponse.name(), entity.name()),
-                () -> Assertions.assertEquals(updateResponse.city(), entity.city()),
-                () -> Assertions.assertEquals(updateResponse.state(), entity.state()),
-                () -> Assertions.assertEquals(updateResponse.country(), entity.country())
-        ));
+        Allure.step("Check response fields match database values", () -> assertSoftly(softly -> {
+            softly.assertThat(updateResponse.name()).as("name").isEqualTo(entity.name());
+            softly.assertThat(updateResponse.city()).as("city").isEqualTo(entity.city());
+            softly.assertThat(updateResponse.state()).as("state").isEqualTo(entity.state());
+            softly.assertThat(updateResponse.country()).as("country").isEqualTo(entity.country());
+        }));
     }
 }

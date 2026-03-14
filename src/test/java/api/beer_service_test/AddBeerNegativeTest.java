@@ -6,7 +6,6 @@ import api.pojo.response.beer.BeerErrorResponse;
 import api.request.BeerRequest;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,12 @@ import org.junit.jupiter.api.Test;
 import static api.test_utils.RandomValueUtils.randomNegativeLong;
 import static api.test_utils.RandomValueUtils.randomPositiveLong;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @Story("Beer_API")
 @Tag("Beer_API")
-public class AddBeerNegativeTest {
+class AddBeerNegativeTest {
 
     @RandomBeerPojo
     private BeerRequestPojo request;
@@ -29,11 +30,12 @@ public class AddBeerNegativeTest {
         var response = BeerRequest.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
 
         Allure.step("Check error message for blank name", () -> {
             BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-            Assertions.assertEquals("Name cannot be blank", errorObject.error().getFirst());
+            assertThat(errorObject.error()).as("response errors array").isNotEmpty();
+            assertThat(errorObject.error().getFirst()).isEqualTo("Name cannot be blank");
         });
     }
 
@@ -44,11 +46,12 @@ public class AddBeerNegativeTest {
         var response = BeerRequest.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
 
         Allure.step("Check error message for blank style", () -> {
             BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-            Assertions.assertEquals("Style cannot be blank", errorObject.error().getFirst());
+            assertThat(errorObject.error()).as("response errors array").isNotEmpty();
+            assertThat(errorObject.error().getFirst()).isEqualTo("Style cannot be blank");
         });
     }
 
@@ -59,11 +62,12 @@ public class AddBeerNegativeTest {
         var response = BeerRequest.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
 
         Allure.step("Check error message for missing breweryId", () -> {
             BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-            Assertions.assertEquals("BreweryId cannot be null", errorObject.error().getFirst());
+            assertThat(errorObject.error()).as("response errors array").isNotEmpty();
+            assertThat(errorObject.error().getFirst()).isEqualTo("BreweryId cannot be null");
         });
     }
 
@@ -74,14 +78,12 @@ public class AddBeerNegativeTest {
         var response = BeerRequest.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
 
         Allure.step("Check error message for negative breweryId", () -> {
             BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-            Assertions.assertEquals(
-                    "breweryId must be a positive number and must be at least 1",
-                    errorObject.error().getFirst()
-            );
+            assertThat(errorObject.error()).as("response errors array").isNotEmpty();
+            assertThat(errorObject.error().getFirst()).isEqualTo("breweryId must be a positive number and must be at least 1");
         });
     }
 
@@ -92,11 +94,12 @@ public class AddBeerNegativeTest {
         var response = BeerRequest.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
 
         Allure.step("Check error message for excessive digits in breweryId", () -> {
             BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-            Assertions.assertEquals("breweryId must be at most 99999", errorObject.error().getFirst());
+            assertThat(errorObject.error()).as("response errors array").isNotEmpty();
+            assertThat(errorObject.error().getFirst()).isEqualTo("breweryId must be at most 99999");
         });
     }
 
@@ -110,15 +113,14 @@ public class AddBeerNegativeTest {
         var response = BeerRequest.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                Assertions.assertEquals(SC_BAD_REQUEST, response.getStatusCode()));
+                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
 
-        Allure.step("Check multiple validation error messages", () -> {
-            BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-            Assertions.assertAll(
-                    () -> Assertions.assertTrue(errorObject.error().contains("Name cannot be blank")),
-                    () -> Assertions.assertTrue(errorObject.error().contains("Style cannot be blank")),
-                    () -> Assertions.assertTrue(errorObject.error().contains("BreweryId cannot be null"))
-            );
-        });
+        BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
+
+        Allure.step("Check multiple validation error messages", () -> assertSoftly(softly -> {
+            softly.assertThat(errorObject.error().contains("Name cannot be blank")).isTrue();
+            softly.assertThat(errorObject.error().contains("Style cannot be blank")).isTrue();
+            softly.assertThat(errorObject.error().contains("BreweryId cannot be null")).isTrue();
+        }));
     }
 }
