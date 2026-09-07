@@ -2384,14 +2384,14 @@ INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.0
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.071','60.0','#002 American I.P.A.','American IPA',211,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.0525','','#003 Brown & Robust Porter','American Porter',211,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.048','38.0','#004 Session I.P.A.','American IPA',211,'12.0');
-INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.0594','','Tarasque','Saison / Farmhouse Ale',239,'12.0');
+INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.0594','40','Tarasque','Saison / Farmhouse Ale',239,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.062','61.0','Ananda India Pale Ale','American IPA',239,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.045','23.0','Tiny Bomb','American Pilsner',239,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.0576','72.0','Train Hopper','American IPA',14,'12.0');
-INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.045','','Edward’s Portly Brown','American Brown Ale',14,'12.0');
+INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.045','31','Edward’s Portly Brown','American Brown Ale',14,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.0594','135.0','Troopers Alley IPA','American IPA',344,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.047','15.0','Wolverine Premium Lager','American Pale Lager',402,'12.0');
-INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.05','','Woodchuck Amber Hard Cider','Cider',501,'12.0');
+INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.05','0','Woodchuck Amber Hard Cider','Cider',501,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.065','82.0','4000 Footer IPA','American IPA',109,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.0277','15.0','Summer Brew','American Pilsner',109,'12.0');
 INSERT INTO Beer (abv, ibu_number, name, style, brewery_id, ounces) VALUES ('0.065','69.0','Be Hoppy IPA','American IPA',339,'16.0');

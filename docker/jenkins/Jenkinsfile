@@ -1,0 +1,45 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.9.16-eclipse-temurin-25'
+            // Persist Maven dependencies between builds in a Docker volume.
+            args '-v maven_cache_for_jenkins:/root/.m2'
+        }
+    }
+
+    stages {
+        stage('Environment') {
+            steps {
+                sh '''
+                    java --version
+                    mvn --version
+                    pwd
+                    ls -la
+                '''
+            }
+        }
+
+        stage('Dependencies') {
+            steps {
+                sh 'mvn dependency:go-offline'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'mvn clean test'
+            }
+        }
+
+        stage('Allure Report') {
+            steps {
+                junit 'target/surefire-reports/*.xml'
+                allure(
+                    includeProperties: false,
+                    jdk: '',
+                    results: [[path: 'target/allure-results']]
+                )
+            }
+        }
+    }
+}

@@ -7,6 +7,7 @@ services:
     networks:
       - beerInfo
     image: eclipse-temurin:25-alpine
+    container_name: beerInfo-app
     command: java --enable-preview -jar /app/app.jar
     stdin_open: true   # Keep stdin open for input
     tty: true          # Allocate a pseudo-TTY for interaction
@@ -22,7 +23,7 @@ services:
     networks:
       - beerInfo
     image: postgres:latest
-    container_name: beerinfo-db
+    container_name: beerInfo-db
     ports:
       - "5432:5432"
     environment:
@@ -39,44 +40,26 @@ services:
       timeout: 5s
       retries: 10
 
-  maven:
-    networks:
-      - beerInfo
-    image: maven:3.9.12-eclipse-temurin-25
-    command:
-      - /bin/bash
-      - -c
-      - |
-        mvn dependency:resolve -f /usr/share/maven/ref/pom.xml
-        mvn -version
-        java --version
-        tail -F anything
-    ports:
-      - "8081:8080"
-    volumes:
-      - ./pom.xml:/usr/share/maven/ref/pom.xml
-      - ./src:/usr/share/maven/ref/src/
-
   jenkins:
     networks:
       - beerInfo
     build:
       context: .  # Use the current directory as the build context (Возможно нужно убрать одну точку)
       dockerfile: docker/jenkins/Dockerfile-Jenkins  # Use the Dockerfile.Jenkins in the current directory
-    container_name: beerinfo-jenkins
+    container_name: beerInfo-jenkins
     user: root
     ports:
       - "8888:8080"
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock  # gives access to host Docker daemon
-      #- /usr/bin/docker:/usr/bin/docker            # gives access to Docker CLI
+      - ./src:/var/jenkins_home/workspace/example-pipeline-job/src # mount tests inside jenkins for pipeline
+      - ./pom.xml:/var/jenkins_home/workspace/example-pipeline-job/pom.xml # mount pom inside jenkins for pipeline
     environment:
       - JENKINS_OPTS=--prefix=/
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins-config.yaml
-      #- -Djenkins.security.csrf.DefaultCrumbIssuer.EXCLUDE=true
     restart: always
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://jenkins:8080/login" ]
@@ -87,17 +70,3 @@ services:
 volumes:
   jenkins_home:
   beerinfo_db_data:
-  #pgadmin_data:
-
-  # pgadmin:
-  #   image: dpage/pgadmin4:latest
-  #   ports:
-  #     - "5050:80"
-  #   volumes:
-  #     - pgadmin_data:/var/lib/pgadmin
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=ya@ya.ru
-  #     - PGADMIN_DEFAULT_PASSWORD=password
-  #     - PGADMIN_CONFIG_SERVER_MODE=False
-  #     - PGADMIN_CONFIG_MAX_LOGIN_ATTEMPTS=0
-  #     - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False

@@ -1,114 +1,46 @@
-configuration-as-code: {
-}
-jenkins:
-  crumbIssuer:
-    standard:
-      excludeClientIPFromCrumb: false
-  disableRememberMe: false
-  labelAtoms:
-    - name: "built-in"
-  log: {
-  }
-  markupFormatter: "plainText"
-  mode: NORMAL
-  nodeMonitors:
-    - "architecture"
-    - "clock"
-    - diskSpace:
-        freeSpaceThreshold: "1GiB"
-        freeSpaceWarningThreshold: "2GiB"
-    - "swapSpace"
-    - tmpSpace:
-        freeSpaceThreshold: "1GiB"
-        freeSpaceWarningThreshold: "2GiB"
-    - "responseTime"
-  numExecutors: 2
-  primaryView:
-    all:
-      name: "all"
-  projectNamingStrategy: "standard"
-  quietPeriod: 5
-  scmCheckoutRetryCount: 0
-  slaveAgentPort: 50000
-  updateCenter:
-    sites:
-      - id: "default"
-        url: "https://updates.jenkins.io/update-center.json"
-  views:
-    - all:
-        name: "all"
-  viewsTabBar: "standard"
+# ----------------------------------------------------------------------
+# JCasC Configuration File
+# ----------------------------------------------------------------------
+
+## 🎨 Appearance Configuration (dark-theme)
 appearance:
-  consoleUrlProvider: {
-  }
+  consoleUrlProvider: { }
   prism:
-    theme: TWILIGHT
+    theme: PRISM
   themeManager:
     disableUserThemes: false
     theme: "dark"
-security:
-  apiToken:
-    creationOfLegacyTokenEnabled: false
-    tokenGenerationOnCreationEnabled: false
-    usageStatisticsEnabled: true
-  crumb: {
-  }
-  prism: {
-  }
-  queueItemAuthenticator: {
-  }
-  scriptApproval:
-    forceSandbox: false
-  updateSiteWarningsConfiguration: {
-  }
+
+## ⏱️ Timestamper Configuration
 unclassified:
-  administrativeMonitorsConfiguration: {
-  }
-  artifactManager: {
-  }
-  buildDiscarders:
-    configuredBuildDiscarders:
-      - "jobBuildDiscarder"
-  casCGlobalConfig: {
-  }
-  computerRetentionCheckInterval: {
-  }
-  defaultView: {
-  }
-  envVarsFilter: {
-  }
-  fingerprints:
-    fingerprintCleanupDisabled: false
-    storage: "file"
-  globalDefaultFlowDurabilityLevel: {
-  }
-  location:
-    adminAddress: "адрес еще не настроен <nobody@nowhere>"
-  myView: {
-  }
-  nodeProperties: {
-  }
-  plugin: {
-  }
-  pollSCM:
-    pollingThreadCount: 10
-  projectNamingStrategy: {
-  }
-  proxyConfigurationManager: {
-  }
-  quietPeriod: {
-  }
-  resourceRoot: {
-  }
-  scmRetryCount: {
-  }
-  shell: {
-  }
-  usageStatistics: {
-  }
-  viewsTabBar: {
-  }
+  timestamper:
+    allPipelines: true
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+
 tool:
+  allure:
+    installations:
+      - name: "AllureFromMavenCentral"
+        properties:
+          - installSource:
+              installers:
+                - allureCommandlineInstaller:
+                    id: "2.43.0"
+  allure3:
+    installations:
+      - name: "Allure 3"
   mavenGlobalConfig:
     globalSettingsProvider: "standard"
     settingsProvider: "standard"
+
+## 🛠️ Job Configuration (configuration-as-code-groovy-plugin)
+jobs:
+    - script: |
+          pipelineJob('example-pipeline-job') {
+            definition {
+              cps {
+                script(new File('/var/jenkins_home/casc_configs/Jenkinsfile').text)
+              }
+            }
+          }
