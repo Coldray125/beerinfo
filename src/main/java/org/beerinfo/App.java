@@ -3,6 +3,7 @@ package org.beerinfo;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.ApiBuilder;
 import io.javalin.http.HttpResponseException;
+import io.javalin.json.JavalinJackson3;
 import lombok.extern.slf4j.Slf4j;
 import org.beerinfo.handlers.beer.*;
 import org.beerinfo.handlers.brewery.GetAllBreweriesHandler;
@@ -32,6 +33,9 @@ public class App {
                 log.error("Unexpected server error at {} {}", ctx.method(), ctx.path(), e);
                 respondWithInternalServerError(ctx);
             });
+
+            //Use until Javalin version 8
+            config.jsonMapper(new JavalinJackson3());
 
             config.routes.exception(HttpResponseException.class, new WrongEndpointHandler());
 
