@@ -1,7 +1,7 @@
 package api.beer_service_test;
 
 import api.db_query.BeerQuery;
-import api.request.BeerRequest;
+import api.api.BeerApiRequests;
 import api.test_utils.RandomValueUtils;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
@@ -27,7 +27,7 @@ class GetBeerByIdNegativeTest {
     @Test
     void checkBeerByIdWrongIdResponseMessage() {
         long lastBeerId = BeerQuery.getLastBeerId() + 1000;
-        var response = BeerRequest.getBeerByIdRequestReturnResponse(String.valueOf(lastBeerId));
+        var response = BeerApiRequests.getBeerByIdRequestReturnResponse(String.valueOf(lastBeerId));
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_NOT_FOUND));
@@ -47,10 +47,10 @@ class GetBeerByIdNegativeTest {
     }
 
     @DisplayName("Error: Retrieve Beer with Invalid ID Format in GET /beer/(beerId)")
-    @ParameterizedTest
+    @ParameterizedTest(name = "Invalid beerId: {0} -> expected response: {1}")
     @MethodSource("nonValidIdProvider")
     void checkBeerByIdWrongFormatIdResponseMessage(String beerId, String expectedResponse) {
-        Response response = BeerRequest.getBeerByIdRequestReturnResponse(beerId);
+        Response response = BeerApiRequests.getBeerByIdRequestReturnResponse(beerId);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));

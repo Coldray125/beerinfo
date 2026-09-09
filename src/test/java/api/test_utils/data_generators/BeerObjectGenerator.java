@@ -1,6 +1,6 @@
 package api.test_utils.data_generators;
 
-import api.pojo.request.BeerRequestPojo;
+import api.test_data.request.BeerRequest;
 import io.qameta.allure.Step;
 import org.beerinfo.data.entity.BeerEntity;
 
@@ -21,8 +21,8 @@ public class BeerObjectGenerator {
     }
 
     @Step("Generate Beer object with random properties")
-    public static BeerRequestPojo generateRandomBeerPojo() {
-        return BeerRequestPojo.builder()
+    public static BeerRequest generateRandomBeerRequest() {
+        return BeerRequest.builder()
                 .abv(randomStringDigits(2))
                 .ibuNumber(randomStringDigits(2))
                 .name(randomBeerName())

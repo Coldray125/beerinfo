@@ -7,8 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/// Annotation for random test data generation for non-static BreweryRequestData fields.
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@ExtendWith(RandomBreweryRequestPojoExtension.class)
-public @interface RandomBreweryPojo {
+@ExtendWith(RandomBreweryRequestDataExtension.class)
+public @interface RandomBreweryData {
 }

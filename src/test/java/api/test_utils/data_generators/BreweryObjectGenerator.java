@@ -1,6 +1,6 @@
 package api.test_utils.data_generators;
 
-import api.pojo.request.BreweryRequestPojo;
+import api.test_data.request.BreweryRequest;
 import io.qameta.allure.Step;
 import org.beerinfo.data.entity.BreweryEntity;
 
@@ -19,8 +19,8 @@ public class BreweryObjectGenerator {
     }
 
     @Step("Generate Brewery object with random properties")
-    public static BreweryRequestPojo generateRandomBreweryPojo() {
-        return BreweryRequestPojo.builder()
+    public static BreweryRequest generateRandomBreweryRequest() {
+        return BreweryRequest.builder()
                 .name(randomBeerName())
                 .city(randomCity())
                 .state(randomState())

@@ -1,10 +1,10 @@
 package api.beer_service_test;
 
 import api.db_query.BeerQuery;
-import api.extensions.annotation.beer.RandomBeerPojo;
-import api.pojo.request.BeerRequestPojo;
-import api.pojo.response.beer.AddBeerResponse;
-import api.request.BeerRequest;
+import api.extensions.annotation.beer.RandomBeerData;
+import api.test_data.request.BeerRequest;
+import api.test_data.response.beer.AddBeerResponse;
+import api.api.BeerApiRequests;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
@@ -21,17 +21,17 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @Tag("Beer_API")
 class AddBeerPositiveTest {
 
-    @RandomBeerPojo
-    private BeerRequestPojo request;
+    @RandomBeerData
+    private BeerRequest request;
 
     @DisplayName("Verify response data for POST /beer")
     @Test
     void checkAddBeerWriteInDatabase() {
-        var response = BeerRequest.addBeerRequest(request);
-        AddBeerResponse.BeerDetails responseObject = response.beer();
+        var fullResponse = BeerApiRequests.addBeerRequest(request);
+        AddBeerResponse.BeerDetails responseObject = fullResponse.beer();
         var beerEntity = BeerQuery.getBeerById(responseObject.beerId());
 
-        Allure.step("Verify response fields against database values", () -> assertSoftly(softly -> {
+        Allure.step("Verify fullResponse fields against database values", () -> assertSoftly(softly -> {
             softly.assertThat(beerEntity.getBeerId()).as("beer_id").isEqualTo(responseObject.beerId());
             softly.assertThat(beerEntity.getAbv()).as("abv").isEqualTo(responseObject.abv());
             softly.assertThat(beerEntity.getName()).as("name").isEqualTo(responseObject.name());
@@ -45,7 +45,7 @@ class AddBeerPositiveTest {
     @DisplayName("Verify response message for POST /beer")
     @Test
     void checkAddBeerResponseText() {
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_OK));
@@ -59,7 +59,7 @@ class AddBeerPositiveTest {
     @DisplayName("Validate Response JSON Structure for POST /beer")
     @Test
     void checkAddBeerResponseStructure() {
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Validate response JSON structure", () ->
                 ResponseValidator.assertResponseMatchesSchema(response, ADD_BEER_RESPONSE.getPath()));
@@ -68,7 +68,7 @@ class AddBeerPositiveTest {
     @DisplayName("Verify data in response after request POST /beer")
     @Test
     void checkValuesAddBeerResponse() {
-        AddBeerResponse fullResponse = BeerRequest.addBeerRequest(request);
+        var fullResponse = BeerApiRequests.addBeerRequest(request);
         AddBeerResponse.BeerDetails responseObject = fullResponse.beer();
 
         Allure.step("Check response fields against request values", () -> assertSoftly(softly -> {

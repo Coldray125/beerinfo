@@ -9,7 +9,7 @@
             <level>TRACE</level>
         </filter>
         <encoder>
-            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%cyan(%-5level)] [%white(%class{36}.%M)] - %cyan(%msg%n%ex{full})
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%cyan(%-5level)] [%white(%class{0}.%M)] - %cyan(%msg%n%ex{full})
             </pattern>
         </encoder>
     </appender>
@@ -21,7 +21,7 @@
             <level>DEBUG</level>
         </filter>
         <encoder>
-            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%blue(%-5level)] [%white(%class{36}.%M)] - %blue(%msg%n%ex{full})
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%blue(%-5level)] [%white(%class{0}.%M)] - %blue(%msg%n%ex{full})
             </pattern>
         </encoder>
     </appender>
@@ -33,7 +33,7 @@
             <level>INFO</level>
         </filter>
         <encoder>
-            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%green(%-5level)] [%white(%class{36}.%M)] - %green(%msg%n%ex{full})
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%green(%-5level)] [%white(%class{0}.%M)] - %green(%msg%n%ex{full})
             </pattern>
         </encoder>
     </appender>
@@ -45,7 +45,7 @@
             <level>WARN</level>
         </filter>
         <encoder>
-            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%yellow(%-5level)] [%white(%class{36}.%M)] %logger{36} - %yellow(%msg%n%ex{full})
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%yellow(%-5level)] [%white(%class{0}.%M)] - %yellow(%msg%n%ex{full})
             </pattern>
         </encoder>
     </appender>
@@ -57,7 +57,7 @@
             <level>ERROR</level>
         </filter>
         <encoder>
-            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%red(%-5level)] [%white(%class{36}.%M)] - %red(%msg%n%ex{full})
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%red(%-5level)] [%white(%class{0}.%M)] - %red(%msg%n%ex{full})
             </pattern>
         </encoder>
     </appender>

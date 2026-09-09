@@ -1,10 +1,10 @@
-package api.request;
+package api.api;
 
 import api.api_specifications.ApiRequestSpecification;
-import api.pojo.request.BeerRequestPojo;
-import api.pojo.response.beer.AddBeerResponse;
-import api.pojo.response.beer.GetBeerResponse;
-import api.pojo.response.beer.UpdateBeerResponse;
+import api.test_data.request.BeerRequest;
+import api.test_data.response.beer.AddBeerResponse;
+import api.test_data.response.beer.GetBeerResponse;
+import api.test_data.response.beer.UpdateBeerResponse;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
@@ -12,10 +12,10 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public final class BeerRequest {
+public final class BeerApiRequests {
     @Step("Request to get all beer records GET /beers")
     public static List<GetBeerResponse> getBeerRequestReturnList() {
-        Response response = given()
+        var response = given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .basePath("/beers")
                 .when()
@@ -36,15 +36,14 @@ public final class BeerRequest {
 
     @Step("Request to get beer record by id GET /beer/(beerId)")
     public static GetBeerResponse getBeerByIdRequest(String beerId) {
-        Response response = given()
+        return given()
                 .spec(ApiRequestSpecification.getRequestSpecification())
                 .queryParam("beerId", beerId)
                 .basePath("/beer")
                 .when()
                 .get()
-                .thenReturn();
-
-        return response.as(GetBeerResponse.class);
+                .thenReturn()
+                .as(GetBeerResponse.class);
     }
 
     @Step("Request to get beer record by id GET /beer/(beerId)")
@@ -59,7 +58,7 @@ public final class BeerRequest {
     }
 
     @Step("Request to add a new beer record POST /beer")
-    public static Response addBeerRequestReturnResponse(BeerRequestPojo beerObject) {
+    public static Response addBeerRequestReturnResponse(BeerRequest beerObject) {
         return given()
                 .spec(ApiRequestSpecification.postRequestSpecification())
                 .body(beerObject)
@@ -70,29 +69,28 @@ public final class BeerRequest {
     }
 
     @Step("Request to add a new beer record POST /beer")
-    public static AddBeerResponse addBeerRequest(BeerRequestPojo beerObject) {
-        Response response = given()
+    public static AddBeerResponse addBeerRequest(BeerRequest beerObject) {
+        return given()
                 .spec(ApiRequestSpecification.postRequestSpecification())
                 .body(beerObject)
                 .basePath("/beer")
                 .when()
                 .post()
-                .thenReturn();
-
-        return response.as(AddBeerResponse.class);
+                .thenReturn()
+                .as(AddBeerResponse.class);
     }
 
     @Step("Request to update beer record PUT /beer/(beerId)")
-    public static UpdateBeerResponse updateBeerRequest(BeerRequestPojo beerObject, String idNumber) {
-        Response response = given()
+    public static UpdateBeerResponse updateBeerRequest(BeerRequest beerObject, String idNumber) {
+        return given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
                 .queryParams("beerId", idNumber)
                 .body(beerObject)
                 .basePath("/beer")
                 .when()
                 .put()
-                .thenReturn();
-        return response.as(UpdateBeerResponse.class);
+                .thenReturn()
+                .as(UpdateBeerResponse.class);
     }
 
     @Step("Request to delete beer record DELETE /beer/(beerId)")

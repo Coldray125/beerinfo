@@ -1,10 +1,9 @@
 package api.beer_service_test;
 
 import api.db_query.BeerQuery;
-import api.request.BeerRequest;
+import api.api.BeerApiRequests;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
-import io.restassured.response.Response;
 import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +27,7 @@ class DeleteBeerPositiveTest {
     @DisplayName("Check response message for DELETE /beer/{beerId}")
     @Test
     void checkDeleteBeerResponseText() {
-        Response response = BeerRequest.deleteBeerRequestReturnResponse(beerId);
+        var response = BeerApiRequests.deleteBeerRequestReturnResponse(beerId);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_OK));

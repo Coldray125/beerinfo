@@ -1,4 +1,4 @@
-package api.pojo.response.beer;
+package api.test_data.response.beer;
 
 import java.util.List;
 

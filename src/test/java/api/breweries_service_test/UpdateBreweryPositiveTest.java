@@ -1,10 +1,10 @@
 package api.breweries_service_test;
 
 import api.db_query.BreweryQuery;
-import api.extensions.annotation.brewery.RandomBreweryPojo;
-import api.pojo.request.BreweryRequestPojo;
-import api.pojo.response.brewery.UpdateBreweryResponse;
-import api.request.BreweryRequest;
+import api.extensions.annotation.brewery.RandomBreweryData;
+import api.test_data.request.BreweryRequest;
+import api.test_data.response.brewery.UpdateBreweryResponse;
+import api.api.BreweryApiRequests;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.beerinfo.data.dto.api.brewery.GetBreweryResponseDTO;
@@ -25,8 +25,8 @@ class UpdateBreweryPositiveTest {
 
     private long breweryId;
 
-    @RandomBreweryPojo
-    private BreweryRequestPojo request;
+    @RandomBreweryData
+    private BreweryRequest request;
 
     @BeforeEach
     void createBeerEntityInDB() {
@@ -36,7 +36,7 @@ class UpdateBreweryPositiveTest {
     @DisplayName("Verify response data matches request for PUT /brewery/{breweryId}")
     @Test
     void checkUpdateBreweryResponseData() {
-        UpdateBreweryResponse fullResponse = BreweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
+        var fullResponse = BreweryApiRequests.updateBreweryRequest(request, String.valueOf(breweryId));
         UpdateBreweryResponse.BreweryDetails responseObject = fullResponse.brewery();
 
         Allure.step("Check response fields match request data", () -> assertSoftly(softly -> {
@@ -50,7 +50,7 @@ class UpdateBreweryPositiveTest {
     @DisplayName("Verify response message for successful PUT /brewery/{breweryId}")
     @Test
     void checkUpdateBreweryResponseText() {
-        UpdateBreweryResponse fullResponse = BreweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
+        var fullResponse = BreweryApiRequests.updateBreweryRequest(request, String.valueOf(breweryId));
         String expectedMessage = String.format("Brewery with id: %s was updated.", breweryId);
 
         Allure.step("Check response message indicates successful update", () ->
@@ -62,7 +62,7 @@ class UpdateBreweryPositiveTest {
     @EnumSource(SupportedCountry.class)
     void checkUpdateBreweryWithValidCountry(SupportedCountry country) {
         request.setCountry(country.getCountryName());
-        UpdateBreweryResponse fullResponse = BreweryRequest.updateBreweryRequest(request, String.valueOf(breweryId));
+        var fullResponse = BreweryApiRequests.updateBreweryRequest(request, String.valueOf(breweryId));
         UpdateBreweryResponse.BreweryDetails updateResponse = fullResponse.brewery();
 
         GetBreweryResponseDTO entity = BreweryQuery.getBreweryById(breweryId);

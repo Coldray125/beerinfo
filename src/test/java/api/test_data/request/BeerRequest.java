@@ -1,4 +1,4 @@
-package api.pojo.request;
+package api.test_data.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BeerRequestPojo {
+public class BeerRequest {
     private String abv;
     private String ibuNumber;
     private String name;

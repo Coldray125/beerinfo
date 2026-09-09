@@ -1,8 +1,8 @@
 package api.beer_service_test;
 
 import api.db_query.BeerQuery;
-import api.pojo.response.beer.GetBeerResponse;
-import api.request.BeerRequest;
+import api.test_data.response.beer.GetBeerResponse;
+import api.api.BeerApiRequests;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
@@ -34,7 +34,7 @@ class GetBeerByIdPositiveTest {
     @DisplayName("Verify response code is 200 for GET /beer/{id}")
     @Test
     void checkBeerByIdResponseCode() {
-        Response response = BeerRequest.getBeerByIdRequestReturnResponse(beerId);
+        Response response = BeerApiRequests.getBeerByIdRequestReturnResponse(beerId);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_OK));
@@ -43,7 +43,7 @@ class GetBeerByIdPositiveTest {
     @DisplayName("Validate response JSON structure for GET /beer/{id}")
     @Test
     void checkBeerByIdResponseStructure() {
-        Response response = BeerRequest.getBeerByIdRequestReturnResponse(beerId);
+        Response response = BeerApiRequests.getBeerByIdRequestReturnResponse(beerId);
 
         Allure.step("Validate response JSON structure", () ->
                 ResponseValidator.assertResponseMatchesSchema(response, BEER_OBJECT.getPath()));
@@ -52,7 +52,7 @@ class GetBeerByIdPositiveTest {
     @DisplayName("Verify response data against database for GET /beer/{id} ")
     @Test
     void checkValuesInBeerByIdResponse() {
-        GetBeerResponse response = BeerRequest.getBeerByIdRequest(beerId);
+        GetBeerResponse response = BeerApiRequests.getBeerByIdRequest(beerId);
 
         Allure.step("Verify response fields against database values", () -> assertSoftly(softly -> {
             softly.assertThat(response.abv()).as("abv").isEqualTo(beerEntity.abv());

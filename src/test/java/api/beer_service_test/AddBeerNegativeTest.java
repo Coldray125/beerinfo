@@ -1,9 +1,9 @@
 package api.beer_service_test;
 
-import api.extensions.annotation.beer.RandomBeerPojo;
-import api.pojo.request.BeerRequestPojo;
-import api.pojo.response.beer.BeerErrorResponse;
-import api.request.BeerRequest;
+import api.extensions.annotation.beer.RandomBeerData;
+import api.test_data.request.BeerRequest;
+import api.test_data.response.beer.BeerErrorResponse;
+import api.api.BeerApiRequests;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
@@ -20,14 +20,14 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @Tag("Beer_API")
 class AddBeerNegativeTest {
 
-    @RandomBeerPojo
-    private BeerRequestPojo request;
+    @RandomBeerData
+    private BeerRequest request;
 
     @DisplayName("Error: Blank Name in POST /beer")
     @Test
     void checkAddBeerErrorEmptyName() {
         request.setName("");
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
@@ -43,7 +43,7 @@ class AddBeerNegativeTest {
     @Test
     void checkAddBeerErrorEmptyStyle() {
         request.setStyle("");
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
@@ -59,7 +59,7 @@ class AddBeerNegativeTest {
     @Test
     void checkAddBeerErrorEmptyBreweryId() {
         request.setBreweryId(null);
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
@@ -75,7 +75,7 @@ class AddBeerNegativeTest {
     @Test
     void checkAddBeerErrorNegativeNumbersBreweryId() {
         request.setBreweryId(randomNegativeLong(111111L, 999999L));
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
@@ -91,7 +91,7 @@ class AddBeerNegativeTest {
     @Test
     void checkAddBeerErrorAmountOfDigitsBreweryId() {
         request.setBreweryId(randomPositiveLong(111111L, 999999L));
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
@@ -110,7 +110,7 @@ class AddBeerNegativeTest {
         request.setStyle("");
         request.setBreweryId(null);
 
-        var response = BeerRequest.addBeerRequestReturnResponse(request);
+        var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));

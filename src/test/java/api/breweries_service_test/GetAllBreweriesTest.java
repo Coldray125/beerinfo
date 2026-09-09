@@ -1,6 +1,6 @@
 package api.breweries_service_test;
 
-import api.request.BreweryRequest;
+import api.api.BreweryApiRequests;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
@@ -19,7 +19,7 @@ class GetAllBreweriesTest {
     @DisplayName("Verify response JSON Structure for GET /breweries")
     @Test
     void checkGetAllBreweriesResponseStructure() {
-        var response = BreweryRequest.getBreweriesRequestReturnResponse();
+        var response = BreweryApiRequests.getBreweriesRequestReturnResponse();
 
         Allure.step("Validate response JSON structure", () ->
                 ResponseValidator.assertResponseMatchesSchema(response, BREWERY_ARRAY.getPath()));
@@ -28,7 +28,7 @@ class GetAllBreweriesTest {
     @DisplayName("Verify response returns successful status for GET /breweries")
     @Test
     void checkGetAllBreweriesStatusCode() {
-        var response = BreweryRequest.getBreweriesRequestReturnResponse();
+        var response = BreweryApiRequests.getBreweriesRequestReturnResponse();
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_OK));

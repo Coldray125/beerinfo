@@ -1,4 +1,4 @@
-package api.pojo.response.brewery;
+package api.test_data.response.brewery;
 
 public record UpdateBreweryResponse(String message, BreweryDetails brewery) {
     public record BreweryDetails(

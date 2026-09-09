@@ -1,9 +1,8 @@
 package api.beer_service_test;
 
-import api.conversion.BeerConverter;
 import api.db_query.BeerQuery;
-import api.pojo.response.beer.GetBeerResponse;
-import api.request.BeerRequest;
+import api.test_data.response.beer.GetBeerResponse;
+import api.api.BeerApiRequests;
 import api.test_utils.ResponseValidator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
@@ -13,11 +12,11 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static api.test_utils.SchemaPaths.BEER_ARRAY;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @Story("Beer_API")
 @Tag("Beer_API")
@@ -27,27 +26,27 @@ class GetAllBeersTest {
     @Test
     void checkGetAllBeersContainsAddedRecord() {
         GetBeerResponseDTO entityDTO = BeerQuery.addRandomBeerReturnDTO();
-        List<GetBeerResponse> responseList = BeerRequest.getBeerRequestReturnList();
-
-        var filteredResponse = Allure.step("Check response contains the added record", () -> {
-            Optional<GetBeerResponse> matchingResponse = responseList.stream()
-                    .filter(response -> response.beerId() == entityDTO.beerId())
-                    .findFirst();
-
-            assertThat(matchingResponse.isPresent()).as("Record should exist in the response").isTrue();
-            return matchingResponse.get();
-        });
-
-        var responseDTO = BeerConverter.MAPPER.convertToGetBeerResponseDTO(filteredResponse);
+        List<GetBeerResponse> responseList = BeerApiRequests.getBeerRequestReturnList();
 
         Allure.step("Verify response record matches database", () ->
-                assertThat(responseDTO).as("Response record should match database").isEqualTo(entityDTO));
+                assertThat(responseList)
+                        .filteredOn(filter -> filter.beerId() == entityDTO.beerId())
+                        .singleElement()
+                        .satisfies(response -> assertSoftly(softly -> {
+                            softly.assertThat(response.beerId()).as("beer_id").isEqualTo(entityDTO.beerId());
+                            softly.assertThat(response.abv()).as("abv").isEqualTo(entityDTO.abv());
+                            softly.assertThat(response.name()).as("name").isEqualTo(entityDTO.name());
+                            softly.assertThat(response.ibuNumber()).as("ibu_number").isEqualTo(entityDTO.ibuNumber());
+                            softly.assertThat(response.style()).as("style").isEqualTo(entityDTO.style());
+                            softly.assertThat(response.breweryId()).as("brewery_id").isEqualTo(entityDTO.breweryId());
+                            softly.assertThat(response.ounces()).as("ounces").isEqualTo(entityDTO.ounces());
+                        })));
     }
 
     @DisplayName("Verify response JSON structure in GET /beers ")
     @Test
     void checkGetAllBeersResponseStructure() {
-        var response = BeerRequest.getBeerRequestReturnResponse();
+        var response = BeerApiRequests.getBeerRequestReturnResponse();
 
         Allure.step("Validate response JSON structure", () ->
                 ResponseValidator.assertResponseMatchesSchema(response, BEER_ARRAY.getPath()));
@@ -56,7 +55,7 @@ class GetAllBeersTest {
     @DisplayName("Verify response code for GET /beers")
     @Test
     void checkGetAllBeersStatusCode() {
-        var response = BeerRequest.getBeerRequestReturnResponse();
+        var response = BeerApiRequests.getBeerRequestReturnResponse();
 
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).isEqualTo(SC_OK));

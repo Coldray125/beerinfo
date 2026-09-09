@@ -1,10 +1,10 @@
 package api.beer_service_test;
 
 import api.db_query.BeerQuery;
-import api.extensions.annotation.beer.RandomBeerPojo;
-import api.pojo.request.BeerRequestPojo;
-import api.pojo.response.beer.UpdateBeerResponse;
-import api.request.BeerRequest;
+import api.extensions.annotation.beer.RandomBeerData;
+import api.test_data.request.BeerRequest;
+import api.test_data.response.beer.UpdateBeerResponse;
+import api.api.BeerApiRequests;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.beerinfo.data.dto.api.beer.GetBeerResponseDTO;
@@ -21,8 +21,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class UpdateBeerPositiveTest {
     private String beerId;
 
-    @RandomBeerPojo
-    private BeerRequestPojo request;
+    @RandomBeerData
+    private BeerRequest request;
 
     @BeforeEach
     void createBeerEntityInDB() {
@@ -33,7 +33,7 @@ class UpdateBeerPositiveTest {
     @DisplayName("Verify response text for PUT /beer/{id}")
     @Test
     void checkUpdateBeerResponseText() {
-        UpdateBeerResponse fullResponse = BeerRequest.updateBeerRequest(request, beerId);
+        UpdateBeerResponse fullResponse = BeerApiRequests.updateBeerRequest(request, beerId);
         String expectedText = String.format("Beer with id: %s was updated.", beerId);
 
         Allure.step("Check response message", () -> {
@@ -45,7 +45,7 @@ class UpdateBeerPositiveTest {
     @DisplayName("Verify response data matches request for PUT /beer/{id}")
     @Test
     void checkValuesAddBeerResponse() {
-        UpdateBeerResponse fullResponse = BeerRequest.updateBeerRequest(request, beerId);
+        UpdateBeerResponse fullResponse = BeerApiRequests.updateBeerRequest(request, beerId);
         UpdateBeerResponse.BeerDetails response = fullResponse.beer();
 
         Allure.step("Check response fields against request values", () -> assertSoftly(softly -> {
@@ -61,7 +61,7 @@ class UpdateBeerPositiveTest {
     @DisplayName("Verify data in response against database for PUT /beer/{id}")
     @Test
     void checkAddBeerWriteInDatabase() {
-        UpdateBeerResponse fullResponse = BeerRequest.updateBeerRequest(request, beerId);
+        UpdateBeerResponse fullResponse = BeerApiRequests.updateBeerRequest(request, beerId);
         UpdateBeerResponse.BeerDetails response = fullResponse.beer();
 
         var beerEntity = BeerQuery.getBeerById(Long.parseLong(beerId));
