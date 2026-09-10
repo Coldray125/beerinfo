@@ -1,9 +1,5 @@
 package org.beerinfo.db;
 
-import org.beerinfo.data.entity.BeerEntity;
-import org.beerinfo.data.entity.BreweryEntity;
-import org.beerinfo.data.entity.JoinedBeerBreweryEntity;
-import org.beerinfo.data.entity.JoinedBreweryBeerEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -17,6 +13,8 @@ import static org.beerinfo.config.PropertyUtil.getProperty;
 import static org.hibernate.cfg.AvailableSettings.*;
 
 public class PostgresSessionProvider {
+
+    private static final String ENTITY_PACKAGE = "org.beerinfo.data.entity";
 
     private PostgresSessionProvider() {
     }
@@ -34,7 +32,7 @@ public class PostgresSessionProvider {
                 .applySettings(createConfiguration().getProperties())
                 .build();
 
-        Metadata metadata = addAnnotatedClasses(serviceRegistry);
+        Metadata metadata = findAndAddAnnotatedClasses(serviceRegistry);
 
         SessionFactoryBuilder sessionFactoryBuilder = metadata.getSessionFactoryBuilder()
                 .applyInterceptor(new LoggingInterceptor());
@@ -42,14 +40,12 @@ public class PostgresSessionProvider {
         return sessionFactoryBuilder.build();
     }
 
-    private static Metadata addAnnotatedClasses(StandardServiceRegistry serviceRegistry) {
-        return new MetadataSources(serviceRegistry)
-                .addAnnotatedClass(BeerEntity.class)
-                .addAnnotatedClass(BreweryEntity.class)
-                .addAnnotatedClass(JoinedBeerBreweryEntity.class)
-                .addAnnotatedClass(JoinedBreweryBeerEntity.class)
-                .getMetadataBuilder()
-                .build();
+    private static Metadata findAndAddAnnotatedClasses(StandardServiceRegistry serviceRegistry) {
+        var metadataSources = new MetadataSources(serviceRegistry);
+
+        EntityScanner.findAnnotatedEntities(ENTITY_PACKAGE).forEach(metadataSources::addAnnotatedClass);
+
+        return metadataSources.buildMetadata();
     }
 
     private static Configuration createConfiguration() {

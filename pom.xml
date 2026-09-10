@@ -29,6 +29,7 @@
         <jackson.version>3.2.2</jackson.version>
         <lombok.version>1.18.48</lombok.version>
         <faker.version>2.7.0</faker.version>
+        <classgraph.version>4.8.194</classgraph.version>
         <logback.version>1.6.3</logback.version>
         <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
@@ -112,6 +113,14 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <!-- Reflection util for finding entities for Hibernate -->
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>${classgraph.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Hibernate Validator requires an implementation of Jakarta Expression Language -->
