@@ -322,6 +322,7 @@
             </plugin>
 
             <!-- Allure -->
+            <!-- mute warning from aspectjweaver in version 1.9.25.1-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -329,6 +330,7 @@
                 <configuration>
                     <argLine>
                         --enable-preview
+                        --sun-misc-unsafe-memory-access=allow
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
                     <properties>
