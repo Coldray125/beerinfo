@@ -54,7 +54,7 @@ public class BeerQuery {
     }
 
     @Step("Find last Beer record Id in Postgres")
-    public static long getLastBeerId() {
+    public static long getMaxBeerId() {
         try (Session session = sessionFactory.openSession()) {
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
             CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);

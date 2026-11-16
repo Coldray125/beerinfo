@@ -55,12 +55,12 @@ class GetBeerByIdPositiveTest {
         GetBeerResponse response = BeerApiRequests.getBeerByIdRequest(beerId);
 
         Allure.step("Verify response fields against database values", () -> assertSoftly(softly -> {
-            softly.assertThat(response.abv()).as("abv").isEqualTo(beerEntity.abv());
+            softly.assertThat(response.abv()).as("abv").isEqualByComparingTo(beerEntity.abv());
             softly.assertThat(response.name()).as("name").isEqualTo(beerEntity.name());
             softly.assertThat(response.ibuNumber()).as("ibu_number").isEqualTo(beerEntity.ibuNumber());
             softly.assertThat(response.style()).as("style").isEqualTo(beerEntity.style());
             softly.assertThat(response.breweryId()).as("brewery_id").isEqualTo(beerEntity.breweryId());
-            softly.assertThat(response.ounces()).as("ounces").isEqualTo(beerEntity.ounces());
+            softly.assertThat(response.ounces()).as("ounces").isEqualByComparingTo(beerEntity.ounces());
         }));
     }
 }

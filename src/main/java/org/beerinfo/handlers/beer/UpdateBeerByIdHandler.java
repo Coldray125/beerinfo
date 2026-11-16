@@ -83,7 +83,10 @@ public class UpdateBeerByIdHandler implements Handler {
     @Override
     public void handle(@NotNull Context context) {
         Long beerId = ValidationUtils.extractAndValidateQueryParam(
-                context, "beerId", Long::parseLong, "Invalid Beer ID format. Only numeric values are allowed.");
+                context,
+                "beerId",
+                Long::parseLong,
+                "Invalid Beer ID format. Only numeric values are allowed.");
 
         if (beerId == null) return;
 
@@ -96,10 +99,10 @@ public class UpdateBeerByIdHandler implements Handler {
             return;
         }
 
-        Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
-        if (validationError != null) {
+        List<String> validationErrors = ValidationUtils.validateDTO(beerCreationDTO);
+        if (!validationErrors.isEmpty()) {
             context.status(400);
-            context.json(validationError);
+            context.json(Map.of("error", validationErrors));
             return;
         }
 

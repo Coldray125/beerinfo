@@ -1,11 +1,14 @@
 package org.beerinfo.data.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString(exclude = "beerEntities")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "Breweries")
 public class JoinedBreweryBeerEntity {

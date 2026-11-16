@@ -97,10 +97,10 @@ public class UpdateBreweryByIdHandler implements Handler {
             return;
         }
 
-        Map<String, List<String>> validationError = ValidationUtils.validateDTO(breweryCreationDTO);
-        if (validationError != null) {
+        List<String> validationErrors = ValidationUtils.validateDTO(breweryCreationDTO);
+        if (!validationErrors.isEmpty()) {
             context.status(400);
-            context.json(validationError);
+            context.json(Map.of("error", validationErrors));
             return;
         }
 

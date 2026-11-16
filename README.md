@@ -20,7 +20,7 @@
 
 - **Java:** 25
 
-- **Maven:** 3.9.11
+- **Maven:** 3.9.16
 
 ## Technology Stack
 
@@ -55,12 +55,6 @@ This project utilizes the following technologies, libraries, and frameworks for 
 - In Command Prompt or PowerShell : `java -version`
 - Set the JAVA_HOME environment variable: `setx JAVA_HOME "C:\Path\To\Your\Java\Installation" /M`
 - Add %JAVA_HOME%\bin to the Path environment variable: `setx Path "%Path%;%JAVA_HOME%\bin" /M`
-
-#### Configure IP Address
-For project working, environment postgresql.dev.uri in property file need to be updated to local ip address (IPv4 Address).
-
-- Console command to find local ip address: `ipconfig`
-- Path to properties file: `src/main/resources/properties/dev.properties`
 
 #### Build and Launch the Application
 - Build JAR file (skipping tests): `mvn package -DskipTests`

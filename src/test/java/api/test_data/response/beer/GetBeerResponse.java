@@ -1,12 +1,14 @@
 package api.test_data.response.beer;
 
+import java.math.BigDecimal;
+
 public record GetBeerResponse(
         long beerId,
-        String abv,
-        String ibuNumber,
+        BigDecimal abv,
+        Integer ibuNumber,
         String name,
         String style,
-        int breweryId,
-        String ounces
+        Integer breweryId,
+        BigDecimal ounces
 ) {
 }

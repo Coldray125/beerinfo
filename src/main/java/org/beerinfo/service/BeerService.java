@@ -21,7 +21,9 @@ public class BeerService {
     }
 
     public Optional<JoinedBeerBreweryEntity> getBeerBreweryById(long id) {
-        return GenericHibernateQuery.getEntityByFieldValue(sessionFactory, JoinedBeerBreweryEntity.class, Map.of("beerId", id));
+        return GenericHibernateQuery.getEntityByFieldValue(sessionFactory,
+                JoinedBeerBreweryEntity.class,
+                Map.of("beerId", id));
     }
 
     public Optional<BeerEntity> addBeer(BeerEntity beer) {

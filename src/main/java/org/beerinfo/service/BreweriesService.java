@@ -29,7 +29,9 @@ public class BreweriesService {
     }
 
     public Optional<JoinedBreweryBeerEntity> getBreweryBeersById(long id) {
-        return GenericHibernateQuery.getEntityByFieldValue(sessionFactory, JoinedBreweryBeerEntity.class, Map.of("breweryId", id));
+        return GenericHibernateQuery.getEntityByFieldValue(sessionFactory,
+                JoinedBreweryBeerEntity.class,
+                Map.of("breweryId", id));
     }
 
     /// Returns 0 if brewery table is empty.

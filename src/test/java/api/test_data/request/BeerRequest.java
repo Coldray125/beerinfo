@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BeerRequest {
-    private String abv;
-    private String ibuNumber;
+    private BigDecimal abv;
+    private Integer ibuNumber;
     private String name;
     private String style;
     private Long breweryId;
-    private String ounces;
+    private BigDecimal ounces;
 }

@@ -3,6 +3,7 @@ package org.beerinfo.db;
 import io.github.classgraph.ClassGraph;
 import jakarta.persistence.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,13 +20,29 @@ public final class EntityScanner {
     /// @return list of classes annotated with {@link Entity}
     public static List<Class<?>> findAnnotatedEntities(String packageName) {
         try (var scanResult = new ClassGraph()
+                .enableClasspath()
+                .enableClassInfo()
                 .enableAnnotationInfo()
                 .acceptPackages(packageName)
                 .scan()) {
 
-            var entityClasses = scanResult
-                    .getClassesWithAnnotation(Entity.class.getName())
-                    .loadClasses();
+            List<Class<?>> entityClasses = new ArrayList<>();
+
+            for (var classInfo : scanResult.getClassesWithAnnotation(Entity.class.getName())) {
+                try {
+                    Class<?> entityClass = Class.forName(
+                            classInfo.getName(),
+                            false,
+                            EntityScanner.class.getClassLoader()
+                    );
+
+                    entityClasses.add(entityClass);
+                } catch (ClassNotFoundException e) {
+                    throw new IllegalStateException(
+                            "Failed to load entity class: " + classInfo.getName(), e
+                    );
+                }
+            }
 
             logFoundEntities(packageName, entityClasses);
 

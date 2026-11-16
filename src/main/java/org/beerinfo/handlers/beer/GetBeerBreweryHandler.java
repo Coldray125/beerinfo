@@ -63,7 +63,10 @@ public class GetBeerBreweryHandler implements Handler {
     @Override
     public void handle(@NotNull Context context) {
         Long beerId = ValidationUtils.extractAndValidateQueryParam(
-                context, "beerId", Long::parseLong, "Invalid Beer ID format. Only numeric values are allowed.");
+                context,
+                "beerId",
+                Long::parseLong,
+                "Invalid Beer ID format. Only numeric values are allowed.");
 
         if (beerId == null) return;
 

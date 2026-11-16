@@ -51,7 +51,7 @@ import static org.beerinfo.utils.ResponseUtil.respondWithError;
                 ),
                 @OpenApiResponse(
                         status = "404",
-                        description = "Wrong brewery id: {breweryIdFromRequest} brewery cannot be added"
+                        description = "Wrong brewery id: {breweryIdFromRequest} beer cannot be added"
                 )
         }
 )
@@ -75,10 +75,10 @@ public class AddBeerHandler implements Handler {
             return;
         }
 
-        Map<String, List<String>> validationError = ValidationUtils.validateDTO(beerCreationDTO);
-        if (validationError != null) {
+        List<String> validationErrors = ValidationUtils.validateDTO(beerCreationDTO);
+        if (!validationErrors.isEmpty()) {
             context.status(400);
-            context.json(validationError);
+            context.json(Map.of("error", validationErrors));
             return;
         }
 
@@ -89,7 +89,7 @@ public class AddBeerHandler implements Handler {
 
         if (breweryIdFromRequest > lastBreweryId) {
             respondWithError(context, 404,
-                    "Wrong brewery id: " + breweryIdFromRequest + ", brewery cannot be added.");
+                    "Wrong brewery id: " + breweryIdFromRequest + ", beer cannot be added.");
             return;
         }
 
@@ -103,7 +103,7 @@ public class AddBeerHandler implements Handler {
         beer.setBeerId(addedBeer.get().getBeerId());
         final var postBeerResponseDTO = BeerMapper.MAPPER.mapToPostBeerResponseDTO(beer);
 
-        context.status(200).json(Map.of(
+        context.status(201).json(Map.of(
                 "beer", postBeerResponseDTO,
                 "message", "Beer added successfully."
         ));

@@ -1,9 +1,10 @@
 package api.beer_service_test;
 
+import api.api.BeerApiRequests;
+import api.db_query.BreweryQuery;
 import api.extensions.annotation.beer.RandomBeerData;
 import api.test_data.request.BeerRequest;
 import api.test_data.response.beer.BeerErrorResponse;
-import api.api.BeerApiRequests;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static api.test_utils.RandomValueUtils.randomNegativeLong;
-import static api.test_utils.RandomValueUtils.randomPositiveLong;
+import static jakarta.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -83,23 +84,28 @@ class AddBeerNegativeTest {
         Allure.step("Check error message for negative breweryId", () -> {
             BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
             assertThat(errorObject.error()).as("response errors array").isNotEmpty();
-            assertThat(errorObject.error().getFirst()).isEqualTo("breweryId must be a positive number and must be at least 1");
+            assertThat(errorObject.error().getFirst()).isEqualTo("BreweryId must be positive");
         });
     }
 
-    @DisplayName("Error: Excessive Digits in BreweryId in POST /beer")
+    @DisplayName("Error: Non-existent BreweryId in POST /beer")
     @Test
-    void checkAddBeerErrorAmountOfDigitsBreweryId() {
-        request.setBreweryId(randomPositiveLong(111111L, 999999L));
+    void checkAddBeerErrorNonExistentBreweryId() {
+        long nonExistentBreweryId = BreweryQuery.getMaxBreweryId() + 1000;
+        request.setBreweryId(nonExistentBreweryId);
+
         var response = BeerApiRequests.addBeerRequestReturnResponse(request);
 
         Allure.step("Check response status code", () ->
-                assertThat(response.getStatusCode()).isEqualTo(SC_BAD_REQUEST));
+                assertThat(response.getStatusCode()).as("status code").isEqualTo(SC_NOT_FOUND));
 
-        Allure.step("Check error message for excessive digits in breweryId", () -> {
-            BeerErrorResponse errorObject = response.body().as(BeerErrorResponse.class);
-            assertThat(errorObject.error()).as("response errors array").isNotEmpty();
-            assertThat(errorObject.error().getFirst()).isEqualTo("breweryId must be at most 99999");
+        String expectedErrorText = "Wrong brewery id: %d, brewery cannot be added."
+                .formatted(nonExistentBreweryId);
+
+        Allure.step("Check error message for non-existent breweryId", () -> {
+            var responseError = response.body().jsonPath().getString("error");
+            assertThat(responseError).as("response errors array").isNotEmpty();
+            assertThat(responseError).isEqualTo(expectedErrorText);
         });
     }
 

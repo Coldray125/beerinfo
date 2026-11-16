@@ -81,11 +81,11 @@ public final class BeerApiRequests {
     }
 
     @Step("Request to update beer record PUT /beer/(beerId)")
-    public static UpdateBeerResponse updateBeerRequest(BeerRequest beerObject, String idNumber) {
+    public static UpdateBeerResponse updateBeerRequest(BeerRequest beerRequest, String idNumber) {
         return given()
                 .spec(ApiRequestSpecification.putRequestSpecification())
                 .queryParams("beerId", idNumber)
-                .body(beerObject)
+                .body(beerRequest)
                 .basePath("/beer")
                 .when()
                 .put()

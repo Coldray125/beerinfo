@@ -49,12 +49,12 @@ class UpdateBeerPositiveTest {
         UpdateBeerResponse.BeerDetails response = fullResponse.beer();
 
         Allure.step("Check response fields against request values", () -> assertSoftly(softly -> {
-            softly.assertThat(response.abv()).as("abv").isEqualTo(request.getAbv());
+            softly.assertThat(response.abv()).as("abv").isEqualByComparingTo(request.getAbv());
             softly.assertThat(response.name()).as("name").isEqualTo(request.getName());
             softly.assertThat(response.ibuNumber()).as("ibu_number").isEqualTo(request.getIbuNumber());
             softly.assertThat(response.style()).as("style").isEqualTo(request.getStyle());
             softly.assertThat(response.breweryId()).as("brewery_id").isEqualTo(request.getBreweryId());
-            softly.assertThat(response.ounces()).as("ounces").isEqualTo(request.getOunces());
+            softly.assertThat(response.ounces()).as("ounces").isEqualByComparingTo(request.getOunces());
         }));
     }
 
@@ -68,12 +68,12 @@ class UpdateBeerPositiveTest {
 
         Allure.step("Check response fields match database values", () -> assertSoftly(softly -> {
             softly.assertThat(fullResponse.message()).as("beer_id").contains(String.valueOf(beerEntity.getBeerId()));
-            softly.assertThat(response.abv()).as("abv").isEqualTo(beerEntity.getAbv());
+            softly.assertThat(response.abv()).as("abv").isEqualByComparingTo(beerEntity.getAbv());
             softly.assertThat(response.name()).as("name").isEqualTo(beerEntity.getName());
             softly.assertThat(response.ibuNumber()).as("ibu_number").isEqualTo(beerEntity.getIbuNumber());
             softly.assertThat(response.style()).as("style").isEqualTo(beerEntity.getStyle());
             softly.assertThat(response.breweryId()).as("brewery_id").isEqualTo(beerEntity.getBreweryId());
-            softly.assertThat(response.ounces()).as("ounces").isEqualTo(beerEntity.getOunces());
+            softly.assertThat(response.ounces()).as("ounces").isEqualByComparingTo(beerEntity.getOunces());
         }));
     }
 }

@@ -26,7 +26,7 @@ class GetBeerByIdNegativeTest {
     @DisplayName("Error: Retrieve Nonexistent Beer by ID in GET /beer/(beerId)")
     @Test
     void checkBeerByIdWrongIdResponseMessage() {
-        long lastBeerId = BeerQuery.getLastBeerId() + 1000;
+        long lastBeerId = BeerQuery.getMaxBeerId() + 1000;
         var response = BeerApiRequests.getBeerByIdRequestReturnResponse(String.valueOf(lastBeerId));
 
         Allure.step("Check response status code", () ->

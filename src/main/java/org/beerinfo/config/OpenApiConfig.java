@@ -7,6 +7,8 @@ import io.javalin.openapi.plugin.redoc.ReDocPlugin;
 import io.javalin.openapi.plugin.swagger.SwaggerPlugin;
 import lombok.extern.slf4j.Slf4j;
 
+import static org.beerinfo.config.PropertyUtil.getProperty;
+
 /// [javalin openAPI example](https://github.com/javalin/javalin-openapi/blob/main/examples/javalin-gradle-kotlin/src/main/java/io/javalin/openapi/plugin/test/JavalinTest.java)
 @Slf4j
 public final class OpenApiConfig {
@@ -17,13 +19,12 @@ public final class OpenApiConfig {
     public static void configureOpenApi(JavalinConfig config) {
         config.registerPlugin(new OpenApiPlugin(pluginConfig -> {
             pluginConfig.withDocumentationPath(OPENAPI_PATH);
-            pluginConfig.withDefinitionConfiguration((_, definition) -> {
-                definition.info(info -> {
-                    info.title("Javalin beerInfo OpenAPI example");
-                    info.version("1.0.0");
-                    info.description("Generated API documentation");
-                });
-            });
+            pluginConfig.withDefinitionConfiguration((_, definition) ->
+                    definition.info(info -> {
+                        info.title("Javalin beerInfo OpenAPI example");
+                        info.version("1.0.0");
+                        info.description("Generated API documentation");
+                    }));
         }));
 
         config.registerPlugin(new SwaggerPlugin(swaggerConfig ->
@@ -34,10 +35,10 @@ public final class OpenApiConfig {
     }
 
     public static void logDocumentationUrls(Javalin app) {
-        String baseUrl = "http://localhost:" + app.port();
+        String baseUrl = "http://localhost:" + getProperty("application.port");
         log.info("");
         log.info("=".repeat(60));
-        log.info("🚀 Server started on port {}", app.port());
+        log.info("🚀 Server started on port {}", getProperty("application.port"));
         log.info("📚 Documentation:");
         log.info("   ├─ OpenAPI:    {}{}", baseUrl, OpenApiConfig.OPENAPI_PATH);
         log.info("   ├─ Swagger UI: {}{}", baseUrl, OpenApiConfig.SWAGGER_PATH);

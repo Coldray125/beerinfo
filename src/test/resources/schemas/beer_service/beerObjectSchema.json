@@ -5,10 +5,16 @@
       "type": "integer"
     },
     "abv": {
-      "type": "string"
+      "type": [
+        "number",
+        "null"
+      ]
     },
     "ibuNumber": {
-      "type": "string"
+      "type": [
+        "integer",
+        "null"
+      ]
     },
     "name": {
       "type": "string"
@@ -20,8 +26,19 @@
       "type": "integer"
     },
     "ounces": {
-      "type": "string"
+      "type": [
+        "number",
+        "null"
+      ]
     }
   },
-  "required": ["beerId", "abv", "ibuNumber", "name", "style", "breweryId", "ounces"]
+  "required": [
+    "beerId",
+    "abv",
+    "ibuNumber",
+    "name",
+    "style",
+    "breweryId",
+    "ounces"
+  ]
 }

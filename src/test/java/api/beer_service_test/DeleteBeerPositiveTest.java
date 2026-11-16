@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Story("Beer_API")
 @Tag("Beer_API")
 class DeleteBeerPositiveTest {
+
     private String beerId;
 
     @BeforeEach
@@ -30,12 +31,12 @@ class DeleteBeerPositiveTest {
         var response = BeerApiRequests.deleteBeerRequestReturnResponse(beerId);
 
         Allure.step("Check response status code", () ->
-                assertThat(response.getStatusCode()).isEqualTo(SC_OK));
+                assertThat(response.getStatusCode()).as("status code").isEqualTo(SC_OK));
 
         Allure.step("Check response message indicates deletion", () -> {
             String expectedText = "Beer with id: " + beerId + " was deleted";
             String responseText = response.body().path("message");
-            assertThat(responseText).isEqualTo(expectedText);
+            assertThat(responseText).as("response message").isEqualTo(expectedText);
         });
     }
 }

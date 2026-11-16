@@ -3,6 +3,8 @@ package api.test_utils;
 import net.datafaker.Faker;
 import org.beerinfo.enums.SupportedCountry;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,8 +37,20 @@ public final class RandomValueUtils {
         return faker.number().digits(amount);
     }
 
+    public static int randomPositiveInt(int min, int max) {
+        return faker.number().numberBetween(min, max);
+    }
+
     public static long randomPositiveLong(long from, long to) {
         return faker.number().numberBetween(from, to);
+    }
+
+    public static BigDecimal randomPositiveBigDecimal(int min, int max) {
+        double randomDouble = faker.number().randomDouble(2, min, max);
+        BigDecimal decimal = BigDecimal.valueOf(randomDouble)
+                .setScale(2, RoundingMode.HALF_UP)
+                .stripTrailingZeros();
+        return new BigDecimal(decimal.toPlainString());
     }
 
     public static long randomNegativeLong(long from, long to) {

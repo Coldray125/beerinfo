@@ -9,27 +9,25 @@ import jakarta.validation.ValidatorFactory;
 import java.util.*;
 import java.util.function.Function;
 
-public class ValidationUtils {
+public final class ValidationUtils {
 
-    public static <T> Map<String, List<String>> validateDTO(T dto) {
-        Validator validator;
-        try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
-            validator = factory.getValidator();
+    private ValidationUtils() {
+    }
+
+    private static final ValidatorFactory FACTORY = Validation.buildDefaultValidatorFactory();
+    private static final Validator VALIDATOR = FACTORY.getValidator();
+
+    public static <T> List<String> validateDTO(T dto) {
+        Set<ConstraintViolation<T>> violations = VALIDATOR.validate(dto);
+
+        if (violations.isEmpty()) {
+            return List.of();
         }
 
-        Set<ConstraintViolation<T>> violations = validator.validate(dto);
-
-        if (!violations.isEmpty()) {
-            List<String> errorMessages = new ArrayList<>();
-            for (ConstraintViolation<T> violation : violations) {
-                errorMessages.add(violation.getMessage());
-            }
-
-            Map<String, List<String>> errors = new HashMap<>();
-            errors.put("error", errorMessages);
-            return errors;
-        }
-        return null;
+        return VALIDATOR.validate(dto)
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList();
     }
 
     /// Extracts and validates a query parameter from the request context.
@@ -43,7 +41,10 @@ public class ValidationUtils {
     /// @param errorMessage message returned in case of conversion failure
     /// @param <T>          the expected type of the query parameter
     /// @return the converted value, or {@code null} if validation fails (response already sent)
-    public static <T> T extractAndValidateQueryParam(Context ctx, String name, Function<String, T> converter, String errorMessage) {
+    public static <T> T extractAndValidateQueryParam(Context ctx,
+                                                     String name,
+                                                     Function<String, T> converter,
+                                                     String errorMessage) {
         String raw = ctx.queryParam(name);
 
         if (raw == null || raw.isBlank()) {
