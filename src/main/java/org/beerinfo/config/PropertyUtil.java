@@ -10,7 +10,6 @@ import java.util.Properties;
 public final class PropertyUtil {
 
     private static final String DEFAULT_ENV = "local";
-
     private static final Properties PROPERTIES = loadProperties();
 
     private PropertyUtil() {
@@ -38,6 +37,7 @@ public final class PropertyUtil {
 
             properties.load(input);
             log.info("Loaded configuration for environment: {}", environment);
+            log.info("Properties file: {}", propertiesFile);
 
             return properties;
 

@@ -99,7 +99,7 @@ class AddBeerNegativeTest {
         Allure.step("Check response status code", () ->
                 assertThat(response.getStatusCode()).as("status code").isEqualTo(SC_NOT_FOUND));
 
-        String expectedErrorText = "Wrong brewery id: %d, brewery cannot be added."
+        String expectedErrorText = "Wrong brewery id: %d, beer cannot be added."
                 .formatted(nonExistentBreweryId);
 
         Allure.step("Check error message for non-existent breweryId", () -> {

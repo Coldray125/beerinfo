@@ -1,12 +1,13 @@
 networks:
-  beerInfo:
+  beer-info-network:
+    name: beer-info-network
     driver: bridge
 
 services:
   app:
     networks:
-      - beerInfo
-    image: eclipse-temurin:25-alpine
+      - beer-info-network
+    image: eclipse-temurin:27-alpine
     container_name: beerInfo-app
     command: java --enable-preview -jar /app/app.jar
     stdin_open: true   # Keep stdin open for input
@@ -15,15 +16,15 @@ services:
       - "8086:8080"
     environment:
       APP_ENV: docker
-    volumes:
-      - ./target/beerinfo-1.0.jar:/app/app.jar
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./target/beerinfo-1.0.jar:/app/app.jar
 
   db:
     networks:
-      - beerInfo
+      - beer-info-network
     image: postgres:latest
     container_name: beerInfo-db
     ports:
@@ -46,7 +47,7 @@ services:
 
   jenkins:
     networks:
-      - beerInfo
+      - beer-info-network
     build:
       context: .  # Use the current directory as the build context (Возможно нужно убрать одну точку)
       dockerfile: docker/jenkins/Dockerfile-Jenkins  # Use the Dockerfile.Jenkins in the current directory
@@ -64,6 +65,9 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs/jenkins-config.yaml
+    depends_on:
+      db:
+        condition: service_healthy
     restart: always
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://jenkins:8080/login" ]

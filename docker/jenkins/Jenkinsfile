@@ -1,10 +1,17 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3.9.16-eclipse-temurin-25'
-            // Persist Maven dependencies between builds in a Docker volume.
-            args '-v maven_cache_for_jenkins:/root/.m2'
+            image 'maven:3.10.0-eclipse-temurin-27'
+
+             // Connect the Maven container to the same network as the application and database.
+             // Mount a persistent volume to cache Maven dependencies between builds.
+            args '--network=beer-info-network -v maven_cache_for_jenkins:/root/.m2'
         }
+    }
+
+    // Load Docker-specific configuration
+    environment {
+        APP_ENV = 'docker'
     }
 
     stages {

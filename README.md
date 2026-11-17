@@ -18,9 +18,9 @@
 
 ## Prerequisites
 
-- **Java:** 25
+- **Java:** 27
 
-- **Maven:** 3.9.16
+- **Maven:** 3.10.0
 
 ## Technology Stack
 
